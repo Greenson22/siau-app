@@ -1,7 +1,7 @@
-'use client'; // Diperlukan untuk hooks seperti useState, useRef, useEffect
+'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Bell, Menu } from 'lucide-react';
+import { Bell, Menu, LogOut } from 'lucide-react'; // Tambahkan LogOut
 import { mahasiswa, notifikasi } from '@/lib/data';
 
 interface HeaderProps {
@@ -11,13 +11,21 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ title, toggleSidebar }) => {
     const [isNotifOpen, setIsNotifOpen] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false); // State untuk profil
+    
     const notifRef = useRef<HTMLDivElement>(null);
+    const profileRef = useRef<HTMLDivElement>(null); // Ref untuk profil
 
-    // Menutup notifikasi jika klik di luar area
+    // Menutup popover jika klik di luar area
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
+            // Cek untuk notifikasi
             if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
                 setIsNotifOpen(false);
+            }
+            // Cek untuk profil
+            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+                setIsProfileOpen(false);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
@@ -35,15 +43,15 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar }) => {
                 <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
             </div>
             <div className="flex items-center gap-4">
-                {/* --- AWAL PERUBAHAN --- */}
+                {/* Notifikasi Dropdown */}
                 <div ref={notifRef} className="relative">
-                    <button onClick={() => setIsNotifOpen(prev => !prev)} className="relative">
+                    <button onClick={() => setIsNotifOpen(prev => !prev)} className="relative p-2 rounded-full hover:bg-gray-100">
                         <Bell size={20} className="text-gray-500" />
-                        <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                        <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                     </button>
 
                     {isNotifOpen && (
-                        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                         <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
                             <div className="p-3 border-b">
                                 <p className="font-semibold text-gray-800">Notifikasi</p>
                             </div>
@@ -60,15 +68,34 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar }) => {
                         </div>
                     )}
                 </div>
-                {/* --- AKHIR PERUBAHAN --- */}
+                
+                {/* --- AWAL PERUBAHAN PROFIL --- */}
+                {/* Profil Dropdown */}
+                <div ref={profileRef} className="relative">
+                    <button onClick={() => setIsProfileOpen(prev => !prev)} className="flex items-center gap-3 p-1 rounded-lg hover:bg-gray-100">
+                        <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 font-bold text-lg">
+                           {mahasiswa.nama.charAt(0)}{mahasiswa.nama.split(' ')[1]?.charAt(0)}
+                        </div>
+                        <div className="hidden sm:block text-left">
+                            <p className="font-semibold text-gray-700">{mahasiswa.nama}</p>
+                            <p className="text-sm text-gray-500">{mahasiswa.peran}</p>
+                        </div>
+                    </button>
 
-                <div className="flex items-center gap-3">
-                    <img src={mahasiswa.avatar} alt="User Avatar" className="w-10 h-10 rounded-full"/>
-                    <div className="hidden sm:block">
-                        <p className="font-semibold text-gray-700">{mahasiswa.nama}</p>
-                        <p className="text-sm text-gray-500">{mahasiswa.peran}</p>
-                    </div>
+                    {isProfileOpen && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                            <ul>
+                                <li>
+                                    <button className="flex items-center gap-3 w-full text-left p-3 text-sm text-red-600 hover:bg-red-50">
+                                        <LogOut size={16} />
+                                        <span>Logout</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    )}
                 </div>
+                {/* --- AKHIR PERUBAHAN PROFIL --- */}
             </div>
         </header>
     );
