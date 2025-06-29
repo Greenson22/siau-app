@@ -16,21 +16,47 @@ const views: { [key in NavLinkId]: React.ComponentType } = {
 };
 
 const DashboardLayout = () => {
-    const [activeView, setActiveView] = useState<NavLinkId>('dashboard');
-    const ActiveComponent = views[activeView];
-    const pageTitle = navLinks.find(link => link.id === activeView)?.title || 'Dashboard';
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeView, setActiveView] = useState<NavLinkId>('dashboard');
+  
+  const ActiveComponent = views[activeView];
+  const pageTitle = navLinks.find(link => link.id === activeView)?.title || 'Dashboard';
 
-    return (
-        <div className="flex h-screen bg-gray-50 font-sans">
-            <Sidebar activeView={activeView} setActiveView={setActiveView} />
-            <div className="flex-1 flex flex-col">
-                <main className="flex-1 p-8 overflow-y-auto">
-                    <Header title={pageTitle} />
-                    <ActiveComponent />
-                </main>
-            </div>
-        </div>
-    );
+  const handleSetView = (view: NavLinkId) => {
+    setActiveView(view);
+    // Selalu tutup sidebar saat navigasi di tampilan mobile
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false);
+    }
+  };
+
+  return (
+    <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
+      {/* Overlay, hanya muncul saat sidebar terbuka di mobile */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 z-20 bg-black opacity-50 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+      )}
+
+      {/* Sidebar */}
+      <Sidebar 
+        activeView={activeView} 
+        setActiveView={handleSetView}
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+      />
+      
+      {/* Konten Utama */}
+      <div className="flex-1">
+        <main className="p-6 lg:p-8">
+          <Header title={pageTitle} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+          <ActiveComponent />
+        </main>
+      </div>
+    </div>
+  );
 };
 
 export default DashboardLayout;
