@@ -1,4 +1,5 @@
 import Card from "@/components/elements/Card";
+import Avatar from "@/components/elements/Avatar";
 import { mahasiswa } from "@/lib/data";
 import { CreditCard, User, Mail, Phone } from "lucide-react";
 
@@ -6,7 +7,7 @@ const ProfileView = () => (
     <Card className="max-w-3xl mx-auto">
         <h3 className="text-xl font-bold mb-6">Profil Mahasiswa</h3>
         <div className="flex flex-col md:flex-row items-center gap-8">
-            <img src={mahasiswa.fotoProfil} alt="Foto Profil" className="w-32 h-32 rounded-full shadow-md"/>
+            <Avatar src={mahasiswa.fotoProfil} name={mahasiswa.nama} className="w-32 h-32 text-4xl shadow-md"/>
             <div className="flex-1">
                 <p className="text-2xl font-bold text-gray-800">{mahasiswa.nama}</p>
                 <p className="text-indigo-600">{mahasiswa.prodi}</p>
