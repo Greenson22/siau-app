@@ -18,8 +18,32 @@ const getInitials = (name: string) => {
     .toUpperCase();
 };
 
-const namaMahasiswa = 'Frendy Rikal';
+// Palet warna untuk avatar [background, text] (format hex tanpa #)
+const colorPalette = [
+  { bg: 'FCA5A5', text: '991B1B' }, // Red-300, Red-800
+  { bg: 'FDBA74', text: '9A3412' }, // Orange-300, Orange-800
+  { bg: 'FDE047', text: '854D0E' }, // Yellow-300, Yellow-700
+  { bg: '86EFAC', text: '166534' }, // Green-300, Green-800
+  { bg: '93C5FD', text: '1E40AF' }, // Blue-300, Blue-800
+  { bg: 'C4B5FD', text: '5B21B6' }, // Violet-300, Violet-800
+  { bg: 'F9A8D4', text: '9D2449' }, // Pink-300, Pink-800
+];
+
+// Helper untuk mendapatkan warna konsisten berdasarkan inisial
+const getAvatarColors = (initials: string) => {
+  if (!initials) {
+    return { bg: 'E2E8F0', text: '4A5568' }; // Default Abu-abu
+  }
+  // Membuat 'hash' sederhana dari inisial untuk memilih warna
+  const charCodeSum = initials.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  const index = charCodeSum % colorPalette.length;
+  return colorPalette[index];
+};
+
+
+const namaMahasiswa = 'Frendy Gerung';
 const inisialMahasiswa = getInitials(namaMahasiswa);
+const avatarColors = getAvatarColors(inisialMahasiswa);
 
 export const mahasiswa = {
   nama: namaMahasiswa,
@@ -29,9 +53,9 @@ export const mahasiswa = {
   status: 'Aktif',
   email: '20210118@sttis.ac.id',
   telepon: '085298937694',
-  // Menggunakan inisial untuk placeholder gambar
-  fotoProfil: `https://placehold.co/128x128/E2E8F0/4A5568?text=${inisialMahasiswa}`,
-  avatar: `https://placehold.co/40x40/E2E8F0/4A5568?text=${inisialMahasiswa}`
+  // Menggunakan inisial dan warna dinamis untuk placeholder
+  fotoProfil: `https://placehold.co/128x128/${avatarColors.bg}/${avatarColors.text}?text=${inisialMahasiswa}`,
+  avatar: `https://placehold.co/40x40/${avatarColors.bg}/${avatarColors.text}?text=${inisialMahasiswa}`
 };
 
 export const ringkasanAkademik = {
