@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => (
             <div className="flex items-center gap-3">
                 <img src="https://placehold.co/40x40/E2E8F0/4A5568?text=AT" alt="User Avatar" className="w-10 h-10 rounded-full"/>
                 <div>
-                    <p className="font-semibold text-gray-700">Ariel Tatum</p>
+                    <p className="font-semibold text-gray-700">Frendy Gerung</p>
                     <p className="text-sm text-gray-500">Mahasiswa</p>
                 </div>
             </div>
