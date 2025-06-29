@@ -102,3 +102,9 @@ export const dataAkademik = {
     ]
   }
 };
+
+export const notifikasi = [
+  { id: 1, pesan: 'Batas akhir pembayaran UKT adalah 30 Juli 2025.', waktu: '2 jam yang lalu' },
+  { id: 2, pesan: 'Jadwal KRS Semester Ganjil 2025/2026 telah terbit.', waktu: '1 hari yang lalu' },
+  { id: 3, pesan: 'Nilai mata kuliah Teologi Sistematika II telah keluar.', waktu: '3 hari yang lalu' },
+];
