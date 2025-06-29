@@ -53,6 +53,7 @@ export const mahasiswa = {
   status: 'Aktif',
   email: '20210118@sttis.ac.id',
   telepon: '085298937694',
+  dosenPA: 'Dr. Glenn Maramis, S.Kom., M.CompSc',
   // Menggunakan inisial dan warna dinamis untuk placeholder
   fotoProfil: `https://placehold.co/128x128/${avatarColors.bg}/${avatarColors.text}?text=${inisialMahasiswa}`,
   avatar: `https://placehold.co/40x40/${avatarColors.bg}/${avatarColors.text}?text=${inisialMahasiswa}`
@@ -168,3 +169,4 @@ export const mataKuliahTersedia = {
     { kode: 'HOM506', nama: 'Homiletika I', sks: 3, checked: false },
   ]
 };
+

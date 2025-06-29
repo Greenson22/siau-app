@@ -1,13 +1,12 @@
 import Card from "@/components/elements/Card";
-import Avatar from "@/components/elements/Avatar";
 import { mahasiswa } from "@/lib/data";
-import { CreditCard, User, Mail, Phone } from "lucide-react";
+import { CreditCard, User, Mail, Phone, UserSquare } from "lucide-react";
 
 const ProfileView = () => (
     <Card className="max-w-3xl mx-auto">
         <h3 className="text-xl font-bold mb-6">Profil Mahasiswa</h3>
         <div className="flex flex-col md:flex-row items-center gap-8">
-            <Avatar src={mahasiswa.fotoProfil} name={mahasiswa.nama} className="w-32 h-32 text-4xl shadow-md"/>
+            <img src={mahasiswa.fotoProfil} alt="Foto Profil" className="w-32 h-32 rounded-full shadow-md"/>
             <div className="flex-1">
                 <p className="text-2xl font-bold text-gray-800">{mahasiswa.nama}</p>
                 <p className="text-indigo-600">{mahasiswa.prodi}</p>
@@ -16,6 +15,7 @@ const ProfileView = () => (
                     <div className="flex items-center gap-2"><User size={16} className="text-gray-500" /><span className="font-semibold">Status:</span><span className="px-2 py-0.5 bg-green-100 text-green-800 rounded-full">{mahasiswa.status}</span></div>
                     <div className="flex items-center gap-2"><Mail size={16} className="text-gray-500" /><span>{mahasiswa.email}</span></div>
                     <div className="flex items-center gap-2"><Phone size={16} className="text-gray-500" /><span>{mahasiswa.telepon}</span></div>
+                    <div className="flex items-center gap-2 sm:col-span-2"><UserSquare size={16} className="text-gray-500" /><span className="font-semibold">Dosen PA:</span><span>{mahasiswa.dosenPA}</span></div>
                 </div>
             </div>
         </div>
