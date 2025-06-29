@@ -1,7 +1,8 @@
 import Card from '@/components/elements/Card';
 import IpsChart from './IpsChart';
 import { GraduationCap, Wallet, BookCopy, Megaphone } from 'lucide-react';
-import { ElementType } from 'react'; // Import ElementType
+import { ElementType } from 'react';
+import { ringkasanAkademik } from '@/lib/data';
 
 // Tipe untuk props InfoCard
 interface InfoCardProps {
@@ -44,9 +45,9 @@ const DashboardView = () => (
     <>
         {/* Info Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            <InfoCard icon={GraduationCap} label="IPK" value="3.75" colorClass={{bg: 'bg-blue-100', text: 'text-blue-600'}} />
-            <InfoCard icon={Wallet} label="Status Keuangan" value="Lunas" colorClass={{bg: 'bg-green-100', text: 'text-green-600'}} />
-            <InfoCard icon={BookCopy} label="SKS Ditempuh" value="98" colorClass={{bg: 'bg-yellow-100', text: 'text-yellow-600'}} />
+            <InfoCard icon={GraduationCap} label="IPK" value={ringkasanAkademik.ipk} colorClass={{bg: 'bg-blue-100', text: 'text-blue-600'}} />
+            <InfoCard icon={Wallet} label="Status Keuangan" value={ringkasanAkademik.statusKeuangan} colorClass={{bg: 'bg-green-100', text: 'text-green-600'}} />
+            <InfoCard icon={BookCopy} label="SKS Ditempuh" value={ringkasanAkademik.sksDitempuh} colorClass={{bg: 'bg-yellow-100', text: 'text-yellow-600'}} />
         </div>
         {/* Chart & Pengumuman */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

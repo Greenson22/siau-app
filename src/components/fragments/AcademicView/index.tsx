@@ -2,6 +2,7 @@
 
 import Card from '@/components/elements/Card';
 import React, { useState } from 'react';
+import { dataAkademik } from '@/lib/data';
 
 type AcademicTab = 'krs' | 'khs' | 'transkrip' | 'jadwal';
 
@@ -20,16 +21,20 @@ const AcademicView = () => {
       case 'krs':
         return (
           <>
-            <h4 className="font-bold text-lg mb-4 text-gray-800">Kartu Rencana Studi - Semester Ganjil 2025/2026</h4>
-            <p className="text-sm mb-4 text-gray-500">Status: <span className="font-semibold text-green-600">Disetujui oleh Dosen PA</span></p>
+            <h4 className="font-bold text-lg mb-4 text-gray-800">Kartu Rencana Studi - Semester {dataAkademik.krs.semester}</h4>
+            <p className="text-sm mb-4 text-gray-500">Status: <span className="font-semibold text-green-600">{dataAkademik.krs.status}</span></p>
             <table className="w-full text-sm text-left text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr><th className="px-6 py-3">Kode MK</th><th className="px-6 py-3">Mata Kuliah</th><th className="px-6 py-3">SKS</th></tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b"><td className="px-6 py-4">TEO501</td><td className="px-6 py-4">Teologi Sistematika III</td><td className="px-6 py-4">3</td></tr>
-                <tr className="bg-white border-b"><td className="px-6 py-4">PAK503</td><td className="px-6 py-4">Hermeneutik II</td><td className="px-6 py-4">3</td></tr>
-                <tr className="bg-white border-b"><td className="px-6 py-4">BIB505</td><td className="px-6 py-4">Bahasa Yunani II</td><td className="px-6 py-4">2</td></tr>
+                {dataAkademik.krs.mataKuliah.map((mk, index) => (
+                  <tr key={index} className="bg-white border-b">
+                    <td className="px-6 py-4">{mk.kode}</td>
+                    <td className="px-6 py-4">{mk.nama}</td>
+                    <td className="px-6 py-4">{mk.sks}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </>
@@ -37,16 +42,21 @@ const AcademicView = () => {
       case 'khs':
         return (
           <>
-            <h4 className="font-bold text-lg mb-4 text-gray-800">Kartu Hasil Studi - Semester Genap 2024/2025</h4>
-            <p className="text-sm mb-4 text-gray-500">IPS: <span className="font-semibold text-gray-800">3.80</span> | SKS: <span className="font-semibold text-gray-800">21</span></p>
+            <h4 className="font-bold text-lg mb-4 text-gray-800">Kartu Hasil Studi - Semester {dataAkademik.khs.semester}</h4>
+            <p className="text-sm mb-4 text-gray-500">IPS: <span className="font-semibold text-gray-800">{dataAkademik.khs.ips}</span> | SKS: <span className="font-semibold text-gray-800">{dataAkademik.khs.sks}</span></p>
             <table className="w-full text-sm text-left text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr><th className="px-6 py-3">Mata Kuliah</th><th className="px-6 py-3">SKS</th><th className="px-6 py-3">Nilai Huruf</th><th className="px-6 py-3">Nilai Angka</th></tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b"><td className="px-6 py-4">Teologi Sistematika II</td><td className="px-6 py-4">3</td><td className="px-6 py-4">A</td><td className="px-6 py-4">4.00</td></tr>
-                <tr className="bg-white border-b"><td className="px-6 py-4">Hermeneutik I</td><td className="px-6 py-4">3</td><td className="px-6 py-4">A-</td><td className="px-6 py-4">3.70</td></tr>
-                <tr className="bg-white border-b"><td className="px-6 py-4">Bahasa Yunani I</td><td className="px-6 py-4">2</td><td className="px-6 py-4">A</td><td className="px-6 py-4">4.00</td></tr>
+                {dataAkademik.khs.mataKuliah.map((mk, index) => (
+                  <tr key={index} className="bg-white border-b">
+                    <td className="px-6 py-4">{mk.nama}</td>
+                    <td className="px-6 py-4">{mk.sks}</td>
+                    <td className="px-6 py-4">{mk.nilaiHuruf}</td>
+                    <td className="px-6 py-4">{mk.nilaiAngka.toFixed(2)}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </>

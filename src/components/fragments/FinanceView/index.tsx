@@ -1,5 +1,6 @@
 import Card from '@/components/elements/Card';
 import React from 'react';
+import { dataKeuangan } from '@/lib/data';
 
 const FinanceView = () => {
   return (
@@ -18,27 +19,15 @@ const FinanceView = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b">
-                  <td className="px-6 py-4">Juli 2025</td>
-                  <td className="px-6 py-4">Rp 1.500.000</td>
-                  <td className="px-6 py-4">
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Lunas</span>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b">
-                  <td className="px-6 py-4">Juni 2025</td>
-                  <td className="px-6 py-4">Rp 1.500.000</td>
-                  <td className="px-6 py-4">
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Lunas</span>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b">
-                  <td className="px-6 py-4">Mei 2025</td>
-                  <td className="px-6 py-4">Rp 1.500.000</td>
-                  <td className="px-6 py-4">
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Lunas</span>
-                  </td>
-                </tr>
+                {dataKeuangan.tagihan.map((item, index) => (
+                  <tr key={index} className="bg-white border-b">
+                    <td className="px-6 py-4">{item.bulan}</td>
+                    <td className="px-6 py-4">{item.jumlah}</td>
+                    <td className="px-6 py-4">
+                      <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">{item.status}</span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -56,21 +45,13 @@ const FinanceView = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b">
-                  <td className="px-6 py-4">10 Juli 2025</td>
-                  <td className="px-6 py-4">Pembayaran UKT Juli</td>
-                  <td className="px-6 py-4">Rp 1.500.000</td>
-                </tr>
-                <tr className="bg-white border-b">
-                  <td className="px-6 py-4">08 Juni 2025</td>
-                  <td className="px-6 py-4">Pembayaran UKT Juni</td>
-                  <td className="px-6 py-4">Rp 1.500.000</td>
-                </tr>
-                <tr className="bg-white border-b">
-                  <td className="px-6 py-4">05 Mei 2025</td>
-                  <td className="px-6 py-4">Pembayaran UKT Mei</td>
-                  <td className="px-6 py-4">Rp 1.500.000</td>
-                </tr>
+                {dataKeuangan.pembayaran.map((item, index) => (
+                  <tr key={index} className="bg-white border-b">
+                    <td className="px-6 py-4">{item.tanggal}</td>
+                    <td className="px-6 py-4">{item.keterangan}</td>
+                    <td className="px-6 py-4">{item.jumlah}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

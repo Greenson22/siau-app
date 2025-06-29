@@ -11,6 +11,7 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
+import { ringkasanAkademik } from '@/lib/data';
 
 ChartJS.register(
   CategoryScale,
@@ -25,10 +26,10 @@ ChartJS.register(
 
 const IpsChart = () => {
     const data = {
-        labels: ['Sm 1', 'Sm 2', 'Sm 3', 'Sm 4', 'Sm 5', 'Sm 6'],
+        labels: ringkasanAkademik.ipsData.labels,
         datasets: [{
             label: 'IPS',
-            data: [3.5, 3.6, 3.4, 3.7, 3.8, 3.75],
+            data: ringkasanAkademik.ipsData.data,
             borderColor: 'rgb(79, 70, 229)',
             backgroundColor: 'rgba(79, 70, 229, 0.1)',
             tension: 0.4,
