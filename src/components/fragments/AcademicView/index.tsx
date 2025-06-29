@@ -1,15 +1,19 @@
+// src/components/fragments/AcademicView/index.tsx
+
 'use client';
 
 import Card from '@/components/elements/Card';
 import React, { useState } from 'react';
 import { dataAkademik } from '@/lib/data';
+import KrsView from '../KrsView'; // Impor komponen baru
 
-type AcademicTab = 'krs' | 'khs' | 'transkrip' | 'jadwal';
+type AcademicTab = 'isi_krs' | 'krs' | 'khs' | 'transkrip' | 'jadwal';
 
 const AcademicView = () => {
-  const [activeTab, setActiveTab] = useState<AcademicTab>('krs');
+  const [activeTab, setActiveTab] = useState<AcademicTab>('isi_krs');
 
   const tabs: { id: AcademicTab, label: string }[] = [
+    { id: 'isi_krs', label: 'Isi KRS' },
     { id: 'krs', label: 'KRS' },
     { id: 'khs', label: 'KHS' },
     { id: 'transkrip', label: 'Transkrip Nilai' },
@@ -18,6 +22,8 @@ const AcademicView = () => {
 
   const renderContent = () => {
     switch (activeTab) {
+      case 'isi_krs':
+        return <KrsView />; // Tampilkan komponen form KRS
       case 'krs':
         return (
           <>
@@ -74,7 +80,7 @@ const AcademicView = () => {
     <Card>
       <h3 className="text-xl font-bold mb-4 text-gray-800">Informasi Akademik</h3>
       <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+        <nav className="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
           {tabs.map((tab) => (
             <button
               key={tab.id}

@@ -129,3 +129,13 @@ export const dataMataKuliah: MataKuliah[] = [
 ];
 
 export const maxSks = 24;
+
+export const mataKuliahTersedia = {
+  semester: 'Ganjil 2025/2026',
+  totalSks: 8,
+  mataKuliah: [
+    { kode: 'TEO501', nama: 'Teologi Sistematika III', sks: 3, checked: true },
+    { kode: 'PAK503', nama: 'Hermeneutik II', sks: 3, checked: true },
+    { kode: 'BIB505', nama: 'Bahasa Yunani II', sks: 2, checked: true },
+  ]
+};
