@@ -4,16 +4,15 @@ import Sidebar from '@/components/fragments/Sidebar';
 import Header from '@/components/fragments/Header';
 import DashboardView from '@/components/fragments/DashboardView';
 import ProfileView from '@/components/fragments/ProfileView';
-// Import FinanceView and AcademicView similarly
-// import FinanceView from '@/components/fragments/FinanceView'; 
-// import AcademicView from '@/components/fragments/AcademicView';
+import FinanceView from '@/components/fragments/FinanceView'; // <-- IMPORT BARU
+import AcademicView from '@/components/fragments/AcademicView'; // <-- IMPORT BARU
 import { navLinks, NavLinkId } from '@/lib/data';
 
 const views: { [key in NavLinkId]: React.ComponentType } = {
   dashboard: DashboardView,
   profil: ProfileView,
-  keuangan: () => <div>Konten Keuangan</div>, // Ganti dengan komponen asli
-  akademik: () => <div>Konten Akademik</div>,   // Ganti dengan komponen asli
+  keuangan: FinanceView, // <-- GANTI DENGAN KOMPONEN
+  akademik: AcademicView,   // <-- GANTI DENGAN KOMPONEN
 };
 
 const DashboardLayout = () => {
