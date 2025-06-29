@@ -108,3 +108,24 @@ export const notifikasi = [
   { id: 2, pesan: 'Jadwal KRS Semester Ganjil 2025/2026 telah terbit.', waktu: '1 hari yang lalu' },
   { id: 3, pesan: 'Nilai mata kuliah Teologi Sistematika II telah keluar.', waktu: '3 hari yang lalu' },
 ];
+
+export interface MataKuliah {
+  id: number;
+  kode: string;
+  nama: string;
+  sks: number;
+  semester: number;
+}
+
+export const dataMataKuliah: MataKuliah[] = [
+  { id: 1, kode: 'TEO101', nama: 'Pengantar Teologi Sistematika', sks: 3, semester: 1 },
+  { id: 2, kode: 'PAK101', nama: 'Dasar-Dasar Pendidikan Agama Kristen', sks: 3, semester: 1 },
+  { id: 3, kode: 'BSI101', nama: 'Bahasa Indonesia', sks: 2, semester: 1 },
+  { id: 4, kode: 'TEO201', nama: 'Kristologi', sks: 3, semester: 2 },
+  { id: 5, kode: 'PAK201', nama: 'Metodologi Pengajaran PAK', sks: 3, semester: 2 },
+  { id: 6, kode: 'BSI201', nama: 'Bahasa Inggris', sks: 2, semester: 2 },
+  { id: 7, kode: 'TEO301', nama: 'Pneumatologi', sks: 3, semester: 3 },
+  { id: 8, kode: 'PAK301', nama: 'Kurikulum PAK', sks: 3, semester: 3 },
+];
+
+export const maxSks = 24;
