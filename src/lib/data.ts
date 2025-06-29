@@ -9,16 +9,29 @@ export const navLinks = [
 
 export type NavLinkId = 'dashboard' | 'profil' | 'keuangan' | 'akademik';
 
+// Helper untuk membuat inisial dari nama
+const getInitials = (name: string) => {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase();
+};
+
+const namaMahasiswa = 'Frendy Rikal';
+const inisialMahasiswa = getInitials(namaMahasiswa);
+
 export const mahasiswa = {
-  nama: 'Frendy Gerung',
+  nama: namaMahasiswa,
   peran: 'Mahasiswa',
   prodi: 'S1 Teologi',
   nim: '20210118',
   status: 'Aktif',
   email: '20210118@sttis.ac.id',
   telepon: '085298937694',
-  fotoProfil: 'https://placehold.co/128x128/E2E8F0/4A5568?text=FG',
-  avatar: 'https://placehold.co/40x40/E2E8F0/4A5568?text=AT'
+  // Menggunakan inisial untuk placeholder gambar
+  fotoProfil: `https://placehold.co/128x128/E2E8F0/4A5568?text=${inisialMahasiswa}`,
+  avatar: `https://placehold.co/40x40/E2E8F0/4A5568?text=${inisialMahasiswa}`
 };
 
 export const ringkasanAkademik = {
@@ -65,10 +78,3 @@ export const dataAkademik = {
     ]
   }
 };
-
-// Data Notifikasi Baru
-export const notifications = [
-  { id: 1, text: 'Batas Akhir Pembayaran UKT adalah 30 Juli 2025.', time: '5 menit yang lalu' },
-  { id: 2, text: 'Jadwal UAS Semester Genap telah terbit.', time: '2 jam yang lalu' },
-  { id: 3, text: 'KRS Anda telah divalidasi oleh Dosen PA.', time: '1 hari yang lalu' },
-];
