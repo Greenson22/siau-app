@@ -9,12 +9,12 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
   return (
-    <aside className="w-64 bg-white shadow-lg flex flex-col text-gray-700">
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h1 className="text-xl font-bold text-gray-800">STTIS Siau</h1>
+    <aside className="w-72 bg-white flex flex-col border-r border-gray-200">
+      <div className="px-8 py-6 border-b border-gray-200">
+        <h1 className="text-2xl font-bold text-indigo-600">STTIS Siau</h1>
         <p className="text-sm text-gray-500">Portal Mahasiswa</p>
       </div>
-      <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+      <nav className="flex-1 px-6 py-6 space-y-3">
         {navLinks.map((link) => (
           <a
             key={link.id}
@@ -23,20 +23,20 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
               e.preventDefault();
               setActiveView(link.id as NavLinkId);
             }}
-            className={`flex items-center gap-3 px-3 py-2 rounded-md transition ${
+            className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeView === link.id
-                ? 'bg-gray-200 text-gray-900 font-semibold'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
+                ? 'bg-indigo-500 text-white shadow-md'
+                : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-600'
             }`}
           >
-            <link.icon size={20} />
-            <span>{link.title}</span>
+            <link.icon size={22} />
+            <span className="font-medium">{link.title}</span>
           </a>
         ))}
       </nav>
-      <div className="px-6 py-4 border-t border-gray-200">
-        <button className="w-full flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition">
-          <LogOut size={16} />
+      <div className="px-6 py-6 border-t border-gray-200">
+        <button className="w-full flex items-center justify-center gap-3 py-3 px-4 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors">
+          <LogOut size={18} />
           <span>Logout</span>
         </button>
       </div>
