@@ -65,3 +65,10 @@ export const dataAkademik = {
     ]
   }
 };
+
+// Data Notifikasi Baru
+export const notifications = [
+  { id: 1, text: 'Batas Akhir Pembayaran UKT adalah 30 Juli 2025.', time: '5 menit yang lalu' },
+  { id: 2, text: 'Jadwal UAS Semester Genap telah terbit.', time: '2 jam yang lalu' },
+  { id: 3, text: 'KRS Anda telah divalidasi oleh Dosen PA.', time: '1 hari yang lalu' },
+];

@@ -18,21 +18,27 @@ const views: { [key in NavLinkId]: React.ComponentType } = {
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState<NavLinkId>('dashboard');
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false); // State untuk notifikasi
   
   const ActiveComponent = views[activeView];
   const pageTitle = navLinks.find(link => link.id === activeView)?.title || 'Dashboard';
 
   const handleSetView = (view: NavLinkId) => {
     setActiveView(view);
-    // Selalu tutup sidebar saat navigasi di tampilan mobile
     if (window.innerWidth < 768) {
       setIsSidebarOpen(false);
     }
   };
 
+  const handleLayoutClick = () => {
+    // Menutup popover notifikasi jika sedang terbuka
+    if (isNotificationOpen) {
+      setIsNotificationOpen(false);
+    }
+  };
+
   return (
-    <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
-      {/* Overlay, hanya muncul saat sidebar terbuka di mobile */}
+    <div className="relative min-h-screen md:flex bg-gray-100 font-sans" onClick={handleLayoutClick}>
       {isSidebarOpen && (
         <div
           className="fixed inset-0 z-20 bg-black opacity-50 md:hidden"
@@ -40,7 +46,6 @@ const DashboardLayout = () => {
         ></div>
       )}
 
-      {/* Sidebar */}
       <Sidebar 
         activeView={activeView} 
         setActiveView={handleSetView}
@@ -48,10 +53,14 @@ const DashboardLayout = () => {
         setIsOpen={setIsSidebarOpen}
       />
       
-      {/* Konten Utama */}
       <div className="flex-1">
         <main className="p-6 lg:p-8">
-          <Header title={pageTitle} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+          <Header 
+            title={pageTitle} 
+            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+            isNotificationOpen={isNotificationOpen}
+            toggleNotification={() => setIsNotificationOpen(!isNotificationOpen)}
+          />
           <ActiveComponent />
         </main>
       </div>
