@@ -1,8 +1,27 @@
 import Card from '@/components/elements/Card';
 import IpsChart from './IpsChart';
 import { GraduationCap, Wallet, BookCopy, Megaphone } from 'lucide-react';
+import { ElementType } from 'react'; // Import ElementType
 
-const InfoCard = ({ icon: Icon, label, value, colorClass }) => (
+// Tipe untuk props InfoCard
+interface InfoCardProps {
+  icon: ElementType;
+  label: string;
+  value: string;
+  colorClass: {
+    bg: string;
+    text: string;
+  };
+}
+
+// Tipe untuk props AnnouncementItem
+interface AnnouncementItemProps {
+    title: string;
+    date: string;
+    borderColor: string;
+}
+
+const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, label, value, colorClass }) => (
     <Card className="flex items-center gap-5">
         <div className={`p-4 rounded-full ${colorClass.bg}`}>
             <Icon className={colorClass.text} size={28}/>
@@ -14,7 +33,7 @@ const InfoCard = ({ icon: Icon, label, value, colorClass }) => (
     </Card>
 );
 
-const AnnouncementItem = ({ title, date, borderColor }) => (
+const AnnouncementItem: React.FC<AnnouncementItemProps> = ({ title, date, borderColor }) => (
     <li className={`border-l-4 pl-4 py-2 ${borderColor}`}>
         <p className="font-semibold text-gray-800">{title}</p>
         <p className="text-sm text-gray-500">{date}</p>
