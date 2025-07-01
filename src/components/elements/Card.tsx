@@ -1,15 +1,13 @@
 import React from 'react';
 
-// Perluas interface untuk menerima semua atribut standar dari elemen div
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CardProps {
   children: React.ReactNode;
-  // className sudah termasuk dalam HTMLAttributes, tapi kita bisa definisikan ulang jika perlu
+  className?: string;
 }
 
-const Card: React.FC<CardProps> = ({ children, className = '', ...props }) => {
+const Card: React.FC<CardProps> = ({ children, className = '' }) => {
   return (
-    // teruskan sisa props (...props) ke elemen div
-    <div {...props} className={`bg-white p-6 rounded-xl border border-gray-200 shadow-sm ${className}`}>
+    <div className={`bg-white p-6 rounded-xl border border-gray-200 shadow-sm ${className}`}>
       {children}
     </div>
   );
