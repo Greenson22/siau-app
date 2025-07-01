@@ -5,15 +5,13 @@
 import Card from '@/components/elements/Card';
 import React, { useState } from 'react';
 import { dataAkademik } from '@/lib/data';
-import KrsView from '../KrsView'; // Impor komponen baru
 
 type AcademicTab = 'isi_krs' | 'krs' | 'khs' | 'transkrip' | 'jadwal';
 
 const AcademicView = () => {
-  const [activeTab, setActiveTab] = useState<AcademicTab>('isi_krs');
+  const [activeTab, setActiveTab] = useState<AcademicTab>('krs');
 
   const tabs: { id: AcademicTab, label: string }[] = [
-    { id: 'isi_krs', label: 'Isi KRS' },
     { id: 'krs', label: 'KRS' },
     { id: 'khs', label: 'KHS' },
     { id: 'transkrip', label: 'Transkrip Nilai' },
@@ -22,8 +20,6 @@ const AcademicView = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'isi_krs':
-        return <KrsView />; // Tampilkan komponen form KRS
       case 'krs':
         return (
           <>
