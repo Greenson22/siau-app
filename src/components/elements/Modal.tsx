@@ -1,5 +1,5 @@
 // src/components/elements/Modal.tsx
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from './Button';
 
 interface ModalProps {
@@ -11,22 +11,39 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm, title, children }) => {
+  // isRendered: untuk memasukkan/mengeluarkan komponen dari DOM
   const [isRendered, setIsRendered] = useState(false);
+  // isVisible: untuk mengontrol kelas CSS transisi (opacity, scale)
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let openTimeout: NodeJS.Timeout;
+    let closeTimeout: NodeJS.Timeout;
+
     if (isOpen) {
+      // 1. Masukkan komponen ke DOM
       setIsRendered(true);
+      // 2. Beri jeda sesaat, lalu jalankan animasi masuk
+      openTimeout = setTimeout(() => {
+        setIsVisible(true);
+      }, 20); // Jeda 20ms sudah cukup
     } else {
-      // Tunggu transisi selesai sebelum unmount
-      timeoutId = setTimeout(() => setIsRendered(false), 300); // Durasi harus sama dengan transisi
+      // 1. Jalankan animasi keluar
+      setIsVisible(false);
+      // 2. Setelah animasi selesai, keluarkan komponen dari DOM
+      closeTimeout = setTimeout(() => {
+        setIsRendered(false);
+      }, 300); // Sesuaikan dengan durasi transisi
     }
 
+    // Membersihkan timeout jika komponen unmount di tengah jalan
     return () => {
-      clearTimeout(timeoutId);
+      clearTimeout(openTimeout);
+      clearTimeout(closeTimeout);
     };
   }, [isOpen]);
 
+  // Jika tidak perlu dirender, return null
   if (!isRendered) {
     return null;
   }
@@ -35,26 +52,25 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm, title, childr
     <div
       className={`
         fixed inset-0 z-50 flex items-center justify-center transition-colors duration-300
-        ${isOpen ? 'bg-black/60' : 'bg-transparent'}
+        ${isVisible ? 'bg-black/60' : 'bg-transparent'}
       `}
       aria-modal="true"
       role="dialog"
-      onClick={onClose} // Menutup modal saat klik di luar
+      onClick={onClose}
     >
       <div
         className={`
           relative w-full max-w-md transform rounded-2xl bg-white text-left shadow-xl
           transition-all duration-300 ease-in-out
-          ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
+          ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
         `}
-        onClick={(e) => e.stopPropagation()} // Mencegah klik di dalam modal ikut menutup modal
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 rounded-t-2xl">
           <div className="sm:flex sm:items-start">
             <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
               <svg className="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.25 5.25m.25-5.25v.25m0 0l-5.25-.25m5.25.25l5.25-.25M11.25 11.25v-5.25m0 5.25h.25-5.25m0 0h5.25m-5.25 0h.25" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9.75a.75.75 0 01.75.75v3.375a.75.75 0 01-1.5 0V10.5a.75.75 0 01.75-.75zM12 21a9 9 0 100-18 9 9 0 000 18z" />
+                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
               </svg>
             </div>
             <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
@@ -73,7 +89,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm, title, childr
           <Button onClick={onConfirm} variant="primary">
             Ya, Saya Yakin
           </Button>
-          <div className="mr-2"> {/* Spacer */}
+          <div className="mr-2">
             <Button onClick={onClose} variant="secondary">
               Batal
             </Button>
