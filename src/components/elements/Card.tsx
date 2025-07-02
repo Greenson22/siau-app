@@ -1,3 +1,4 @@
+// src/components/elements/Card.tsx
 import React from 'react';
 
 interface CardProps {
@@ -7,7 +8,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ children, className = '' }) => {
   return (
-    <div className={`bg-white p-6 rounded-xl border border-gray-200 shadow-sm ${className}`}>
+    <div className={`bg-white shadow-md rounded-xl p-6 md:p-8 ${className}`}>
       {children}
     </div>
   );
