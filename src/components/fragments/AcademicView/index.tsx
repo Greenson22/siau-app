@@ -1,4 +1,3 @@
-// src/components/fragments/AcademicView/index.tsx
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -26,18 +25,24 @@ const AcademicView = () => {
   return (
     <Card>
       <h3 className="text-xl font-bold mb-4 text-gray-800">Informasi Akademik</h3>
-      <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+      
+      {/* === BAGIAN YANG DIPERBAIKI === */}
+      {/* Kembalikan `border-b` di sini untuk membuat garis bawah panjang */}
+      <div className="border-b border-gray-200"> 
+        <nav className="flex space-x-6 overflow-x-auto" aria-label="Tabs">
           {tabs.map((tab) => (
-            <TabButton
-              key={tab.id}
-              label={tab.label}
-              isActive={activeTab === tab.id}
-              onClick={() => setActiveTab(tab.id)}
-            />
+            <div key={tab.id} className="flex-shrink-0">
+              <TabButton
+                label={tab.label}
+                isActive={activeTab === tab.id}
+                onClick={() => setActiveTab(tab.id)}
+              />
+            </div>
           ))}
         </nav>
       </div>
+      {/* === AKHIR BAGIAN YANG DIPERBAIKI === */}
+
       <div className="mt-6">
         {ActiveComponent && <ActiveComponent />}
       </div>

@@ -1,4 +1,3 @@
-// src/components/elements/TabButton.tsx
 import React from 'react';
 
 interface TabButtonProps {
@@ -8,15 +7,14 @@ interface TabButtonProps {
 }
 
 const TabButton: React.FC<TabButtonProps> = ({ label, isActive, onClick }) => {
-  const activeClasses = 'border-indigo-500 text-indigo-600';
-  const inactiveClasses = 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';
+  const baseClasses = 'py-4 px-4 font-medium text-sm focus:outline-none transition-colors';
+  const activeClasses = 'bg-indigo-100 text-indigo-700 font-semibold rounded-t-md'; // Contoh warna tema
+  const inactiveClasses = 'text-gray-500 hover:text-gray-700';
 
   return (
     <button
+      className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}
       onClick={onClick}
-      className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
-        isActive ? activeClasses : inactiveClasses
-      }`}
     >
       {label}
     </button>
