@@ -170,3 +170,15 @@ export const mataKuliahTersedia = {
   ]
 };
 
+export const dataKrs = {
+  semester: 5,
+  status: 'Belum Kontrak',
+  mataKuliah: [
+    { kode: 'TEO301', nama: 'Teologi Sistematika III', sks: 3 },
+    { kode: 'PAK301', nama: 'Metodologi Pengajaran PAK', sks: 3 },
+    { kode: 'BIB301', nama: 'Eksegesis Perjanjian Baru', sks: 3 },
+    { kode: 'PRA301', nama: 'Praktik Pelayanan Jemaat', sks: 2 },
+    { kode: 'SEJ301', nama: 'Sejarah Gereja Asia', sks: 2 },
+    { kode: 'FIL301', nama: 'Filsafat Agama', sks: 2 },
+  ],
+};

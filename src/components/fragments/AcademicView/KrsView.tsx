@@ -1,3 +1,4 @@
+// src/components/fragments/KrsView.tsx (atau path yang sesuai)
 'use client';
 
 import React, { useState } from 'react';
@@ -7,20 +8,13 @@ import Modal from '@/components/elements/Modal';
 import KrsBelumKontrak from '@/components/fragments/KrsBelumKontrak';
 import KrsMenungguPersetujuan from '@/components/fragments/KrsMenungguPersetujuan';
 import KrsDisetujui from '@/components/fragments/KrsDisetujui';
+import { dataKrs } from '@/lib/data'; // <-- 1. Impor data dari data.ts
 
 // Tipe untuk state status KRS
 type KrsStatus = 'belum_kontrak' | 'menunggu_persetujuan' | 'disetujui';
 type BadgeStatus = 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui';
 
-// Data matakuliah contoh (bisa juga di-fetch dari API)
-const dataMatakuliah = [
-  { kode: 'TEO301', nama: 'Teologi Sistematika III', sks: 3 },
-  { kode: 'PAK301', nama: 'Metodologi Pengajaran PAK', sks: 3 },
-  { kode: 'BIB301', nama: 'Eksegesis Perjanjian Baru', sks: 3 },
-  { kode: 'PRA301', nama: 'Praktik Pelayanan Jemaat', sks: 2 },
-  { kode: 'SEJ301', nama: 'Sejarah Gereja Asia', sks: 2 },
-  { kode: 'FIL301', nama: 'Filsafat Agama', sks: 2 },
-];
+// 2. Hapus dataMatakuliah lokal karena sudah dipindah ke data.ts
 
 export default function KrsView() {
   const [status, setStatus] = useState<KrsStatus>('belum_kontrak');
@@ -39,10 +33,10 @@ export default function KrsView() {
       setStatus('disetujui');
     }, 5000); // Dosen PA menyetujui setelah 5 detik
   };
-  
+
   const handleReset = () => {
     setStatus('belum_kontrak');
-  }
+  };
 
   const renderContent = () => {
     switch (status) {
@@ -52,20 +46,21 @@ export default function KrsView() {
         return <KrsDisetujui />;
       case 'belum_kontrak':
       default:
-        return <KrsBelumKontrak matakuliah={dataMatakuliah} onAjukan={handleBukaModalKonfirmasi} />;
+        // 3. Gunakan dataKrs.mataKuliah dari hasil impor
+        return <KrsBelumKontrak matakuliah={dataKrs.mataKuliah} onAjukan={handleBukaModalKonfirmasi} />;
     }
   };
 
   const getStatusText = (): BadgeStatus => {
-     switch (status) {
-       case 'menunggu_persetujuan':
-         return 'Menunggu Persetujuan';
-       case 'disetujui':
-         return 'Disetujui';
-       default:
-         return 'Belum Kontrak';
-     }
-  }
+    switch (status) {
+      case 'menunggu_persetujuan':
+        return 'Menunggu Persetujuan';
+      case 'disetujui':
+        return 'Disetujui';
+      default:
+        return 'Belum Kontrak';
+    }
+  };
 
   return (
     <>
@@ -75,7 +70,7 @@ export default function KrsView() {
         onConfirm={handleAjukanKrs}
         title="Konfirmasi Pengajuan KRS"
       >
-        Apakah Anda yakin ingin mengontrak semua mata kuliah yang ada di paket ini? 
+        Apakah Anda yakin ingin mengontrak semua mata kuliah yang ada di paket ini?
         Setelah diajukan, Anda tidak dapat mengubahnya hingga Dosen PA memberikan persetujuan.
       </Modal>
 
@@ -89,10 +84,10 @@ export default function KrsView() {
       </div>
 
       <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
-          <p className="text-sm text-yellow-700 mb-2">Ini adalah area demonstrasi untuk simulasi.</p>
-          <Button onClick={handleReset} variant="secondary">
-            Reset Simulasi
-          </Button>
+        <p className="text-sm text-yellow-700 mb-2">Ini adalah area demonstrasi untuk simulasi.</p>
+        <Button onClick={handleReset} variant="secondary">
+          Reset Simulasi
+        </Button>
       </div>
     </>
   );
