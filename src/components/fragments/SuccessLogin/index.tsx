@@ -3,7 +3,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
 import Card from '@/components/elements/Card';
 
@@ -27,7 +27,7 @@ const SuccessLogin: React.FC<SuccessLoginProps> = ({ onAnimationComplete }) => {
     exit: { opacity: 0, transition: { duration: 0.5 } }
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { scale: 0.5, opacity: 0 },
     visible: { 
       scale: 1, 
