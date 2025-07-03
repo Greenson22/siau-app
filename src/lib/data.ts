@@ -175,6 +175,44 @@ export const dataAkademik = {
     }
   ],
   transkrip: {
-    // Data untuk transkrip bisa ditambahkan di sini
-  }
+    ipk: "3.75",
+    totalSks: "98",
+    semesters: [
+      {
+        semester: "Ganjil 2023/2024",
+        ips: "3.70",
+        sks: "18",
+        mataKuliah: [
+          { kode: 'TEO101', nama: 'Pengantar Perjanjian Lama', sks: 3, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+          { kode: 'TEO102', nama: 'Pengantar Perjanjian Baru', sks: 3, nilaiHuruf: 'A-', nilaiAngka: 3.70 },
+          { kode: 'PAK101', nama: 'Pendidikan Agama Kristen', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+        ]
+      },
+      {
+        semester: "Genap 2023/2024",
+        ips: "3.80",
+        sks: "20",
+         mataKuliah: [
+          { kode: 'BIB201', nama: 'Bahasa Ibrani I', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+          { kode: 'TEO201', nama: 'Teologi Sistematika I', sks: 3, nilaiHuruf: 'B+', nilaiAngka: 3.30 },
+          { kode: 'MIS201', nama: 'Misiologi', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+        ]
+      },
+       {
+        semester: "Genap 2024/2025",
+        ips: "3.80",
+        sks: "21",
+        mataKuliah: [
+         { kode: 'TEO301', nama: 'Teologi Sistematika II', sks: 3, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+         { kode: 'PAK301', nama: 'Hermeneutik I', sks: 3, nilaiHuruf: 'A-', nilaiAngka: 3.70 },
+         { kode: 'BIB301', nama: 'Bahasa Yunani I', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+        ]
+      }
+    ]
+  },
+  jadwal: [
+      { hari: 'Senin', waktu: '08:00 - 10:30', nama: 'Teologi Sistematika III', dosen: 'Dr. John Doe', ruang: 'A-101' },
+      { hari: 'Selasa', waktu: '10:30 - 12:00', nama: 'Hermeneutik II', dosen: 'Dr. Jane Smith', ruang: 'B-203' },
+      { hari: 'Rabu', waktu: '13:00 - 15:30', nama: 'Bahasa Yunani II', dosen: 'Prof. Alex Johnson', ruang: 'C-305' },
+  ]
 };
