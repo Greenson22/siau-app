@@ -110,66 +110,6 @@ export const notifikasi = [
   { id: 3, pesan: 'Nilai mata kuliah Teologi Sistematika II telah keluar.', waktu: '3 hari yang lalu' },
 ];
 
-export interface MataKuliah {
-  id: number;
-  kode: string;
-  nama: string;
-  sks: number;
-  semester: number;
-}
-
-export const dataMataKuliah: MataKuliah[] = [
-  // Semester 1
-  { id: 1, kode: 'TEO101', nama: 'Pengantar Teologi Sistematika', sks: 3, semester: 1 },
-  { id: 2, kode: 'PAK101', nama: 'Dasar-Dasar Pendidikan Agama Kristen', sks: 3, semester: 1 },
-  { id: 3, kode: 'BSI101', nama: 'Bahasa Indonesia', sks: 2, semester: 1 },
-  { id: 4, kode: 'PLB101', nama: 'Pengantar Perjanjian Lama', sks: 3, semester: 1 },
-  { id: 5, kode: 'FIL101', nama: 'Filsafat Umum', sks: 2, semester: 1 },
-
-  // Semester 2
-  { id: 6, kode: 'TEO201', nama: 'Kristologi', sks: 3, semester: 2 },
-  { id: 7, kode: 'PAK201', nama: 'Metodologi Pengajaran PAK', sks: 3, semester: 2 },
-  { id: 8, kode: 'BSI201', nama: 'Bahasa Inggris', sks: 2, semester: 2 },
-  { id: 9, kode: 'PB201', nama: 'Pengantar Perjanjian Baru', sks: 3, semester: 2 },
-  { id: 10, kode: 'PSI201', nama: 'Psikologi Perkembangan', sks: 3, semester: 2 },
-
-  // Semester 3
-  { id: 11, kode: 'TEO301', nama: 'Pneumatologi', sks: 3, semester: 3 },
-  { id: 12, kode: 'PAK301', nama: 'Kurikulum PAK', sks: 3, semester: 3 },
-  { id: 13, kode: 'HER301', nama: 'Hermeneutik I', sks: 3, semester: 3 },
-  { id: 14, kode: 'SOT301', nama: 'Soteriologi', sks: 2, semester: 3 },
-  { id: 15, kode: 'ETK301', nama: 'Etika Kristen', sks: 3, semester: 3 },
-
-  // Semester 4
-  { id: 16, kode: 'TEO401', nama: 'Antropologi & Hamartologi', sks: 3, semester: 4 },
-  { id: 17, kode: 'PAK401', nama: 'Evaluasi Pembelajaran PAK', sks: 3, semester: 4 },
-  { id: 18, kode: 'HER401', nama: 'Hermeneutik II', sks: 3, semester: 4 },
-  { id: 19, kode: 'BYN401', nama: 'Bahasa Yunani I', sks: 2, semester: 4 },
-  { id: 20, kode: 'MIS401', nama: 'Misiologi', sks: 3, semester: 4 },
-
-  // Semester 5
-  { id: 21, kode: 'TEO501', nama: 'Eklesiologi', sks: 3, semester: 5 },
-  { id: 22, kode: 'PAK501', nama: 'PAK dalam Keluarga', sks: 3, semester: 5 },
-  { id: 23, kode: 'BYN501', nama: 'Bahasa Yunani II', sks: 2, semester: 5 },
-  { id: 24, kode: 'APO501', nama: 'Apologetika', sks: 3, semester: 5 },
-  { id: 25, kode: 'LIT501', nama: 'Liturgika', sks: 2, semester: 5 },
-];
-
-export const maxSks = 24;
-
-export const mataKuliahTersedia = {
-  semester: 'Ganjil 2025/2026',
-  totalSks: 17,
-  mataKuliah: [
-    { kode: 'TEO501', nama: 'Teologi Sistematika III', sks: 3, checked: true },
-    { kode: 'PAK503', nama: 'Hermeneutik II', sks: 3, checked: true },
-    { kode: 'BIB505', nama: 'Bahasa Yunani II', sks: 2, checked: true },
-    { kode: 'FIL502', nama: 'Filsafat Kristen', sks: 3, checked: false },
-    { kode: 'SEJ504', nama: 'Sejarah Gereja Asia', sks: 3, checked: false },
-    { kode: 'HOM506', nama: 'Homiletika I', sks: 3, checked: false },
-  ]
-};
-
 export const dataKrs = {
   semester: 5,
   status: 'Belum Kontrak',

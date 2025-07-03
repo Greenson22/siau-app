@@ -14,8 +14,6 @@ import { dataKrs } from '@/lib/data'; // <-- 1. Impor data dari data.ts
 type KrsStatus = 'belum_kontrak' | 'menunggu_persetujuan' | 'disetujui';
 type BadgeStatus = 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui';
 
-// 2. Hapus dataMatakuliah lokal karena sudah dipindah ke data.ts
-
 export default function KrsView() {
   const [status, setStatus] = useState<KrsStatus>('belum_kontrak');
   const [isModalOpen, setIsModalOpen] = useState(false);
