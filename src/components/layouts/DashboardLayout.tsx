@@ -64,7 +64,9 @@ const DashboardLayout = () => {
       {/* Konten Utama */}
       <div className="flex-1">
         <main className="p-6 lg:p-8">
-          <Header title={pageTitle} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+          <Header title={pageTitle} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isNotificationOpen={false} toggleNotification={function (): void {
+            throw new Error('Function not implemented.');
+          } } />
           <ActiveComponent />
         </main>
       </div>
