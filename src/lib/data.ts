@@ -82,27 +82,27 @@ export const dataKeuangan = {
   ]
 };
 
-export const dataAkademik = {
-  krs: {
-    semester: 'Ganjil 2025/2026',
-    status: 'Disetujui oleh Dosen PA',
-    mataKuliah: [
-      { kode: 'TEO501', nama: 'Teologi Sistematika III', sks: 3 },
-      { kode: 'PAK503', nama: 'Hermeneutik II', sks: 3 },
-      { kode: 'BIB505', nama: 'Bahasa Yunani II', sks: 2 },
-    ]
-  },
-  khs: {
-    semester: 'Genap 2024/2025',
-    ips: '3.80',
-    sks: '21',
-    mataKuliah: [
-      { nama: 'Teologi Sistematika II', sks: 3, nilaiHuruf: 'A', nilaiAngka: 4.00 },
-      { nama: 'Hermeneutik I', sks: 3, nilaiHuruf: 'A-', nilaiAngka: 3.70 },
-      { nama: 'Bahasa Yunani I', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
-    ]
-  }
-};
+// export const dataAkademik = {
+//   krs: {
+//     semester: 'Ganjil 2025/2026',
+//     status: 'Disetujui oleh Dosen PA',
+//     mataKuliah: [
+//       { kode: 'TEO501', nama: 'Teologi Sistematika III', sks: 3 },
+//       { kode: 'PAK503', nama: 'Hermeneutik II', sks: 3 },
+//       { kode: 'BIB505', nama: 'Bahasa Yunani II', sks: 2 },
+//     ]
+//   },
+//   khs: {
+//     semester: 'Genap 2024/2025',
+//     ips: '3.80',
+//     sks: '21',
+//     mataKuliah: [
+//       { nama: 'Teologi Sistematika II', sks: 3, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+//       { nama: 'Hermeneutik I', sks: 3, nilaiHuruf: 'A-', nilaiAngka: 3.70 },
+//       { nama: 'Bahasa Yunani I', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+//     ]
+//   }
+// };
 
 export const notifikasi = [
   { id: 1, pesan: 'Batas akhir pembayaran UKT adalah 30 Juli 2025.', waktu: '2 jam yang lalu' },
@@ -121,4 +121,60 @@ export const dataKrs = {
     { kode: 'SEJ301', nama: 'Sejarah Gereja Asia', sks: 2 },
     { kode: 'FIL301', nama: 'Filsafat Agama', sks: 2 },
   ],
+};
+
+export const dataAkademik = {
+  krs: {
+    semester: 'Ganjil 2025/2026',
+    status: 'Disetujui oleh Dosen PA',
+    mataKuliah: [
+      { kode: 'TEO501', nama: 'Teologi Sistematika III', sks: 3 },
+      { kode: 'PAK503', nama: 'Hermeneutik II', sks: 3 },
+      { kode: 'BIB505', nama: 'Bahasa Yunani II', sks: 2 },
+    ]
+  },
+  // Mengubah khs menjadi array untuk menampung data multi-semester
+  khs: [
+    {
+      semester: 'Genap 2024/2025',
+      ips: '3.80',
+      sks: '21',
+      ipk: '3.75',
+      totalSks: '110',
+      mataKuliah: [
+        { nama: 'Teologi Sistematika II', sks: 3, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+        { nama: 'Hermeneutik I', sks: 3, nilaiHuruf: 'A-', nilaiAngka: 3.70 },
+        { nama: 'Bahasa Yunani I', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+        { nama: 'Dogmatika II', sks: 3, nilaiHuruf: 'B+', nilaiAngka: 3.30 },
+        { nama: 'Pendidikan Agama Kristen II', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+      ]
+    },
+    {
+      semester: 'Ganjil 2024/2025',
+      ips: '3.70',
+      sks: '20',
+      ipk: '3.72',
+      totalSks: '89',
+      mataKuliah: [
+        { nama: 'Misiologi', sks: 3, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+        { nama: 'Etika Kristen', sks: 3, nilaiHuruf: 'A-', nilaiAngka: 3.70 },
+        { nama: 'Bahasa Ibrani I', sks: 2, nilaiHuruf: 'B+', nilaiAngka: 3.30 },
+      ]
+    },
+     {
+      semester: 'Genap 2023/2024',
+      ips: '3.65',
+      sks: '19',
+      ipk: '3.68',
+      totalSks: '69',
+      mataKuliah: [
+        { nama: 'Sejarah Gereja', sks: 3, nilaiHuruf: 'A-', nilaiAngka: 3.70 },
+        { nama: 'Teologi Perjanjian Lama', sks: 3, nilaiHuruf: 'A', nilaiAngka: 4.00 },
+        { nama: 'Logika', sks: 2, nilaiHuruf: 'B', nilaiAngka: 3.00 },
+      ]
+    }
+  ],
+  transkrip: {
+    // Data untuk transkrip bisa ditambahkan di sini
+  }
 };
