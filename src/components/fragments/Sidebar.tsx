@@ -39,11 +39,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, se
               e.preventDefault();
               setActiveView(link.id as NavLinkId);
             }}
-            className={`flex items-center gap-3 px-3 py-2 rounded-md transition ${
+            // === BAGIAN YANG DIPERBAIKI ===
+            className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors duration-200 ${
               activeView === link.id
-                ? 'bg-gray-200 text-gray-900 font-semibold'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
+                ? 'bg-indigo-100 text-indigo-700 font-semibold' // Tema aktif yang baru
+                : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-600' // Tema hover yang disesuaikan
             }`}
+            // === AKHIR BAGIAN YANG DIPERBAIKI ===
           >
             <link.icon size={20} />
             <span>{link.title}</span>
