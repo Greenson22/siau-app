@@ -7,6 +7,8 @@ import { mahasiswa, notifikasi } from '@/lib/data';
 interface HeaderProps {
     title: string;
     toggleSidebar: () => void;
+    isNotificationOpen: boolean;
+    toggleNotification: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ title, toggleSidebar }) => {
