@@ -3,15 +3,16 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { User, KeyRound } from 'lucide-react'; // Impor ikon untuk menu
 
-import Sidebar from '@/components/fragments/Sidebar'; // Menggunakan Sidebar generik
-import Header from '@/components/fragments/Header';
+import Sidebar from '@/components/fragments/Sidebar';
+import Header from '@/components/fragments/Header'; // Impor Header generik
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
 import ProfileView from '@/components/fragments/ProfileView';
 import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
 import AcademicView from '@/components/fragments/AcademicView';
-import { navLinks, NavLinkId, ProfileTab } from '@/lib/data'; // navLinks sudah diimpor
+import { navLinks, NavLinkId, ProfileTab, mahasiswa } from '@/lib/data'; // Impor data mahasiswa
 
 const views: { [key in NavLinkId]: React.ComponentType<any> } = {
   dashboard: DashboardView,
@@ -54,6 +55,18 @@ const MahasiswaLayout = () => {
     setIsLogoutModalOpen(false);
   };
 
+  // --- Data spesifik untuk Header Mahasiswa ---
+  const profileMenuItemsMhs = [
+    { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
+    { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
+  ];
+
+  const notificationsMhs = [
+      { title: 'Batas Akhir Pembayaran UKT', subtitle: '30 Juli 2025' },
+      { title: 'Validasi KRS oleh Dosen PA', subtitle: '25-31 Agustus 2025' },
+      { title: 'Perkuliahan Semester Ganjil Dimulai', subtitle: '1 September 2025' },
+  ];
+
   const animationVariants = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -75,10 +88,9 @@ const MahasiswaLayout = () => {
         ></div>
       )}
 
-      {/* --- Perubahan di sini --- */}
       <Sidebar 
-        navLinks={navLinks} // Prop navLinks ditambahkan
-        portalTitle="Portal Mahasiswa" // Prop portalTitle ditambahkan
+        navLinks={navLinks}
+        portalTitle="Portal Mahasiswa"
         activeView={activeView} 
         setActiveView={(view) => handleSetView(view as NavLinkId)}
         isOpen={isSidebarOpen}
@@ -87,11 +99,14 @@ const MahasiswaLayout = () => {
       />
       
       <div className="flex-1 flex flex-col h-screen">
+        {/* --- Gunakan Header generik dengan props yang sesuai --- */}
         <Header 
           title={pageTitle} 
+          user={mahasiswa}
+          profileMenuItems={profileMenuItemsMhs}
+          notifications={notificationsMhs}
           toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
           handleLogout={handleRequestLogout}
-          setActiveView={handleSetView} 
         />
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
           <AnimatePresence mode="wait">
