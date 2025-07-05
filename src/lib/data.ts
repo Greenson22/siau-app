@@ -18,29 +18,28 @@ const getInitials = (name: string) => {
     .toUpperCase();
 };
 
-// Palet warna untuk avatar [background, text] (format hex tanpa #)
+// Palet warna untuk avatar [background, text]
 const colorPalette = [
-  { bg: 'FCA5A5', text: '991B1B' }, // Red-300, Red-800
-  { bg: 'FDBA74', text: '9A3412' }, // Orange-300, Orange-800
-  { bg: 'FDE047', text: '854D0E' }, // Yellow-300, Yellow-700
-  { bg: '86EFAC', text: '166534' }, // Green-300, Green-800
-  { bg: '93C5FD', text: '1E40AF' }, // Blue-300, Blue-800
-  { bg: 'C4B5FD', text: '5B21B6' }, // Violet-300, Violet-800
-  { bg: 'F9A8D4', text: '9D2449' }, // Pink-300, Pink-800
+  { bg: 'FCA5A5', text: '991B1B' }, // Red
+  { bg: 'FDBA74', text: '9A3412' }, // Orange
+  { bg: 'FDE047', text: '854D0E' }, // Yellow
+  { bg: '86EFAC', text: '166534' }, // Green
+  { bg: '93C5FD', text: '1E40AF' }, // Blue
+  { bg: 'C4B5FD', text: '5B21B6' }, // Violet
+  { bg: 'F9A8D4', text: '9D2449' }, // Pink
 ];
 
 // Helper untuk mendapatkan warna konsisten berdasarkan inisial
 const getAvatarColors = (initials: string) => {
   if (!initials) {
-    return { bg: 'E2E8F0', text: '4A5568' }; // Default Abu-abu
+    return { bg: 'E2E8F0', text: '4A5568' }; // Default Gray
   }
-  // Membuat 'hash' sederhana dari inisial untuk memilih warna
   const charCodeSum = initials.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
   const index = charCodeSum % colorPalette.length;
   return colorPalette[index];
 };
 
-
+// --- DATA UNTUK PROFIL ---
 const namaMahasiswa = 'Frendy Gerung';
 const inisialMahasiswa = getInitials(namaMahasiswa);
 const avatarColors = getAvatarColors(inisialMahasiswa);
@@ -54,9 +53,16 @@ export const mahasiswa = {
   email: '20210118@sttis.ac.id',
   telepon: '085298937694',
   dosenPA: 'Dr. Glenn Maramis, S.Kom., M.CompSc',
-  // Menggunakan inisial dan warna dinamis untuk placeholder
   fotoProfil: `https://placehold.co/128x128/${avatarColors.bg}/${avatarColors.text}?text=${inisialMahasiswa}`,
-  avatar: `https://placehold.co/40x40/${avatarColors.bg}/${avatarColors.text}?text=${inisialMahasiswa}`
+  avatar: `https://placehold.co/40x40/${avatarColors.bg}/${avatarColors.text}?text=${inisialMahasiswa}`,
+  
+  // --- PENAMBAHAN DATA UNTUK PROFILEVIEW ---
+  ttl: 'Manado, 17 Agustus 2003',
+  jenisKelamin: 'Laki-laki',
+  alamat: 'Jl. Raya Tahuna-Manganitu, Siau Timur, Kab. Sitaro',
+  semester: 7, // Semester saat ini
+  ipk: 3.75,
+  totalSKS: 98,
 };
 
 export const ringkasanAkademik = {
@@ -71,38 +77,16 @@ export const ringkasanAkademik = {
 
 export const dataKeuangan = {
   tagihan: [
-    { bulan: 'Juli 2025', jumlah: 'Rp 1.500.000', status: 'Lunas' },
-    { bulan: 'Juni 2025', jumlah: 'Rp 1.500.000', status: 'Lunas' },
-    { bulan: 'Mei 2025', jumlah: 'Rp 1.500.000', status: 'Lunas' },
+    { bulan: 'Juli 2025', jumlah: 'Rp 500.000', status: 'Lunas' },
+    { bulan: 'Juni 2025', jumlah: 'Rp 500.000', status: 'Lunas' },
+    { bulan: 'Mei 2025', jumlah: 'Rp 500.000', status: 'Lunas' },
   ],
   pembayaran: [
-    { tanggal: '10 Juli 2025', keterangan: 'Pembayaran UKT Juli', jumlah: 'Rp 1.500.000' },
-    { tanggal: '08 Juni 2025', keterangan: 'Pembayaran UKT Juni', jumlah: 'Rp 1.500.000' },
-    { tanggal: '05 Mei 2025', keterangan: 'Pembayaran UKT Mei', jumlah: 'Rp 1.500.000' },
+    { tanggal: '10 Juli 2025', keterangan: 'Pembayaran UKT Juli', jumlah: 'Rp 500.000' },
+    { tanggal: '08 Juni 2025', keterangan: 'Pembayaran UKT Juni', jumlah: 'Rp 500.000' },
+    { tanggal: '05 Mei 2025', keterangan: 'Pembayaran UKT Mei', jumlah: 'Rp 500.000' },
   ]
 };
-
-// export const dataAkademik = {
-//   krs: {
-//     semester: 'Ganjil 2025/2026',
-//     status: 'Disetujui oleh Dosen PA',
-//     mataKuliah: [
-//       { kode: 'TEO501', nama: 'Teologi Sistematika III', sks: 3 },
-//       { kode: 'PAK503', nama: 'Hermeneutik II', sks: 3 },
-//       { kode: 'BIB505', nama: 'Bahasa Yunani II', sks: 2 },
-//     ]
-//   },
-//   khs: {
-//     semester: 'Genap 2024/2025',
-//     ips: '3.80',
-//     sks: '21',
-//     mataKuliah: [
-//       { nama: 'Teologi Sistematika II', sks: 3, nilaiHuruf: 'A', nilaiAngka: 4.00 },
-//       { nama: 'Hermeneutik I', sks: 3, nilaiHuruf: 'A-', nilaiAngka: 3.70 },
-//       { nama: 'Bahasa Yunani I', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
-//     ]
-//   }
-// };
 
 export const notifikasi = [
   { id: 1, pesan: 'Batas akhir pembayaran UKT adalah 30 Juli 2025.', waktu: '2 jam yang lalu' },
@@ -111,28 +95,19 @@ export const notifikasi = [
 ];
 
 export const dataKrs = {
-  semester: 5,
-  status: 'Belum Kontrak',
+  semester: 7,
+  status: 'Disetujui',
   mataKuliah: [
-    { kode: 'TEO301', nama: 'Teologi Sistematika III', sks: 3 },
-    { kode: 'PAK301', nama: 'Metodologi Pengajaran PAK', sks: 3 },
-    { kode: 'BIB301', nama: 'Eksegesis Perjanjian Baru', sks: 3 },
-    { kode: 'PRA301', nama: 'Praktik Pelayanan Jemaat', sks: 2 },
-    { kode: 'SEJ301', nama: 'Sejarah Gereja Asia', sks: 2 },
-    { kode: 'FIL301', nama: 'Filsafat Agama', sks: 2 },
+    { kode: 'TEO401', nama: 'Teologi Kontemporer', sks: 3 },
+    { kode: 'PAK401', nama: 'Pendidikan Kristen Lanjutan', sks: 3 },
+    { kode: 'BIB401', nama: 'Eksegesis Lanjutan', sks: 3 },
+    { kode: 'PRA401', nama: 'Praktik Pelayanan Lanjutan', sks: 2 },
+    { kode: 'SEJ401', nama: 'Sejarah Gereja Modern', sks: 2 },
   ],
 };
 
 export const dataAkademik = {
-  krs: {
-    semester: 'Ganjil 2025/2026',
-    status: 'Disetujui oleh Dosen PA',
-    mataKuliah: [
-      { kode: 'TEO501', nama: 'Teologi Sistematika III', sks: 3 },
-      { kode: 'PAK503', nama: 'Hermeneutik II', sks: 3 },
-      { kode: 'BIB505', nama: 'Bahasa Yunani II', sks: 2 },
-    ]
-  },
+  krs: dataKrs,
   // Mengubah khs menjadi array untuk menampung data multi-semester
   khs: [
     {
@@ -188,31 +163,12 @@ export const dataAkademik = {
           { kode: 'PAK101', nama: 'Pendidikan Agama Kristen', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
         ]
       },
-      {
-        semester: "Genap 2023/2024",
-        ips: "3.80",
-        sks: "20",
-         mataKuliah: [
-          { kode: 'BIB201', nama: 'Bahasa Ibrani I', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
-          { kode: 'TEO201', nama: 'Teologi Sistematika I', sks: 3, nilaiHuruf: 'B+', nilaiAngka: 3.30 },
-          { kode: 'MIS201', nama: 'Misiologi', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
-        ]
-      },
-       {
-        semester: "Genap 2024/2025",
-        ips: "3.80",
-        sks: "21",
-        mataKuliah: [
-         { kode: 'TEO301', nama: 'Teologi Sistematika II', sks: 3, nilaiHuruf: 'A', nilaiAngka: 4.00 },
-         { kode: 'PAK301', nama: 'Hermeneutik I', sks: 3, nilaiHuruf: 'A-', nilaiAngka: 3.70 },
-         { kode: 'BIB301', nama: 'Bahasa Yunani I', sks: 2, nilaiHuruf: 'A', nilaiAngka: 4.00 },
-        ]
-      }
+      // ... data semester lainnya
     ]
   },
   jadwal: [
-      { hari: 'Senin', waktu: '08:00 - 10:30', nama: 'Teologi Sistematika III', dosen: 'Dr. John Doe', ruang: 'A-101' },
-      { hari: 'Selasa', waktu: '10:30 - 12:00', nama: 'Hermeneutik II', dosen: 'Dr. Jane Smith', ruang: 'B-203' },
-      { hari: 'Rabu', waktu: '13:00 - 15:30', nama: 'Bahasa Yunani II', dosen: 'Prof. Alex Johnson', ruang: 'C-305' },
+      { hari: 'Senin', waktu: '08:00 - 10:30', nama: 'Teologi Kontemporer', dosen: 'Dr. John Doe', ruang: 'A-101' },
+      { hari: 'Selasa', waktu: '10:30 - 12:00', nama: 'Pendidikan Kristen Lanjutan', dosen: 'Dr. Jane Smith', ruang: 'B-203' },
+      // ... data jadwal lainnya
   ]
 };
