@@ -6,9 +6,9 @@ import Logo from '@/components/elements/Logo';
 import Label from '@/components/elements/Label';
 import Input from '@/components/elements/Input';
 import Button from '@/components/elements/Button';
+import { User, Lock } from 'lucide-react'; // Impor ikon
 
 const LoginForm = () => {
-  // Mengubah 'nim' menjadi 'identifier' agar lebih generik
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -20,18 +20,12 @@ const LoginForm = () => {
     setIsLoading(true);
     setError('');
 
-    // --- Simulasi Proses Login dengan Pengecekan Peran---
     setTimeout(() => {
-      // Cek kredensial mahasiswa
       if (identifier === '20210118' && password === 'password') {
         router.push('/mahasiswa');
-      
-      // --- TAMBAHAN: Cek kredensial dosen ---
-      } else if (identifier === 'dosen' && password === 'dosen') {
+      } else if (identifier === '0912048801' && password === 'passworddosen') {
         router.push('/dosen');
-        
       } else {
-        // Jika keduanya gagal, tampilkan error
         setError('NIM/NIDN atau Password salah. Silakan coba lagi.');
         setIsLoading(false);
       }
@@ -39,24 +33,32 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <Logo />
-      {/* Mengubah judul agar lebih umum */}
-      <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        Portal Akademik STTIS Siau
-      </h2>
-      <p className="text-sm text-gray-600">Login untuk melanjutkan</p>
+    <div className="flex flex-col">
+      {/* Logo hanya ditampilkan di mobile, karena di desktop sudah ada di panel kiri */}
+      <div className="md:hidden flex flex-col items-center mb-6">
+        <Logo />
+      </div>
+      
+      <div className="text-center">
+        <h2 className="text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          Login ke Akun Anda
+        </h2>
+        <p className="text-sm text-gray-600 mt-1">
+          Selamat datang kembali!
+        </p>
+      </div>
 
       <form className="mt-8 w-full space-y-6" onSubmit={handleSubmit}>
         <div>
-          {/* Mengubah label dan placeholder */}
           <Label htmlFor="identifier">NIM / NIDN</Label>
-          <div className="mt-2">
+          <div className="mt-2 relative">
+            <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
               id="identifier"
               name="identifier"
               type="text"
-              placeholder="Masukkan NIM atau NIDN Anda"
+              placeholder="Masukkan NIM atau NIDN"
+              className="pl-10" // Tambahkan padding untuk ikon
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               required
@@ -66,13 +68,15 @@ const LoginForm = () => {
         </div>
 
         <div>
-            <Label htmlFor="password">Password</Label>
-          <div className="mt-2">
+          <Label htmlFor="password">Password</Label>
+          <div className="mt-2 relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
               id="password"
               name="password"
               type="password"
               placeholder="••••••••"
+              className="pl-10" // Tambahkan padding untuk ikon
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -82,15 +86,15 @@ const LoginForm = () => {
         </div>
         
         {error && (
-            <p className="text-sm text-red-600">{error}</p>
+          <p className="text-sm text-center text-red-600 animate-shake">{error}</p>
         )}
 
-        <div className="flex items-center justify-between">
-            <div className="text-sm">
-                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                Lupa password?
-                </a>
-            </div>
+        <div className="flex items-center justify-end">
+          <div className="text-sm">
+            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+              Lupa password?
+            </a>
+          </div>
         </div>
 
         <div>

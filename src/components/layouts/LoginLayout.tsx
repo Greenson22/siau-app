@@ -1,16 +1,36 @@
 import Card from "@/components/elements/Card";
 import LoginForm from "@/components/fragments/LoginForm";
+import Logo from "@/components/elements/Logo";
 
 const LoginLayout = () => {
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md">
-        <Card className="px-8 py-10">
-          <LoginForm />
-        </Card>
-        <p className="text-center text-sm text-gray-500 mt-6">
-          © {new Date().getFullYear()} STTIS Siau. All rights reserved.
-        </p>
+    <main className="flex min-h-screen bg-white">
+      {/* Bagian Kiri: Panel Branding (Hanya untuk Desktop) */}
+      <div className="hidden md:flex flex-col justify-between w-1/2 bg-indigo-800 p-12 text-white">
+        <div className="flex items-center gap-4">
+            <Logo variant="light" />
+            <span className="text-xl font-bold">STTIS Siau</span>
+        </div>
+        <div>
+            <h1 className="text-3xl font-bold leading-tight">
+                Selamat Datang di Portal Akademik.
+            </h1>
+            <p className="mt-2 text-indigo-200">
+                Akses informasi akademik Anda dengan mudah dan aman.
+            </p>
+        </div>
+        <div className="text-sm text-indigo-300">
+            © {new Date().getFullYear()} Sekolah Tinggi Teologi Injili Setia Siau
+        </div>
+      </div>
+
+      {/* Bagian Kanan: Form Login */}
+      <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-50 p-4 sm:p-6 lg:p-8">
+        <div className="w-full max-w-md">
+            <Card className="px-8 py-10 shadow-lg">
+              <LoginForm />
+            </Card>
+        </div>
       </div>
     </main>
   );
