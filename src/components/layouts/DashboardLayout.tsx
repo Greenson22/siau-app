@@ -1,5 +1,3 @@
-// src/components/layouts/DashboardLayout.tsx
-
 'use client';
 import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
@@ -9,7 +7,7 @@ import DashboardView from '@/components/fragments/DashboardView';
 import ProfileView from '@/components/fragments/ProfileView';
 import FinanceView from '@/components/fragments/FinanceView';
 import AcademicView from '@/components/fragments/AcademicView';
-import SuccessLogin from '@/components/fragments/SuccessLogin'; // <-- Import komponen baru
+import SuccessLogin from '@/components/fragments/SuccessLogin';
 import { navLinks, NavLinkId } from '@/lib/data';
 
 const views: { [key in NavLinkId]: React.ComponentType } = {
@@ -20,32 +18,36 @@ const views: { [key in NavLinkId]: React.ComponentType } = {
 };
 
 const DashboardLayout = () => {
-  // State untuk mengontrol visibilitas sidebar dan animasi login
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState<NavLinkId>('dashboard');
-  const [showLoginAnimation, setShowLoginAnimation] = useState(true); // <-- State baru
+  const [showLoginAnimation, setShowLoginAnimation] = useState(true);
 
   const ActiveComponent = views[activeView];
   const pageTitle = navLinks.find(link => link.id === activeView)?.title || 'Dashboard';
 
   const handleSetView = (view: NavLinkId) => {
     setActiveView(view);
-    // Selalu tutup sidebar saat navigasi di tampilan mobile
     if (window.innerWidth < 768) {
       setIsSidebarOpen(false);
     }
   };
 
+  // --- 1. Logika untuk logout ditambahkan kembali ---
+  const handleLogout = () => {
+    // Logika untuk membersihkan sesi dan mengarahkan ke halaman login
+    console.log('Pengguna telah logout.');
+    alert('Anda telah berhasil logout!');
+    // Contoh: window.location.href = '/login';
+  };
+
   return (
     <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
-      {/* Animasi Login Berhasil sebagai Overlay */}
       <AnimatePresence>
         {showLoginAnimation && (
           <SuccessLogin onAnimationComplete={() => setShowLoginAnimation(false)} />
         )}
       </AnimatePresence>
       
-      {/* Overlay Sidebar untuk Mobile */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 z-20 bg-black opacity-50 md:hidden"
@@ -53,20 +55,23 @@ const DashboardLayout = () => {
         ></div>
       )}
 
-      {/* Sidebar */}
+      {/* --- 2. Prop handleLogout diteruskan ke Sidebar --- */}
       <Sidebar 
         activeView={activeView} 
         setActiveView={handleSetView}
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
+        handleLogout={handleLogout} // <-- Prop diteruskan di sini
       />
       
-      {/* Konten Utama */}
       <div className="flex-1">
         <main className="p-6 lg:p-8">
-          <Header title={pageTitle} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isNotificationOpen={false} toggleNotification={function (): void {
-            throw new Error('Function not implemented.');
-          } } />
+          <Header 
+            title={pageTitle} 
+            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+            isNotificationOpen={false} 
+            toggleNotification={() => {}} 
+          />
           <ActiveComponent />
         </main>
       </div>

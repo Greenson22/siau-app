@@ -1,16 +1,18 @@
 'use client';
 import { LogOut, X } from 'lucide-react';
 import { navLinks, NavLinkId } from '@/lib/data';
-import Image from 'next/image'; // <-- 1. Impor komponen Image
+import Image from 'next/image';
 
+// --- 1. Prop handleLogout ditambahkan kembali ---
 interface SidebarProps {
   activeView: NavLinkId;
   setActiveView: (view: NavLinkId) => void;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  handleLogout: () => void; // <-- Prop untuk fungsi logout
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, setIsOpen }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, setIsOpen, handleLogout }) => {
   return (
     <aside 
       className={`
@@ -21,13 +23,11 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, se
         md:relative md:translate-x-0 md:shadow-none
       `}
     >
-      {/* --- 2. Bagian Header Diperbarui --- */}
       <div className="flex flex-col items-center px-6 py-5 border-b border-gray-200 relative">
         <button onClick={() => setIsOpen(false)} className="md:hidden text-gray-500 hover:text-gray-800 absolute top-4 right-4">
           <X size={24} />
         </button>
         
-        {/* --- Logo Ditambahkan Disini --- */}
         <div className="mb-4">
           <Image 
             src="/images/logo.png" 
@@ -35,7 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, se
             width={160} 
             height={40}
             className="h-10 w-auto rounded-full object-cover"
-            priority // Tambahkan ini agar logo dimuat lebih cepat
+            priority
           />
         </div>
         
@@ -44,7 +44,6 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, se
           <p className="text-sm text-gray-500">Portal Mahasiswa</p>
         </div>
       </div>
-      {/* --- Akhir Bagian Header --- */}
 
       <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
         {navLinks.map((link) => (
@@ -68,7 +67,11 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, se
       </nav>
 
       <div className="px-6 py-4 border-t border-gray-200">
-        <button className="w-full flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition">
+        {/* --- 2. Event onClick ditambahkan pada tombol logout --- */}
+        <button 
+          onClick={handleLogout} // <-- Memicu fungsi logout
+          className="w-full flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition"
+        >
           <LogOut size={16} />
           <span>Logout</span>
         </button>
