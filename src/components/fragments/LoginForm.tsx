@@ -23,7 +23,7 @@ const LoginForm = () => {
     setTimeout(() => {
       if (identifier === '20210118' && password === 'password') {
         router.push('/mahasiswa');
-      } else if (identifier === '0912048801' && password === 'passworddosen') {
+      } else if (identifier === 'dosen' && password === 'dosen') {
         router.push('/dosen');
       } else {
         setError('NIM/NIDN atau Password salah. Silakan coba lagi.');
