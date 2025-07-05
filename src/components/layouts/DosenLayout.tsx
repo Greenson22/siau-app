@@ -4,13 +4,16 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import SidebarDosen from '@/components/fragments/dosen/SidebarDosen';
+// --- 1. Impor Sidebar generik ---
+import Sidebar from '@/components/fragments/Sidebar'; 
 import HeaderDosen from '@/components/fragments/dosen/HeaderDosen';
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
 import DashboardDosenView from '@/components/fragments/dosen/DashboardDosenView';
 import BimbinganAkademikView from '@/components/fragments/dosen/BimbinganAkademikView';
 import AkademikDosenView from '@/components/fragments/dosen/AkademikDosenView';
-import { navLinksDosen, NavLinkIdDosen } from '@/lib/dataDosen';
+// --- 2. Impor navLinksDosen ---
+import { navLinksDosen } from '@/lib/dataDosen'; 
+import type { NavLinkIdDosen } from '@/lib/dataDosen';
 
 const views: { [key in NavLinkIdDosen]: React.ComponentType<any> } = {
   dashboard: DashboardDosenView,
@@ -27,8 +30,8 @@ const DosenLayout = () => {
   const ActiveComponent = views[activeView];
   const pageTitle = navLinksDosen.find(link => link.id === activeView)?.title || 'Dashboard';
 
-  const handleSetView = (view: NavLinkIdDosen) => {
-    setActiveView(view);
+  const handleSetView = (view: string) => {
+    setActiveView(view as NavLinkIdDosen);
     if (window.innerWidth < 1024) {
       setIsSidebarOpen(false);
     }
@@ -51,12 +54,15 @@ const DosenLayout = () => {
         <div className="fixed inset-0 z-20 bg-black/50 lg:hidden" onClick={() => setIsSidebarOpen(false)}></div>
       )}
 
-      <SidebarDosen 
+      {/* --- 3. Gunakan komponen Sidebar yang baru --- */}
+      <Sidebar
+        navLinks={navLinksDosen}
         activeView={activeView} 
         setActiveView={handleSetView}
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
         handleLogout={() => setIsLogoutModalOpen(true)}
+        portalTitle="Portal Dosen" // Kirim judul portal
       />
       
       <div className="flex-1 flex flex-col h-screen">
@@ -86,7 +92,7 @@ const DosenLayout = () => {
         onClose={() => setIsLogoutModalOpen(false)}
         onConfirm={handleConfirmLogout}
         title="Konfirmasi Logout"
-        message="Apakah Anda yakin ingin keluar dari Portal Dosen?"
+        message="Apakah Anda yakin ingin keluar?"
       />
     </div>
   );

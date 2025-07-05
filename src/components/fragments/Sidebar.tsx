@@ -1,18 +1,34 @@
 'use client';
-import { LogOut, X } from 'lucide-react';
-import { navLinks, NavLinkId } from '@/lib/data';
+
+import { LogOut, X, type LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 
-// --- 1. Prop handleLogout ditambahkan kembali ---
-interface SidebarProps {
-  activeView: NavLinkId;
-  setActiveView: (view: NavLinkId) => void;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  handleLogout: () => void; // <-- Prop untuk fungsi logout
+// Mendefinisikan tipe data untuk link navigasi secara generik
+export interface NavLink {
+  id: string;
+  title: string;
+  icon: LucideIcon;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, setIsOpen, handleLogout }) => {
+interface SidebarProps {
+  navLinks: NavLink[];
+  activeView: string;
+  setActiveView: (view: string) => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  handleLogout: () => void;
+  portalTitle: string; // Judul portal, misal: "Portal Dosen"
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ 
+  navLinks, 
+  activeView, 
+  setActiveView, 
+  isOpen, 
+  setIsOpen, 
+  handleLogout,
+  portalTitle 
+}) => {
   return (
     <aside 
       className={`
@@ -41,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, se
         
         <div className="text-center">
           <h1 className="text-xl font-bold text-gray-800">STTIS Siau</h1>
-          <p className="text-sm text-gray-500">Portal Mahasiswa</p>
+          <p className="text-sm text-gray-500">{portalTitle}</p>
         </div>
       </div>
 
@@ -52,7 +68,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, se
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              setActiveView(link.id as NavLinkId);
+              setActiveView(link.id);
             }}
             className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors duration-200 ${
               activeView === link.id
@@ -67,9 +83,8 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, se
       </nav>
 
       <div className="px-6 py-4 border-t border-gray-200">
-        {/* --- 2. Event onClick ditambahkan pada tombol logout --- */}
         <button 
-          onClick={handleLogout} // <-- Memicu fungsi logout
+          onClick={handleLogout}
           className="w-full flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition"
         >
           <LogOut size={16} />

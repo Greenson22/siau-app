@@ -2,16 +2,16 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion'; // Impor motion dan AnimatePresence
+import { motion, AnimatePresence } from 'framer-motion';
 
-import Sidebar from '@/components/fragments/Sidebar';
+import Sidebar from '@/components/fragments/Sidebar'; // Menggunakan Sidebar generik
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
 import ProfileView from '@/components/fragments/ProfileView';
 import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
 import AcademicView from '@/components/fragments/AcademicView';
-import { navLinks, NavLinkId, ProfileTab } from '@/lib/data';
+import { navLinks, NavLinkId, ProfileTab } from '@/lib/data'; // navLinks sudah diimpor
 
 const views: { [key in NavLinkId]: React.ComponentType<any> } = {
   dashboard: DashboardView,
@@ -20,7 +20,6 @@ const views: { [key in NavLinkId]: React.ComponentType<any> } = {
   akademik: AcademicView,
 };
 
-// Pastikan nama komponen dan file adalah MahasiswaLayout
 const MahasiswaLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState<NavLinkId>('dashboard');
@@ -55,14 +54,12 @@ const MahasiswaLayout = () => {
     setIsLogoutModalOpen(false);
   };
 
-  // Definisikan varian animasi untuk transisi halaman
   const animationVariants = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
   };
 
-  // Definisikan properti transisi
   const animationTransition = {
     type: "tween",
     ease: "anticipate",
@@ -71,7 +68,6 @@ const MahasiswaLayout = () => {
 
   return (
     <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
-      {/* Overlay, hanya muncul saat sidebar terbuka di mobile */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 z-20 bg-black opacity-50 md:hidden"
@@ -79,16 +75,17 @@ const MahasiswaLayout = () => {
         ></div>
       )}
 
-      {/* Sidebar */}
+      {/* --- Perubahan di sini --- */}
       <Sidebar 
+        navLinks={navLinks} // Prop navLinks ditambahkan
+        portalTitle="Portal Mahasiswa" // Prop portalTitle ditambahkan
         activeView={activeView} 
-        setActiveView={handleSetView}
+        setActiveView={(view) => handleSetView(view as NavLinkId)}
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
         handleLogout={handleRequestLogout}
       />
       
-      {/* Konten Utama */}
       <div className="flex-1 flex flex-col h-screen">
         <Header 
           title={pageTitle} 
@@ -97,10 +94,9 @@ const MahasiswaLayout = () => {
           setActiveView={handleSetView} 
         />
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
-          {/* AnimatePresence menangani animasi komponen saat masuk dan keluar */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeView} // Key penting untuk mendeteksi pergantian komponen
+              key={activeView}
               variants={animationVariants}
               transition={animationTransition}
               initial="initial"
@@ -113,7 +109,6 @@ const MahasiswaLayout = () => {
         </main>
       </div>
 
-      {/* Modal Konfirmasi Logout */}
       <ConfirmationModal
         isOpen={isLogoutModalOpen}
         onClose={handleCancelLogout}
