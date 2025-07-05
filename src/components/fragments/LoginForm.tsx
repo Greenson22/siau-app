@@ -8,7 +8,8 @@ import Input from '@/components/elements/Input';
 import Button from '@/components/elements/Button';
 
 const LoginForm = () => {
-  const [nim, setNim] = useState('');
+  // Mengubah 'nim' menjadi 'identifier' agar lebih generik
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -19,14 +20,19 @@ const LoginForm = () => {
     setIsLoading(true);
     setError('');
 
-    // --- Simulasi Proses Login ---
-    // Di aplikasi nyata, ganti ini dengan panggilan API ke backend Anda
+    // --- Simulasi Proses Login dengan Pengecekan Peran---
     setTimeout(() => {
-      if (nim === '20210118' && password === 'password') {
-        // Jika berhasil, arahkan ke dashboard
+      // Cek kredensial mahasiswa
+      if (identifier === '20210118' && password === 'password') {
         router.push('/mahasiswa');
+      
+      // --- TAMBAHAN: Cek kredensial dosen ---
+      } else if (identifier === 'dosen' && password === 'dosen') {
+        router.push('/dosen');
+        
       } else {
-        setError('NIM atau Password salah. Silakan coba lagi.');
+        // Jika keduanya gagal, tampilkan error
+        setError('NIM/NIDN atau Password salah. Silakan coba lagi.');
         setIsLoading(false);
       }
     }, 1500);
@@ -35,23 +41,27 @@ const LoginForm = () => {
   return (
     <div className="flex flex-col items-center">
       <Logo />
+      {/* Mengubah judul agar lebih umum */}
       <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        Portal Mahasiswa
+        Portal Akademik STTIS Siau
       </h2>
       <p className="text-sm text-gray-600">Login untuk melanjutkan</p>
 
       <form className="mt-8 w-full space-y-6" onSubmit={handleSubmit}>
         <div>
-          <Label htmlFor="nim">NIM (Nomor Induk Mahasiswa)</Label>
+          {/* Mengubah label dan placeholder */}
+          <Label htmlFor="identifier">NIM / NIDN</Label>
           <div className="mt-2">
             <Input
-              id="nim"
-              name="nim"
+              id="identifier"
+              name="identifier"
               type="text"
-              placeholder="Contoh: 20210118"
-              value={nim}
-              onChange={(e) => setNim(e.target.value)}
-              required label={''}            />
+              placeholder="Masukkan NIM atau NIDN Anda"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              required
+              label={''} 
+            />
           </div>
         </div>
 
@@ -65,7 +75,9 @@ const LoginForm = () => {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required label={''}            />
+              required
+              label={''} 
+            />
           </div>
         </div>
         
