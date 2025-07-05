@@ -3,20 +3,68 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, KeyRound } from 'lucide-react'; // Impor ikon untuk menu
+import {
+    User, KeyRound, Mail, Phone, Home, Calendar, VenetianMask, UserSquare, BookOpen, Star
+} from 'lucide-react';
 
 import Sidebar from '@/components/fragments/Sidebar';
-import Header from '@/components/fragments/Header'; // Impor Header generik
+import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
-import ProfileView from '@/components/fragments/ProfileView';
 import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
 import AcademicView from '@/components/fragments/AcademicView';
-import { navLinks, NavLinkId, ProfileTab, mahasiswa } from '@/lib/data'; // Impor data mahasiswa
+// --- 1. Impor ProfileView generik dan komponen pembantunya ---
+import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView';
+import { navLinks, NavLinkId, ProfileTab, mahasiswa } from '@/lib/data';
 
+// --- 2. Buat Section Components untuk Mahasiswa ---
+const BiodataMahasiswaSection = () => (
+    <div className="space-y-4 text-sm">
+        <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Pribadi</h4>
+        <InfoItem icon={<Calendar size={16} />} label="Tempat, Tanggal Lahir" value={mahasiswa.ttl} />
+        <InfoItem icon={<VenetianMask size={16} />} label="Jenis Kelamin" value={mahasiswa.jenisKelamin} />
+        <InfoItem icon={<Mail size={16} />} label="Email" value={mahasiswa.email} />
+        <InfoItem icon={<Phone size={16} />} label="No. Telepon" value={mahasiswa.telepon} />
+        <InfoItem icon={<Home size={16} />} label="Alamat" value={mahasiswa.alamat} isBlock />
+    </div>
+);
+
+const AkademikMahasiswaSection = () => (
+    <div className="space-y-4 text-sm">
+        <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Akademik</h4>
+        <InfoItem icon={<UserSquare size={16} />} label="Dosen Pembimbing Akademik" value={mahasiswa.dosenPA} />
+        <InfoItem icon={<BookOpen size={16} />} label="Semester" value={mahasiswa.semester} />
+        <InfoItem icon={<Star size={16} />} label="Total SKS Ditempuh" value={mahasiswa.totalSKS} />
+        <InfoItem icon={<Star size={16} />} label="Indeks Prestasi Kumulatif (IPK)" value={mahasiswa.ipk.toFixed(2)} />
+    </div>
+);
+
+// --- 3. Buat wrapper untuk ProfileView ---
+const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: ProfileTab }) => {
+    const userProfileData = {
+        nama: mahasiswa.nama,
+        peran: mahasiswa.peran,
+        idNumber: mahasiswa.nim,
+        idLabel: "NIM",
+        status: mahasiswa.status,
+        fotoProfil: mahasiswa.fotoProfil,
+        detail: mahasiswa.prodi,
+    };
+
+    const profileTabs = [
+        { id: 'biodata', label: 'Biodata', content: <BiodataMahasiswaSection /> },
+        { id: 'akademik', label: 'Info Akademik', content: <AkademikMahasiswaSection /> },
+        { id: 'keamanan', label: 'Keamanan', content: <KeamananSection /> },
+    ];
+
+    return <ProfileView user={userProfileData} tabs={profileTabs} initialTab={initialTab} />;
+};
+
+
+// --- 4. Daftarkan wrapper ke dalam views object ---
 const views: { [key in NavLinkId]: React.ComponentType<any> } = {
   dashboard: DashboardView,
-  profil: ProfileView,
+  profil: MahasiswaProfileWrapper, // Gunakan wrapper
   keuangan: FinanceView,
   akademik: AcademicView,
 };
@@ -55,7 +103,7 @@ const MahasiswaLayout = () => {
     setIsLogoutModalOpen(false);
   };
 
-  // --- Data spesifik untuk Header Mahasiswa ---
+  // Data spesifik untuk Header Mahasiswa
   const profileMenuItemsMhs = [
     { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
     { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
@@ -99,7 +147,6 @@ const MahasiswaLayout = () => {
       />
       
       <div className="flex-1 flex flex-col h-screen">
-        {/* --- Gunakan Header generik dengan props yang sesuai --- */}
         <Header 
           title={pageTitle} 
           user={mahasiswa}

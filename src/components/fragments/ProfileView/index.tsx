@@ -1,85 +1,93 @@
 'use client';
 
-import { useState, useEffect } from 'react'; // Impor useEffect
+import { useState, useEffect } from 'react';
 import Card from "@/components/elements/Card";
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
-import { mahasiswa, ProfileTab } from "@/lib/data"; // Impor ProfileTab
-import { 
-    CreditCard, User, Mail, Phone, UserSquare, Home, Calendar, VenetianMask, BookOpen, Star, KeyRound 
-} from "lucide-react";
+import { LucideIcon } from 'lucide-react';
 
-// --- 1. Tambahkan prop initialTab ---
-interface ProfileViewProps {
-  initialTab?: ProfileTab;
+// --- Tipe Data Generik ---
+interface UserProfile {
+  nama: string;
+  peran: string;
+  idNumber: string; // Bisa NIM atau NIDN
+  idLabel: string; // "NIM" atau "NIDN"
+  status: string;
+  fotoProfil: string;
+  detail?: string; // Prodi untuk mahasiswa, Jabatan untuk dosen
 }
 
-const ProfileView: React.FC<ProfileViewProps> = ({ initialTab = 'biodata' }) => {
-    // --- 2. Gunakan initialTab untuk state awal ---
-    const [activeTab, setActiveTab] = useState<ProfileTab>(initialTab);
+interface ProfileTab {
+  id: string;
+  label:string;
+  content: React.ReactNode;
+}
 
-    // 3. Gunakan useEffect untuk menangani perubahan tab saat komponen sudah aktif
+interface ProfileViewProps {
+  user: UserProfile;
+  tabs: ProfileTab[];
+  initialTab?: string;
+}
+
+const ProfileView: React.FC<ProfileViewProps> = ({ user, tabs, initialTab }) => {
+    const [activeTab, setActiveTab] = useState(initialTab || (tabs.length > 0 ? tabs[0].id : ''));
+
     useEffect(() => {
         if (initialTab) {
             setActiveTab(initialTab);
         }
     }, [initialTab]);
-
-    const renderContent = () => {
-        switch (activeTab) {
-            case 'biodata':
-                return <BiodataSection />;
-            case 'akademik':
-                return <AkademikSection />;
-            case 'keamanan':
-return <KeamananSection />;
-            default:
-                return <BiodataSection />;
-        }
-    };
+    
+    const ActiveContent = tabs.find(tab => tab.id === activeTab)?.content;
 
     return (
         <Card className="max-w-4xl mx-auto">
-            {/* ... (Header Profil tidak berubah) ... */}
+            {/* Header Profil Generik */}
             <div className="flex flex-col md:flex-row items-center gap-8 border-b border-gray-200 pb-6 mb-6">
                 <img 
-                    src={mahasiswa.fotoProfil} 
-                    alt="Foto Profil Mahasiswa" 
+                    src={user.fotoProfil} 
+                    alt={`Foto Profil ${user.nama}`} 
                     className="w-32 h-32 rounded-full shadow-md object-cover ring-2 ring-offset-2 ring-indigo-200"
                 />
                 <div className="flex-1 text-center md:text-left">
-                    <p className="text-2xl font-bold text-gray-800">{mahasiswa.nama}</p>
-                    <p className="text-indigo-600 font-medium">{mahasiswa.prodi}</p>
+                    <p className="text-2xl font-bold text-gray-800">{user.nama}</p>
+                    {user.detail && <p className="text-indigo-600 font-medium">{user.detail}</p>}
                     <div className="mt-2 flex items-center justify-center md:justify-start gap-2 text-sm">
-                        <CreditCard size={16} className="text-gray-500" />
-                        <span className="font-semibold text-gray-600">NIM:</span>
-                        <span>{mahasiswa.nim}</span>
+                        <span className="font-semibold text-gray-600">{user.idLabel}:</span>
+                        <span>{user.idNumber}</span>
                     </div>
                      <div className="mt-1 flex items-center justify-center md:justify-start gap-2 text-sm">
-                        <User size={16} className="text-gray-500" />
                         <span className="font-semibold text-gray-600">Status:</span>
-                        <span className="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">{mahasiswa.status}</span>
+                        <span className="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">{user.status}</span>
                     </div>
                 </div>
             </div>
 
-            {/* Tombol Navigasi Tab */}
+            {/* Tombol Navigasi Tab Dinamis */}
             <div className="flex border-b border-gray-200 mb-6">
-                <TabButton id="biodata" label="Biodata" activeTab={activeTab} setActiveTab={setActiveTab} />
-                <TabButton id="akademik" label="Info Akademik" activeTab={activeTab} setActiveTab={setActiveTab} />
-                <TabButton id="keamanan" label="Keamanan" activeTab={activeTab} setActiveTab={setActiveTab} />
+                {tabs.map(tab => (
+                    <TabButton 
+                        key={tab.id}
+                        id={tab.id} 
+                        label={tab.label} 
+                        activeTab={activeTab} 
+                        setActiveTab={setActiveTab} 
+                    />
+                ))}
             </div>
             
             <div>
-                {renderContent()}
+                {ActiveContent}
             </div>
         </Card>
     );
 };
 
-// ... (Komponen TabButton, BiodataSection, AkademikSection, KeamananSection, InfoItem tidak berubah)
+
+// --- Komponen Pembantu (Reusable) ---
+
 // Komponen Tombol Tab
-const TabButton = ({ id, label, activeTab, setActiveTab }: { id: ProfileTab, label: string, activeTab: ProfileTab, setActiveTab: (id: ProfileTab) => void }) => (
+const TabButton = ({ id, label, activeTab, setActiveTab }: { id: string, label: string, activeTab: string, setActiveTab: (id: string) => void }) => (
     <button
         onClick={() => setActiveTab(id)}
         className={`px-4 py-2 text-sm font-medium transition-colors duration-200 -mb-px ${
@@ -92,34 +100,10 @@ const TabButton = ({ id, label, activeTab, setActiveTab }: { id: ProfileTab, lab
     </button>
 );
 
-// Komponen untuk Bagian Biodata
-const BiodataSection = () => (
-    <div className="space-y-4 text-sm">
-        <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Pribadi</h4>
-        <InfoItem icon={<Calendar size={16} />} label="Tempat, Tanggal Lahir" value={mahasiswa.ttl} />
-        <InfoItem icon={<VenetianMask size={16} />} label="Jenis Kelamin" value={mahasiswa.jenisKelamin} />
-        <InfoItem icon={<Mail size={16} />} label="Email" value={mahasiswa.email} />
-        <InfoItem icon={<Phone size={16} />} label="No. Telepon" value={mahasiswa.telepon} />
-        <InfoItem icon={<Home size={16} />} label="Alamat" value={mahasiswa.alamat} isBlock />
-    </div>
-);
-
-// Komponen untuk Bagian Akademik
-const AkademikSection = () => (
-     <div className="space-y-4 text-sm">
-        <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Akademik</h4>
-        <InfoItem icon={<UserSquare size={16} />} label="Dosen Pembimbing Akademik" value={mahasiswa.dosenPA} />
-        <InfoItem icon={<BookOpen size={16} />} label="Semester" value={mahasiswa.semester} />
-        <InfoItem icon={<Star size={16} />} label="Total SKS Ditempuh" value={mahasiswa.totalSKS} />
-        <InfoItem icon={<Star size={16} />} label="Indeks Prestasi Kumulatif (IPK)" value={mahasiswa.ipk.toFixed(2)} />
-    </div>
-);
-
 // Komponen untuk Bagian Keamanan (Ganti Password)
-const KeamananSection = () => {
+export const KeamananSection = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Logika ganti password akan ditambahkan di sini
         alert('Fitur ganti password sedang dalam pengembangan.');
     };
 
@@ -131,9 +115,7 @@ const KeamananSection = () => {
                 <Input id="password-baru" label="Password Baru" type="password" required />
                 <Input id="konfirmasi-password" label="Konfirmasi Password Baru" type="password" required />
                 <div className="pt-2">
-                    <Button type="submit">
-                        Simpan Perubahan
-                    </Button>
+                    <Button type="submit">Simpan Perubahan</Button>
                 </div>
             </form>
         </div>
@@ -141,7 +123,7 @@ const KeamananSection = () => {
 };
 
 // Komponen item info yang dapat digunakan kembali
-const InfoItem = ({ icon, label, value, isBlock = false }: { icon: React.ReactNode, label: string, value: string | number, isBlock?: boolean }) => (
+export const InfoItem = ({ icon, label, value, isBlock = false }: { icon: React.ReactNode, label: string, value: string | number, isBlock?: boolean }) => (
     <div className={`flex ${isBlock ? 'flex-col sm:flex-row' : 'flex-row'} items-start sm:items-center gap-x-4 gap-y-1`}>
         <div className="flex items-center gap-2 min-w-[240px] text-gray-500">
             {icon}
@@ -150,6 +132,5 @@ const InfoItem = ({ icon, label, value, isBlock = false }: { icon: React.ReactNo
         <span className="text-gray-800">{value}</span>
     </div>
 );
-
 
 export default ProfileView;
