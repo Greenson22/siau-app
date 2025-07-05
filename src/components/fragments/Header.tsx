@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar, handleLogout, set
 
 
   return (
-    <header className="bg-white shadow-sm rounded-xl p-4 flex justify-between items-center mb-6">
+    <header className="bg-white shadow-sm p-4 flex justify-between items-center mb-6">
       {/* Bagian Kiri Header */}
       <div className="flex items-center gap-4">
         <button onClick={toggleSidebar} className="md:hidden text-gray-500 hover:text-gray-700 transition-colors">
