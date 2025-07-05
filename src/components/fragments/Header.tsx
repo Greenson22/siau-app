@@ -1,17 +1,19 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Bell, Menu, LogOut } from 'lucide-react';
+import { Bell, Menu, LogOut, User, KeyRound } from 'lucide-react'; // Impor ikon baru
 import { mahasiswa, notifikasi } from '@/lib/data';
+import type { NavLinkId } from '@/lib/data'; // Impor tipe NavLinkId
 
-// --- 1. Tambahkan prop handleLogout ---
+// --- 1. Tambahkan prop setActiveView ---
 interface HeaderProps {
     title: string;
     toggleSidebar: () => void;
-    handleLogout: () => void; // Prop untuk fungsi logout
+    handleLogout: () => void;
+    setActiveView: (view: NavLinkId) => void; // Prop untuk mengubah view
 }
 
-const Header: React.FC<HeaderProps> = ({ title, toggleSidebar, handleLogout }) => {
+const Header: React.FC<HeaderProps> = ({ title, toggleSidebar, handleLogout, setActiveView }) => {
     const [isNotifOpen, setIsNotifOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     
@@ -32,6 +34,11 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar, handleLogout }) =
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    const handleMenuClick = (view: NavLinkId) => {
+        setActiveView(view);
+        setIsProfileOpen(false); // Tutup dropdown setelah diklik
+    };
 
     return (
         <header className="flex justify-between items-center mb-6">
@@ -70,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar, handleLogout }) =
                 {/* Profil Dropdown */}
                 <div ref={profileRef} className="relative">
                     <button onClick={() => setIsProfileOpen(prev => !prev)} className="flex items-center gap-3 p-1 rounded-lg hover:bg-gray-100">
-                        <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 font-bold text-lg">
+                         <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 font-bold text-lg">
                            {mahasiswa.nama.charAt(0)}{mahasiswa.nama.split(' ')[1]?.charAt(0)}
                         </div>
                         <div className="hidden sm:block text-left">
@@ -80,13 +87,35 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar, handleLogout }) =
                     </button>
 
                     {isProfileOpen && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                        // --- 2. Perbarui isi dropdown ---
+                        <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-10 py-1">
                             <ul>
                                 <li>
-                                    {/* --- 2. Tambahkan onClick untuk memanggil handleLogout --- */}
+                                    <button 
+                                        onClick={() => handleMenuClick('profil')}
+                                        className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    >
+                                        <User size={16} />
+                                        <span>Lihat Profil</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        // TODO: Buat view/halaman khusus untuk ganti password
+                                        onClick={() => handleMenuClick('profil')}
+                                        className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    >
+                                        <KeyRound size={16} />
+                                        <span>Ganti Password</span>
+                                    </button>
+                                </li>
+                                <li className="my-1">
+                                    <hr className="border-gray-200" />
+                                </li>
+                                <li>
                                     <button 
                                         onClick={handleLogout} 
-                                        className="flex items-center gap-3 w-full text-left p-3 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                                        className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                                     >
                                         <LogOut size={16} />
                                         <span>Logout</span>

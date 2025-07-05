@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AnimatePresence } from 'framer-motion';
 
 import Sidebar from '@/components/fragments/Sidebar';
-import Header from '@/components/fragments/Header'; // Pastikan Header diimpor
+import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
 
 // Impor views dan data lainnya...
@@ -77,11 +77,12 @@ const MahasiswaLayout = () => {
       />
       
       <div className="flex-1 flex flex-col">
-          {/* --- Teruskan handleRequestLogout ke Header --- */}
+          {/* --- PERBAIKAN DI SINI --- */}
           <Header 
-            title={pageTitle} 
-            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
-            handleLogout={handleRequestLogout} // <-- Prop diteruskan di sini
+            title={pageTitle}
+            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+            handleLogout={handleRequestLogout}
+            setActiveView={handleSetView} // <-- Teruskan fungsi handleSetView dengan benar
           />
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
           <ActiveComponent />
