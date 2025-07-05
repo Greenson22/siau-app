@@ -78,7 +78,7 @@ const DosenLayout = () => {
             <motion.div
               key={activeView}
               variants={animationVariants}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              transition={{ duration: 0.1, ease: 'easeInOut' }}
               initial="initial"
               animate="animate"
               exit="exit"
