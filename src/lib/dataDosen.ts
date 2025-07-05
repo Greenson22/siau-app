@@ -8,9 +8,18 @@ export type KrsStatus = 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui';
 export const dosen = {
   nama: 'Dr. Glenn Maramis, S.Kom., M.CompSc',
   nidn: '0912048801',
-  peran: 'Dosen',
+  peran: 'Dosen Tetap',
   email: 'glenn.maramis@sttis.ac.id',
-  avatar: `https://placehold.co/40x40/93C5FD/1E40AF?text=GM`,
+  telepon: '0812-3456-7890',
+  jabatanAkademik: 'Lektor Kepala',
+  spesialisasi: 'Sistem Informasi, Kecerdasan Buatan',
+  alamatKantor: 'Gedung A, Ruang A-203, Kampus STTIS Siau',
+  riwayatPendidikan: [
+    { jenjang: 'S1 Teknik Informatika', institusi: 'Universitas Klabat', tahun: '2010' },
+    { jenjang: 'S2 Ilmu Komputer', institusi: 'Universitas Gadjah Mada', tahun: '2014' },
+    { jenjang: 'S3 Ilmu Komputer', institusi: 'Asia University, Taiwan', tahun: '2019' },
+  ],
+  fotoProfil: `https://placehold.co/128x128/93C5FD/1E40AF?text=GM`,
 };
 
 // Navigasi untuk Sidebar Dosen
