@@ -1,31 +1,28 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Bell, Menu, LogOut } from 'lucide-react'; // Tambahkan LogOut
+import { Bell, Menu, LogOut } from 'lucide-react';
 import { mahasiswa, notifikasi } from '@/lib/data';
 
+// --- 1. Tambahkan prop handleLogout ---
 interface HeaderProps {
     title: string;
     toggleSidebar: () => void;
-    isNotificationOpen: boolean;
-    toggleNotification: () => void;
+    handleLogout: () => void; // Prop untuk fungsi logout
 }
 
-const Header: React.FC<HeaderProps> = ({ title, toggleSidebar }) => {
+const Header: React.FC<HeaderProps> = ({ title, toggleSidebar, handleLogout }) => {
     const [isNotifOpen, setIsNotifOpen] = useState(false);
-    const [isProfileOpen, setIsProfileOpen] = useState(false); // State untuk profil
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
     
     const notifRef = useRef<HTMLDivElement>(null);
-    const profileRef = useRef<HTMLDivElement>(null); // Ref untuk profil
+    const profileRef = useRef<HTMLDivElement>(null);
 
-    // Menutup popover jika klik di luar area
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            // Cek untuk notifikasi
             if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
                 setIsNotifOpen(false);
             }
-            // Cek untuk profil
             if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
                 setIsProfileOpen(false);
             }
@@ -51,9 +48,8 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar }) => {
                         <Bell size={20} className="text-gray-500" />
                         <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                     </button>
-
                     {isNotifOpen && (
-                         <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
                             <div className="p-3 border-b">
                                 <p className="font-semibold text-gray-800">Notifikasi</p>
                             </div>
@@ -71,7 +67,6 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar }) => {
                     )}
                 </div>
                 
-                {/* --- AWAL PERUBAHAN PROFIL --- */}
                 {/* Profil Dropdown */}
                 <div ref={profileRef} className="relative">
                     <button onClick={() => setIsProfileOpen(prev => !prev)} className="flex items-center gap-3 p-1 rounded-lg hover:bg-gray-100">
@@ -88,7 +83,11 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar }) => {
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
                             <ul>
                                 <li>
-                                    <button className="flex items-center gap-3 w-full text-left p-3 text-sm text-red-600 hover:bg-red-50">
+                                    {/* --- 2. Tambahkan onClick untuk memanggil handleLogout --- */}
+                                    <button 
+                                        onClick={handleLogout} 
+                                        className="flex items-center gap-3 w-full text-left p-3 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                                    >
                                         <LogOut size={16} />
                                         <span>Logout</span>
                                     </button>
@@ -97,7 +96,6 @@ const Header: React.FC<HeaderProps> = ({ title, toggleSidebar }) => {
                         </div>
                     )}
                 </div>
-                {/* --- AKHIR PERUBAHAN PROFIL --- */}
             </div>
         </header>
     );

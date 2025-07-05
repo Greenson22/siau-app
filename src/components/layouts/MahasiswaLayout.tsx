@@ -1,16 +1,14 @@
-// src/components/layouts/MahasiswaLayout.tsx
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // <-- Impor useRouter
+import { useRouter } from 'next/navigation';
 import { AnimatePresence } from 'framer-motion';
 
-// Impor komponen yang diperlukan
 import Sidebar from '@/components/fragments/Sidebar';
-import Header from '@/components/fragments/Header';
-import ConfirmationModal from '@/components/fragments/ConfirmationModal'; // <-- Impor Modal Konfirmasi
+import Header from '@/components/fragments/Header'; // Pastikan Header diimpor
+import ConfirmationModal from '@/components/fragments/ConfirmationModal';
 
-// Impor view dan data
+// Impor views dan data lainnya...
 import DashboardView from '@/components/fragments/DashboardView';
 import ProfileView from '@/components/fragments/ProfileView';
 import FinanceView from '@/components/fragments/FinanceView';
@@ -29,8 +27,6 @@ const MahasiswaLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState<NavLinkId>('dashboard');
   const [showLoginAnimation, setShowLoginAnimation] = useState(true);
-  
-  // --- 1. State untuk mengelola modal konfirmasi logout ---
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const router = useRouter();
 
@@ -44,24 +40,17 @@ const MahasiswaLayout = () => {
     }
   };
 
-  // --- 2. Logika untuk alur logout ---
-  
-  // Fungsi ini dipanggil saat tombol Logout di Sidebar diklik
   const handleRequestLogout = () => {
-    setIsLogoutModalOpen(true); // Membuka modal konfirmasi
+    setIsLogoutModalOpen(true);
   };
 
-  // Fungsi ini dijalankan saat pengguna menekan "Konfirmasi" di modal
   const handleConfirmLogout = () => {
-    setIsLogoutModalOpen(false); // Menutup modal
-    console.log('Pengguna telah logout.');
-    // Mengarahkan pengguna ke halaman login
+    setIsLogoutModalOpen(false);
     router.push('/login'); 
   };
   
-  // Fungsi ini dijalankan saat pengguna menekan "Batal"
   const handleCancelLogout = () => {
-    setIsLogoutModalOpen(false); // Hanya menutup modal
+    setIsLogoutModalOpen(false);
   };
 
   return (
@@ -79,27 +68,26 @@ const MahasiswaLayout = () => {
         ></div>
       )}
 
-      {/* --- 3. Prop handleLogout di Sidebar sekarang memanggil fungsi untuk membuka modal --- */}
       <Sidebar 
         activeView={activeView} 
         setActiveView={handleSetView}
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
-        handleLogout={handleRequestLogout} // <-- Menggunakan handleRequestLogout
+        handleLogout={handleRequestLogout}
       />
       
       <div className="flex-1 flex flex-col">
-        <Header 
-          title={pageTitle}
-          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isNotificationOpen={false} toggleNotification={function (): void {
-            throw new Error('Function not implemented.');
-          } }        />
+          {/* --- Teruskan handleRequestLogout ke Header --- */}
+          <Header 
+            title={pageTitle} 
+            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+            handleLogout={handleRequestLogout} // <-- Prop diteruskan di sini
+          />
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
           <ActiveComponent />
         </main>
       </div>
 
-      {/* --- 4. Render komponen ConfirmationModal di sini --- */}
       <ConfirmationModal
         isOpen={isLogoutModalOpen}
         onClose={handleCancelLogout}
