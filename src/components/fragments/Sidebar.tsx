@@ -32,9 +32,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isOpen, se
           <Image 
             src="/images/logo.png" 
             alt="Logo STTIS Siau" 
-            width={80} 
-            height={80}
-            className="rounded-full object-cover"
+            width={160} 
+            height={40}
+            className="h-10 w-auto rounded-full object-cover"
             priority // Tambahkan ini agar logo dimuat lebih cepat
           />
         </div>
