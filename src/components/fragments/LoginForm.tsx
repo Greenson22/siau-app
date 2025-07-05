@@ -51,8 +51,7 @@ const LoginForm = () => {
               placeholder="Contoh: 20210118"
               value={nim}
               onChange={(e) => setNim(e.target.value)}
-              required
-            />
+              required label={''}            />
           </div>
         </div>
 
@@ -66,8 +65,7 @@ const LoginForm = () => {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+              required label={''}            />
           </div>
         </div>
         
