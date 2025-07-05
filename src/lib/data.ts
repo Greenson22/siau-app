@@ -8,6 +8,7 @@ export const navLinks = [
 ];
 
 export type NavLinkId = 'dashboard' | 'profil' | 'keuangan' | 'akademik';
+export type ProfileTab = 'biodata' | 'akademik' | 'keamanan';
 
 // Helper untuk membuat inisial dari nama
 const getInitials = (name: string) => {

@@ -7,34 +7,38 @@ import { AnimatePresence } from 'framer-motion';
 import Sidebar from '@/components/fragments/Sidebar';
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
-
-// Impor views dan data lainnya...
+import ProfileView from '@/components/fragments/ProfileView'; // Impor ProfileView
 import DashboardView from '@/components/fragments/DashboardView';
-import ProfileView from '@/components/fragments/ProfileView';
 import FinanceView from '@/components/fragments/FinanceView';
 import AcademicView from '@/components/fragments/AcademicView';
-import SuccessLogin from '@/components/fragments/SuccessLogin';
-import { navLinks, NavLinkId } from '@/lib/data';
+import { navLinks, NavLinkId, ProfileTab } from '@/lib/data'; // Impor ProfileTab
 
-const views: { [key in NavLinkId]: React.ComponentType } = {
+const views: { [key in NavLinkId]: React.ComponentType<any> } = {
   dashboard: DashboardView,
-  profil: ProfileView,
+  profil: ProfileView, // ProfileView ada di sini
   keuangan: FinanceView,
   akademik: AcademicView,
 };
 
-const MahasiswaLayout = () => {
+const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState<NavLinkId>('dashboard');
-  const [showLoginAnimation, setShowLoginAnimation] = useState(true);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  
+  // --- 1. State untuk menyimpan tab tujuan ---
+  const [targetProfileTab, setTargetProfileTab] = useState<ProfileTab>('biodata');
+  
   const router = useRouter();
 
   const ActiveComponent = views[activeView];
   const pageTitle = navLinks.find(link => link.id === activeView)?.title || 'Dashboard';
 
-  const handleSetView = (view: NavLinkId) => {
+  // --- 2. Perbarui handleSetView ---
+  const handleSetView = (view: NavLinkId, tab?: ProfileTab) => {
     setActiveView(view);
+    if (tab) {
+        setTargetProfileTab(tab);
+    }
     if (window.innerWidth < 768) {
       setIsSidebarOpen(false);
     }
@@ -55,37 +59,34 @@ const MahasiswaLayout = () => {
 
   return (
     <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
-      <AnimatePresence>
-        {showLoginAnimation && (
-          <SuccessLogin onAnimationComplete={() => setShowLoginAnimation(false)} />
+        {/* ... (AnimatePresence, Overlay, Sidebar tidak berubah) ... */}
+        <AnimatePresence>
+            {/* ... */}
+        </AnimatePresence>
+        {isSidebarOpen && (
+            <div
+            className="fixed inset-0 z-20 bg-black opacity-50 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+            ></div>
         )}
-      </AnimatePresence>
-      
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 z-20 bg-black opacity-50 md:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
-      )}
-
-      <Sidebar 
-        activeView={activeView} 
-        setActiveView={handleSetView}
-        isOpen={isSidebarOpen}
-        setIsOpen={setIsSidebarOpen}
-        handleLogout={handleRequestLogout}
-      />
+        <Sidebar 
+            activeView={activeView} 
+            setActiveView={handleSetView}
+            isOpen={isSidebarOpen}
+            setIsOpen={setIsSidebarOpen}
+            handleLogout={handleRequestLogout}
+        />
       
       <div className="flex-1 flex flex-col">
-          {/* --- PERBAIKAN DI SINI --- */}
           <Header 
-            title={pageTitle}
-            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+            title={pageTitle} 
+            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
             handleLogout={handleRequestLogout}
-            setActiveView={handleSetView} // <-- Teruskan fungsi handleSetView dengan benar
+            setActiveView={handleSetView} 
           />
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
-          <ActiveComponent />
+          {/* --- 3. Render komponen dengan prop --- */}
+          <ActiveComponent initialTab={targetProfileTab} />
         </main>
       </div>
 
@@ -100,4 +101,4 @@ const MahasiswaLayout = () => {
   );
 };
 
-export default MahasiswaLayout;
+export default DashboardLayout;

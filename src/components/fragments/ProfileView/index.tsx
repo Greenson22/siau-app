@@ -1,31 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // Impor useEffect
 import Card from "@/components/elements/Card";
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
-import { mahasiswa } from "@/lib/data";
+import { mahasiswa, ProfileTab } from "@/lib/data"; // Impor ProfileTab
 import { 
-    CreditCard, 
-    User, 
-    Mail, 
-    Phone, 
-    UserSquare, 
-    Home, 
-    Calendar, 
-    VenetianMask, 
-    BookOpen, 
-    Star, 
-    KeyRound 
+    CreditCard, User, Mail, Phone, UserSquare, Home, Calendar, VenetianMask, BookOpen, Star, KeyRound 
 } from "lucide-react";
 
-// Tipe untuk Tab yang aktif
-type ProfileTab = 'biodata' | 'akademik' | 'keamanan';
+// --- 1. Tambahkan prop initialTab ---
+interface ProfileViewProps {
+  initialTab?: ProfileTab;
+}
 
-const ProfileView = () => {
-    const [activeTab, setActiveTab] = useState<ProfileTab>('biodata');
+const ProfileView: React.FC<ProfileViewProps> = ({ initialTab = 'biodata' }) => {
+    // --- 2. Gunakan initialTab untuk state awal ---
+    const [activeTab, setActiveTab] = useState<ProfileTab>(initialTab);
 
-    // Fungsi untuk merender konten berdasarkan tab yang aktif
+    // 3. Gunakan useEffect untuk menangani perubahan tab saat komponen sudah aktif
+    useEffect(() => {
+        if (initialTab) {
+            setActiveTab(initialTab);
+        }
+    }, [initialTab]);
+
     const renderContent = () => {
         switch (activeTab) {
             case 'biodata':
@@ -33,7 +32,7 @@ const ProfileView = () => {
             case 'akademik':
                 return <AkademikSection />;
             case 'keamanan':
-                return <KeamananSection />;
+return <KeamananSection />;
             default:
                 return <BiodataSection />;
         }
@@ -41,7 +40,7 @@ const ProfileView = () => {
 
     return (
         <Card className="max-w-4xl mx-auto">
-            {/* Bagian Header Profil */}
+            {/* ... (Header Profil tidak berubah) ... */}
             <div className="flex flex-col md:flex-row items-center gap-8 border-b border-gray-200 pb-6 mb-6">
                 <img 
                     src={mahasiswa.fotoProfil} 
@@ -71,7 +70,6 @@ const ProfileView = () => {
                 <TabButton id="keamanan" label="Keamanan" activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
             
-            {/* Konten Tab */}
             <div>
                 {renderContent()}
             </div>
@@ -79,7 +77,8 @@ const ProfileView = () => {
     );
 };
 
-// Komponen untuk Tombol Tab
+// ... (Komponen TabButton, BiodataSection, AkademikSection, KeamananSection, InfoItem tidak berubah)
+// Komponen Tombol Tab
 const TabButton = ({ id, label, activeTab, setActiveTab }: { id: ProfileTab, label: string, activeTab: ProfileTab, setActiveTab: (id: ProfileTab) => void }) => (
     <button
         onClick={() => setActiveTab(id)}
@@ -151,5 +150,6 @@ const InfoItem = ({ icon, label, value, isBlock = false }: { icon: React.ReactNo
         <span className="text-gray-800">{value}</span>
     </div>
 );
+
 
 export default ProfileView;
