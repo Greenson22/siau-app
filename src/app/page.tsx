@@ -1,7 +1,10 @@
-import LoginLayout from "@/components/layouts/LoginLayout";
+// src/app/page.tsx
+import { redirect } from 'next/navigation';
 
-export default function LoginPage() {
-  return (
-    <LoginLayout />
-  );
+export default function Home() {
+  // Langsung arahkan pengguna ke halaman login
+  redirect('/login');
+
+  // Tidak ada JSX yang akan dirender karena sudah dialihkan
+  return null; 
 }
