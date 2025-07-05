@@ -40,7 +40,7 @@ const SuccessLogin: React.FC<SuccessLoginProps> = ({ onAnimationComplete }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-black/50"
         initial="hidden"
         animate="visible"
         exit="exit"
