@@ -1,7 +1,7 @@
-import { LayoutDashboard, Users, GraduationCap, Calendar } from 'lucide-react';
+import { LayoutDashboard, Users, GraduationCap, Calendar, User } from 'lucide-react';
 
 // Tipe untuk ID navigasi dan status KRS
-export type NavLinkIdDosen = 'dashboard' | 'bimbingan' | 'akademik';
+export type NavLinkIdDosen = 'dashboard' | 'bimbingan' | 'akademik' | 'profil';
 export type KrsStatus = 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui';
 
 // Data Profil Dosen
@@ -15,9 +15,10 @@ export const dosen = {
 
 // Navigasi untuk Sidebar Dosen
 export const navLinksDosen = [
-    { id: 'dashboard', title: 'Dashboard', icon: LayoutDashboard },
-    { id: 'bimbingan', title: 'Bimbingan Akademik', icon: Users },
-    { id: 'akademik', title: 'Akademik Dosen', icon: GraduationCap },
+  { id: 'dashboard', title: 'Dashboard', icon: LayoutDashboard },
+  { id: 'bimbingan', title: 'Bimbingan Akademik', icon: Users },
+  { id: 'akademik', title: 'Akademik Dosen', icon: GraduationCap },
+  { id: 'profil', title: 'Profil Saya', icon: User }, // <-- Link baru
 ];
 
 // Data untuk Mahasiswa Bimbingan

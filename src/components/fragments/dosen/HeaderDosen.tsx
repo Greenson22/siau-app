@@ -5,14 +5,21 @@ import { Bell, Menu, LogOut, User, ChevronDown } from 'lucide-react';
 import { dosen } from '@/lib/dataDosen';
 import type { NavLinkIdDosen } from '@/lib/dataDosen';
 
+/**
+ * Interface untuk props HeaderDosen.
+ * @param title - Judul halaman yang akan ditampilkan.
+ * @param toggleSidebar - Fungsi untuk membuka/menutup sidebar di tampilan mobile.
+ * @param handleLogout - Fungsi untuk memicu modal konfirmasi logout.
+ * @param setActiveView - Fungsi untuk mengubah view/halaman aktif di DosenLayout.
+ */
 interface HeaderDosenProps {
   title: string;
   toggleSidebar: () => void;
   handleLogout: () => void;
-  // setActiveView dapat ditambahkan jika diperlukan navigasi dari header
+  setActiveView: (view: NavLinkIdDosen) => void;
 }
 
-const HeaderDosen: React.FC<HeaderDosenProps> = ({ title, toggleSidebar, handleLogout }) => {
+const HeaderDosen: React.FC<HeaderDosenProps> = ({ title, toggleSidebar, handleLogout, setActiveView }) => {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -33,10 +40,16 @@ const HeaderDosen: React.FC<HeaderDosenProps> = ({ title, toggleSidebar, handleL
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+  
+  // Menangani klik menu di dalam dropdown profil
+  const handleMenuClick = (view: NavLinkIdDosen) => {
+    setActiveView(view);
+    setIsProfileOpen(false); // Tutup dropdown setelah diklik
+  };
 
+  // Fungsi untuk mendapatkan inisial dari nama
   const getInitials = (name: string) => {
     const names = name.split(' ');
-    // Mengambil inisial dari nama depan dan gelar
     if (names.length > 1) {
       return `${names[0].charAt(0)}${names[1].charAt(0)}`.toUpperCase();
     }
@@ -79,9 +92,6 @@ const HeaderDosen: React.FC<HeaderDosenProps> = ({ title, toggleSidebar, handleL
                   <p className="text-xs text-gray-500">Besok, 10:00 WITA di Ruang Rapat</p>
                 </li>
               </ul>
-              <div className="px-4 py-2 border-t text-center">
-                 <a href="#" className="text-sm text-indigo-600 hover:underline">Lihat semua notifikasi</a>
-              </div>
             </div>
           )}
         </div>
@@ -110,7 +120,8 @@ const HeaderDosen: React.FC<HeaderDosenProps> = ({ title, toggleSidebar, handleL
                 </div>
                 <ul className="py-1">
                     <li>
-                        <button className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                        <button onClick={() => handleMenuClick('profil')}
+                                className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
                             <User size={16} />
                             <span>Profil Saya</span>
                         </button>

@@ -12,13 +12,14 @@ import DashboardDosenView from '@/components/fragments/dosen/DashboardDosenView'
 import BimbinganAkademikView from '@/components/fragments/dosen/BimbinganAkademikView';
 import AkademikDosenView from '@/components/fragments/dosen/AkademikDosenView';
 // --- 2. Impor navLinksDosen ---
-import { navLinksDosen } from '@/lib/dataDosen'; 
-import type { NavLinkIdDosen } from '@/lib/dataDosen';
+import { navLinksDosen, NavLinkIdDosen } from '@/lib/dataDosen'; 
+import ProfileDosenView from '@/components/fragments/dosen/ProfileDosenView';
 
 const views: { [key in NavLinkIdDosen]: React.ComponentType<any> } = {
   dashboard: DashboardDosenView,
   bimbingan: BimbinganAkademikView,
   akademik: AkademikDosenView,
+  profil: ProfileDosenView, // <-- Daftarkan di sini
 };
 
 const DosenLayout = () => {
@@ -66,11 +67,12 @@ const DosenLayout = () => {
       />
       
       <div className="flex-1 flex flex-col h-screen">
-        <HeaderDosen 
-          title={pageTitle} 
-          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
-          handleLogout={() => setIsLogoutModalOpen(true)}
-        />
+      <HeaderDosen 
+        title={pageTitle} 
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+        handleLogout={() => setIsLogoutModalOpen(true)}
+        setActiveView={(view) => handleSetView(view)} // <-- Tambahkan ini
+      />
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div
