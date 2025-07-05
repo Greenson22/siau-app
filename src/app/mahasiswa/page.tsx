@@ -1,7 +1,7 @@
-import DashboardLayout from "@/components/layouts/DashboardLayout";
+import MahasiswaLayout from "@/components/layouts/MahasiswaLayout";
 
 export default function Home() {
   return (
-    <DashboardLayout />
+    <MahasiswaLayout />
   );
 }

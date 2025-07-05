@@ -17,7 +17,7 @@ const views: { [key in NavLinkId]: React.ComponentType } = {
   akademik: AcademicView,
 };
 
-const DashboardLayout = () => {
+const MahasiswaLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState<NavLinkId>('dashboard');
   const [showLoginAnimation, setShowLoginAnimation] = useState(true);
@@ -79,4 +79,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default MahasiswaLayout;
