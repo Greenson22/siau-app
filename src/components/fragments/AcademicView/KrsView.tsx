@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import StatusBadge from '@/components/elements/StatusBadge';
 import Button from '@/components/elements/Button';
 import Modal from '@/components/elements/Modal';
-import KrsBelumKontrak from '@/components/fragments/KrsBelumKontrak';
-import KrsMenungguPersetujuan from '@/components/fragments/KrsMenungguPersetujuan';
-import KrsDisetujui from '@/components/fragments/KrsDisetujui';
+import KrsBelumKontrak from '@/components/fragments/AcademicView/Krs/KrsBelumKontrak';
+import KrsMenungguPersetujuan from '@/components/fragments/AcademicView/Krs/KrsMenungguPersetujuan';
+import KrsDisetujui from '@/components/fragments/AcademicView/Krs/KrsDisetujui';
 import { dataKrs } from '@/lib/data'; // <-- 1. Impor data dari data.ts
 
 // Tipe untuk state status KRS

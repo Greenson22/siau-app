@@ -1,7 +1,7 @@
 // src/components/fragments/KrsDisetujui.tsx
 import React from 'react';
-import Button from '../elements/Button';
-import Card from '../elements/Card';
+import Button from '../../../elements/Button';
+import Card from '../../../elements/Card';
 
 const KrsDisetujui: React.FC = () => {
   return (

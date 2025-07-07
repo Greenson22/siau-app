@@ -1,6 +1,6 @@
 // src/components/fragments/KrsMenungguPersetujuan.tsx
 import React from 'react';
-import Card from '../elements/Card';
+import Card from '../../../elements/Card';
 
 const KrsMenungguPersetujuan: React.FC = () => {
   return (
