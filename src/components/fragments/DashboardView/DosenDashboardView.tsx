@@ -5,8 +5,6 @@ import InfoCard from '@/components/fragments/InfoCard'; // <-- 1. Impor InfoCard
 import { mahasiswaBimbingan, jadwalMengajar } from '@/lib/dataDosen';
 import { Users, Calendar, BookOpen } from 'lucide-react';
 
-// 2. Definisi InfoCard yang lama sudah DIHAPUS dari sini
-
 const DosenDashboardView = () => {
     const totalBimbingan = mahasiswaBimbingan.length;
     const totalJadwal = jadwalMengajar.length;
