@@ -15,8 +15,7 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   // Kelas dasar ditambahkan style untuk disabled dan flexbox agar spinner sejajar
-  const baseClasses =
-    'flex w-full items-center justify-center rounded-md px-4 py-2 font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:cursor-wait disabled:opacity-50';
+  const baseClasses = 'flex items-center justify-center rounded-md px-4 py-2 font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:cursor-wait disabled:opacity-50';
 
   const variantClasses = {
     primary: 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500',
