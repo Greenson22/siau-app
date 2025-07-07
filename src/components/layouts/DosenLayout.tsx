@@ -5,20 +5,20 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Phone, Building, BookCheck, BrainCircuit, GraduationCap } from 'lucide-react';
 
-// --- 1. Impor komponen generik dan view yang relevan ---
 import Sidebar from '@/components/fragments/Sidebar'; 
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
 import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView';
 import { navLinksDosen, dosen } from '@/lib/dataDosen'; 
 import type { NavLinkIdDosen } from '@/lib/dataDosen';
-import DashboardDosenView from '@/components/fragments/dosen/DashboardDosenView';
-import BimbinganAkademikView from '@/components/fragments/dosen/BimbinganAkademikView';
-// --- 2. Impor AcademicView yang sudah digabung ---
+// --- 1. Hapus impor DashboardDosenView ---
+// import DashboardDosenView from '@/components/fragments/dosen/DashboardDosenView';
+// --- 2. Impor DashboardView dan AcademicView yang sudah digabung ---
+import DashboardView from '@/components/fragments/DashboardView'; 
 import AcademicView from '@/components/fragments/AcademicView';
+import BimbinganAkademikView from '@/components/fragments/dosen/BimbinganAkademikView';
 
-
-// Komponen section untuk profil dosen tetap sama
+// Komponen section untuk profil tidak berubah
 const BiodataDosenSection = () => (
     <div className="space-y-4 text-sm">
         <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Kontak & Pribadi</h4>
@@ -54,11 +54,9 @@ const AkademikDosenSection = () => (
     </div>
 );
 
-// --- 3. Buat wrapper untuk AcademicView Dosen ---
-const DosenAcademicWrapper = () => (
-    <AcademicView role="dosen" />
-);
-
+// --- 3. Buat wrapper untuk komponen yang membutuhkan role ---
+const DosenDashboardWrapper = () => <DashboardView role="dosen" />;
+const DosenAcademicWrapper = () => <AcademicView role="dosen" />;
 
 const DosenLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -117,10 +115,10 @@ const DosenLayout = () => {
   // --- 4. Perbarui logika render komponen ---
   const renderActiveComponent = () => {
       const views: { [key: string]: React.ComponentType<any> } = {
-          dashboard: DashboardDosenView,
+          // Gunakan wrapper DashboardView yang baru
+          dashboard: DosenDashboardWrapper,
           profil: () => <ProfileView user={userProfileData} tabs={profileTabs} initialTab={targetProfileTab} />,
           bimbingan: BimbinganAkademikView,
-          // Gunakan wrapper AcademicView untuk dosen
           akademik: DosenAcademicWrapper,
       };
       const Component = views[activeView];

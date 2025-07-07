@@ -10,14 +10,14 @@ import {
 import Sidebar from '@/components/fragments/Sidebar';
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
-import DashboardView from '@/components/fragments/DashboardView';
+// --- 1. Impor DashboardView yang sudah digabung ---
+import DashboardView from '@/components/fragments/DashboardView'; 
 import FinanceView from '@/components/fragments/FinanceView';
-// --- 1. Impor AcademicView yang sudah digabung ---
 import AcademicView from '@/components/fragments/AcademicView';
 import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView';
 import { navLinks, NavLinkId, ProfileTab, mahasiswa } from '@/lib/data';
 
-// Komponen section untuk profil mahasiswa tetap sama
+// Komponen section untuk profil tidak berubah
 const BiodataMahasiswaSection = () => (
     <div className="space-y-4 text-sm">
         <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Pribadi</h4>
@@ -39,6 +39,7 @@ const AkademikMahasiswaSection = () => (
     </div>
 );
 
+// Wrapper untuk komponen-komponen yang membutuhkan role
 const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: ProfileTab }) => {
     const userProfileData = {
         nama: mahasiswa.nama,
@@ -49,29 +50,25 @@ const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: ProfileTab }) => 
         fotoProfil: mahasiswa.fotoProfil,
         detail: mahasiswa.prodi,
     };
-
     const profileTabs = [
         { id: 'biodata', label: 'Biodata', content: <BiodataMahasiswaSection /> },
         { id: 'akademik', label: 'Info Akademik', content: <AkademikMahasiswaSection /> },
         { id: 'keamanan', label: 'Keamanan', content: <KeamananSection /> },
     ];
-
     return <ProfileView user={userProfileData} tabs={profileTabs} initialTab={initialTab} />;
 };
+const MahasiswaAcademicWrapper = () => <AcademicView role="mahasiswa" />;
 
-// --- 2. Buat wrapper untuk AcademicView Mahasiswa ---
-// Komponen ini akan memberikan prop `role` yang sesuai
-const MahasiswaAcademicWrapper = () => (
-    <AcademicView role="mahasiswa" />
-);
+// --- 2. Buat wrapper untuk DashboardView Mahasiswa ---
+const MahasiswaDashboardWrapper = () => <DashboardView role="mahasiswa" />;
 
 
 // --- 3. Perbarui `views` object ---
 const views: { [key in NavLinkId]: React.ComponentType<any> } = {
-  dashboard: DashboardView,
+  // Gunakan wrapper DashboardView yang baru
+  dashboard: MahasiswaDashboardWrapper,
   profil: MahasiswaProfileWrapper,
   keuangan: FinanceView,
-  // Gunakan wrapper AcademicView untuk mahasiswa
   akademik: MahasiswaAcademicWrapper,
 };
 
@@ -170,9 +167,6 @@ const MahasiswaLayout = () => {
               animate="animate"
               exit="exit"
             >
-                {/* Komponen aktif akan dirender di sini, 
-                    jika `activeView` adalah 'akademik', maka `MahasiswaAcademicWrapper` yang akan dipanggil.
-                */}
               <ActiveComponent initialTab={targetProfileTab} />
             </motion.div>
           </AnimatePresence>
