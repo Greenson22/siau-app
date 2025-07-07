@@ -1,9 +1,9 @@
 import React from 'react';
 
-// Interface diperbarui dengan isLoading
+// 1. Tambahkan 'danger' sebagai pilihan variant
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'danger'; // <-- 'danger' ditambahkan di sini
   isLoading?: boolean;
 }
 
@@ -11,24 +11,24 @@ const Button = ({
   children,
   variant = 'primary',
   className = '',
-  isLoading = false, // Prop isLoading ditambahkan kembali
+  isLoading = false,
   ...props
 }: ButtonProps) => {
-  // Kelas dasar ditambahkan style untuk disabled dan flexbox agar spinner sejajar
   const baseClasses = 'flex items-center justify-center rounded-md px-4 py-2 font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:cursor-wait disabled:opacity-50';
 
+  // 2. Tambahkan kelas untuk variant 'danger'
   const variantClasses = {
     primary: 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500',
     secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400',
+    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500', // <-- Kelas untuk tombol merah
   };
 
   return (
     <button
       className={`${baseClasses} ${variantClasses[variant]} ${className}`}
-      disabled={isLoading} // Tombol dinonaktifkan saat loading
+      disabled={isLoading}
       {...props}
     >
-      {/* Logika untuk menampilkan spinner saat isLoading bernilai true */}
       {isLoading && (
         <svg
           className="animate-spin -ml-1 mr-3 h-5 w-5"

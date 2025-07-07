@@ -1,8 +1,8 @@
-// src/components/fragments/ConfirmationModal.tsx
 'use client';
 
 import React from 'react';
-import { X, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
+import Button from '@/components/elements/Button';
 
 interface ConfirmationModalProps {
   isOpen: boolean;
@@ -36,20 +36,21 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, onClose, 
           </div>
         </div>
         <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-lg">
-          <button
-            type="button"
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+          {/* --- Cukup panggil variant="danger" --- */}
+          <Button
             onClick={onConfirm}
+            variant="danger" // <-- Gunakan variant yang baru
+            className="w-full sm:w-auto sm:ml-3" // className untuk layout tetap ada
           >
             Konfirmasi
-          </button>
-          <button
-            type="button"
-            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
+          </Button>
+          <Button
             onClick={onClose}
+            variant="secondary"
+            className="mt-3 w-full sm:w-auto sm:mt-0"
           >
             Batal
-          </button>
+          </Button>
         </div>
       </div>
     </div>
