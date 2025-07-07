@@ -1,33 +1,11 @@
 'use client';
 
-import { ElementType } from 'react';
 import Card from '@/components/elements/Card';
+import InfoCard from '@/components/fragments/InfoCard'; // <-- 1. Impor InfoCard yang baru
 import { mahasiswaBimbingan, jadwalMengajar } from '@/lib/dataDosen';
 import { Users, Calendar, BookOpen } from 'lucide-react';
 
-// Komponen InfoCard bisa juga diletakkan di sini
-interface InfoCardProps {
-  icon: ElementType;
-  label: string;
-  value: string | number;
-  colorClass: {
-    bg: string;
-    text: string;
-  };
-}
-
-const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, label, value, colorClass }) => (
-    <Card className="flex items-center gap-5 p-5">
-        <div className={`p-4 rounded-full ${colorClass.bg}`}>
-            <Icon className={colorClass.text} size={28}/>
-        </div>
-        <div>
-            <p className="text-md text-gray-500">{label}</p>
-            <p className="text-3xl font-bold text-gray-800">{value}</p>
-        </div>
-    </Card>
-);
-
+// 2. Definisi InfoCard yang lama sudah DIHAPUS dari sini
 
 const DosenDashboardView = () => {
     const totalBimbingan = mahasiswaBimbingan.length;
@@ -39,6 +17,7 @@ const DosenDashboardView = () => {
             <div>
                 <h3 className="text-xl font-bold text-gray-800 mb-4">Ringkasan Aktivitas</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* 3. Penggunaan InfoCard tidak perlu diubah */}
                     <InfoCard icon={Users} label="Mahasiswa Bimbingan" value={totalBimbingan} colorClass={{bg: 'bg-blue-100', text: 'text-blue-600'}} />
                     <InfoCard icon={Calendar} label="Jadwal Mengajar" value={totalJadwal} colorClass={{bg: 'bg-green-100', text: 'text-green-600'}} />
                     <InfoCard icon={BookOpen} label="Total SKS Mengajar" value={totalSks} colorClass={{bg: 'bg-yellow-100', text: 'text-yellow-600'}} />

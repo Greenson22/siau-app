@@ -1,33 +1,10 @@
 'use client';
 
-import { ElementType } from 'react';
 import Card from '@/components/elements/Card';
+import InfoCard from '@/components/fragments/InfoCard'; // <-- 1. Impor InfoCard yang baru
 import IpsChart from './IpsChart';
 import { GraduationCap, Wallet, BookCopy, Megaphone } from 'lucide-react';
 import { ringkasanAkademik } from '@/lib/data';
-
-// Komponen InfoCard bisa tetap di sini atau dipindahkan ke file utilitas jika digunakan di banyak tempat
-interface InfoCardProps {
-  icon: ElementType;
-  label: string;
-  value: string | number;
-  colorClass: {
-    bg: string;
-    text: string;
-  };
-}
-
-const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, label, value, colorClass }) => (
-    <Card className="flex items-center gap-5 p-5">
-        <div className={`p-4 rounded-full ${colorClass.bg}`}>
-            <Icon className={colorClass.text} size={28}/>
-        </div>
-        <div>
-            <p className="text-md text-gray-500">{label}</p>
-            <p className="text-3xl font-bold text-gray-800">{value}</p>
-        </div>
-    </Card>
-);
 
 interface AnnouncementItemProps {
     title: string;
@@ -46,6 +23,7 @@ const MahasiswaDashboardView = () => (
     <>
         {/* Info Cards Mahasiswa */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {/* 3. Penggunaan InfoCard tidak perlu diubah */}
             <InfoCard icon={GraduationCap} label="IPK" value={ringkasanAkademik.ipk} colorClass={{bg: 'bg-blue-100', text: 'text-blue-600'}} />
             <InfoCard icon={Wallet} label="Status Keuangan" value={ringkasanAkademik.statusKeuangan} colorClass={{bg: 'bg-green-100', text: 'text-green-600'}} />
             <InfoCard icon={BookCopy} label="SKS Ditempuh" value={ringkasanAkademik.sksDitempuh} colorClass={{bg: 'bg-yellow-100', text: 'text-yellow-600'}} />
