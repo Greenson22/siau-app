@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Card from '@/components/elements/Card';
 import Button from '@/components/elements/Button';
 import StatusBadge from '@/components/elements/StatusBadge';
-import ConfirmationModal from '@/components/fragments/ConfirmationModal';
+import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
 import { mahasiswaBimbingan as initialData, KrsStatus } from '@/lib/dataDosen';
 
 interface Mahasiswa {

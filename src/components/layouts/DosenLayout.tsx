@@ -7,7 +7,7 @@ import { User, Mail, Phone, Building, BookCheck, BrainCircuit, GraduationCap, Ke
 
 import Sidebar from '@/components/fragments/Sidebar'; 
 import Header from '@/components/fragments/Header';
-import ConfirmationModal from '@/components/fragments/ConfirmationModal';
+import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
 import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView';
 import { navLinksDosen, dosen } from '@/lib/dataDosen'; 
 import type { NavLinkIdDosen } from '@/lib/dataDosen';

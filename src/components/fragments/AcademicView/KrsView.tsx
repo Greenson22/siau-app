@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import StatusBadge from '@/components/elements/StatusBadge';
 import Button from '@/components/elements/Button';
-import Modal from '@/components/elements/Modal';
+import Modal from '@/components/fragments/Modal/Modal';
 import KrsBelumKontrak from '@/components/fragments/AcademicView/Krs/KrsBelumKontrak';
 import KrsMenungguPersetujuan from '@/components/fragments/AcademicView/Krs/KrsMenungguPersetujuan';
 import KrsDisetujui from '@/components/fragments/AcademicView/Krs/KrsDisetujui';

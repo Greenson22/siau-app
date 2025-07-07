@@ -9,7 +9,7 @@ import {
 
 import Sidebar from '@/components/fragments/Sidebar';
 import Header from '@/components/fragments/Header';
-import ConfirmationModal from '@/components/fragments/ConfirmationModal';
+import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
 // --- 1. Impor DashboardView yang sudah digabung ---
 import DashboardView from '@/components/fragments/DashboardView'; 
 import FinanceView from '@/components/fragments/FinanceView';
