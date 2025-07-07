@@ -12,12 +12,12 @@ import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
 import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
+// --- 1. Impor AcademicView yang sudah digabung ---
 import AcademicView from '@/components/fragments/AcademicView';
-// --- 1. Impor ProfileView generik dan komponen pembantunya ---
 import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView';
 import { navLinks, NavLinkId, ProfileTab, mahasiswa } from '@/lib/data';
 
-// --- 2. Buat Section Components untuk Mahasiswa ---
+// Komponen section untuk profil mahasiswa tetap sama
 const BiodataMahasiswaSection = () => (
     <div className="space-y-4 text-sm">
         <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Pribadi</h4>
@@ -39,7 +39,6 @@ const AkademikMahasiswaSection = () => (
     </div>
 );
 
-// --- 3. Buat wrapper untuk ProfileView ---
 const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: ProfileTab }) => {
     const userProfileData = {
         nama: mahasiswa.nama,
@@ -60,13 +59,20 @@ const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: ProfileTab }) => 
     return <ProfileView user={userProfileData} tabs={profileTabs} initialTab={initialTab} />;
 };
 
+// --- 2. Buat wrapper untuk AcademicView Mahasiswa ---
+// Komponen ini akan memberikan prop `role` yang sesuai
+const MahasiswaAcademicWrapper = () => (
+    <AcademicView role="mahasiswa" />
+);
 
-// --- 4. Daftarkan wrapper ke dalam views object ---
+
+// --- 3. Perbarui `views` object ---
 const views: { [key in NavLinkId]: React.ComponentType<any> } = {
   dashboard: DashboardView,
-  profil: MahasiswaProfileWrapper, // Gunakan wrapper
+  profil: MahasiswaProfileWrapper,
   keuangan: FinanceView,
-  akademik: AcademicView,
+  // Gunakan wrapper AcademicView untuk mahasiswa
+  akademik: MahasiswaAcademicWrapper,
 };
 
 const MahasiswaLayout = () => {
@@ -103,7 +109,6 @@ const MahasiswaLayout = () => {
     setIsLogoutModalOpen(false);
   };
 
-  // Data spesifik untuk Header Mahasiswa
   const profileMenuItemsMhs = [
     { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
     { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
@@ -165,6 +170,9 @@ const MahasiswaLayout = () => {
               animate="animate"
               exit="exit"
             >
+                {/* Komponen aktif akan dirender di sini, 
+                    jika `activeView` adalah 'akademik', maka `MahasiswaAcademicWrapper` yang akan dipanggil.
+                */}
               <ActiveComponent initialTab={targetProfileTab} />
             </motion.div>
           </AnimatePresence>

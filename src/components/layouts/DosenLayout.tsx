@@ -5,20 +5,20 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Phone, Building, BookCheck, BrainCircuit, GraduationCap } from 'lucide-react';
 
-// --- 1. Impor komponen generik ---
+// --- 1. Impor komponen generik dan view yang relevan ---
 import Sidebar from '@/components/fragments/Sidebar'; 
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/ConfirmationModal';
-import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView'; // Updated import
-
-// --- 2. Impor data dan view spesifik Dosen (kecuali ProfileDosenView) ---
+import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView';
 import { navLinksDosen, dosen } from '@/lib/dataDosen'; 
 import type { NavLinkIdDosen } from '@/lib/dataDosen';
 import DashboardDosenView from '@/components/fragments/dosen/DashboardDosenView';
 import BimbinganAkademikView from '@/components/fragments/dosen/BimbinganAkademikView';
-import AkademikDosenView from '@/components/fragments/dosen/AkademikDosenView';
+// --- 2. Impor AcademicView yang sudah digabung ---
+import AcademicView from '@/components/fragments/AcademicView';
 
-// --- 3. Definisikan Section Content untuk Dosen ---
+
+// Komponen section untuk profil dosen tetap sama
 const BiodataDosenSection = () => (
     <div className="space-y-4 text-sm">
         <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Kontak & Pribadi</h4>
@@ -54,12 +54,17 @@ const AkademikDosenSection = () => (
     </div>
 );
 
+// --- 3. Buat wrapper untuk AcademicView Dosen ---
+const DosenAcademicWrapper = () => (
+    <AcademicView role="dosen" />
+);
+
 
 const DosenLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState<NavLinkIdDosen>('dashboard');
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const [targetProfileTab, setTargetProfileTab] = useState('biodata'); // State to control the profile tab
+  const [targetProfileTab, setTargetProfileTab] = useState('biodata');
   const router = useRouter();
 
   const handleSetView = (view: string, tab?: string) => {
@@ -93,7 +98,6 @@ const DosenLayout = () => {
     exit: { opacity: 0, y: -15 },
   };
 
-  // --- 4. Buat objek user dan tabs untuk ProfileView ---
   const userProfileData = {
     nama: dosen.nama,
     peran: dosen.peran,
@@ -110,15 +114,14 @@ const DosenLayout = () => {
     { id: 'keamanan', label: 'Keamanan', content: <KeamananSection /> },
   ];
 
-  // --- 5. Tentukan komponen yang akan dirender ---
+  // --- 4. Perbarui logika render komponen ---
   const renderActiveComponent = () => {
-      if (activeView === 'profil') {
-          return <ProfileView user={userProfileData} tabs={profileTabs} initialTab={targetProfileTab} />;
-      }
       const views: { [key: string]: React.ComponentType<any> } = {
           dashboard: DashboardDosenView,
+          profil: () => <ProfileView user={userProfileData} tabs={profileTabs} initialTab={targetProfileTab} />,
           bimbingan: BimbinganAkademikView,
-          akademik: AkademikDosenView,
+          // Gunakan wrapper AcademicView untuk dosen
+          akademik: DosenAcademicWrapper,
       };
       const Component = views[activeView];
       return Component ? <Component /> : null;
