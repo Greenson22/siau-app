@@ -130,6 +130,7 @@ const Header: React.FC<HeaderProps> = ({
             </div>
             <ChevronDown size={16} className={`text-gray-500 transition-transform hidden sm:block ${isProfileOpen ? 'rotate-180' : ''}`} />
           </button>
+          {/* Menu Profil */}
           {isProfileOpen && (
             <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 z-20 py-1 animate-fade-in-down">
               <div className="px-4 py-3 border-b border-gray-200">

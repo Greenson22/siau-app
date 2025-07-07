@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Mail, Phone, Building, BookCheck, BrainCircuit, GraduationCap } from 'lucide-react';
+import { User, Mail, Phone, Building, BookCheck, BrainCircuit, GraduationCap, KeyRound } from 'lucide-react';
 
 import Sidebar from '@/components/fragments/Sidebar'; 
 import Header from '@/components/fragments/Header';
@@ -81,7 +81,9 @@ const DosenLayout = () => {
   };
 
   const profileMenuItemsDosen = [
-    { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') }
+    { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
+    { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
+    
   ];
 
   const notificationsDosen = [

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Transition } from 'framer-motion';
 import {
     User, KeyRound, Mail, Phone, Home, Calendar, VenetianMask, UserSquare, BookOpen, Star
 } from 'lucide-react';
@@ -123,7 +123,7 @@ const MahasiswaLayout = () => {
     exit: { opacity: 0, y: -20 },
   };
 
-  const animationTransition = {
+  const animationTransition: Transition = {
     type: "tween",
     ease: "anticipate",
     duration: 0.1
