@@ -6,7 +6,7 @@ import Logo from '@/components/elements/Logo';
 import Label from '@/components/elements/Label';
 import Input from '@/components/elements/Input';
 import Button from '@/components/elements/Button';
-import { User, Lock } from 'lucide-react'; // Impor ikon
+import { User, Lock } from 'lucide-react';
 
 const LoginForm = () => {
   const [identifier, setIdentifier] = useState('');
@@ -25,6 +25,8 @@ const LoginForm = () => {
         router.push('/mahasiswa');
       } else if (identifier === 'dosen' && password === 'dosen') {
         router.push('/dosen');
+      } else if (identifier === 'admin' && password === 'admin') { // <-- Tambahkan ini
+        router.push('/administrasi');
       } else {
         setError('NIM/NIDN atau Password salah. Silakan coba lagi.');
         setIsLoading(false);
@@ -34,7 +36,6 @@ const LoginForm = () => {
 
   return (
     <div className="flex flex-col">
-      {/* Logo hanya ditampilkan di mobile, karena di desktop sudah ada di panel kiri */}
       <div className="md:hidden flex flex-col items-center mb-6">
         <Logo />
       </div>
@@ -50,15 +51,15 @@ const LoginForm = () => {
 
       <form className="mt-8 w-full space-y-6" onSubmit={handleSubmit}>
         <div>
-          <Label htmlFor="identifier">NIM / NIDN</Label>
+          <Label htmlFor="identifier">NIM / NIDN / User ID</Label> {/* Label diubah */}
           <div className="mt-2 relative">
             <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
               id="identifier"
               name="identifier"
               type="text"
-              placeholder="Masukkan NIM atau NIDN"
-              className="pl-10" // Tambahkan padding untuk ikon
+              placeholder="Masukkan ID Anda" // Placeholder diubah
+              className="pl-10"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               required
@@ -76,7 +77,7 @@ const LoginForm = () => {
               name="password"
               type="password"
               placeholder="••••••••"
-              className="pl-10" // Tambahkan padding untuk ikon
+              className="pl-10"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
