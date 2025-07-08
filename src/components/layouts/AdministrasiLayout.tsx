@@ -5,7 +5,7 @@ import { User, KeyRound } from 'lucide-react';
 import AppLayout from './AppLayout';
 
 // Impor data & view khusus administrasi
-import { navLinksAdministrasi, administrasi } from '@/lib/dataAdministrasi';
+import { navLinksAdministrasi, administrasi, notifications } from '@/lib/dataAdministrasi';
 import DashboardView from '@/components/fragments/DashboardView/AdministrasiDashboardView';
 import PendaftaranView from '@/components/fragments/administrasi/PendaftaranView';
 import KeuanganView from '@/components/fragments/administrasi/KeuanganView';
@@ -43,12 +43,6 @@ const AdministrasiLayout = () => {
     const profileMenuItemsFactory = (handleSetView: (view: string, tab?: string) => void) => [
         { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'keamanan') },
         { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
-    ];
-
-    // Data notifikasi statis untuk administrasi
-    const notifications = [
-        { title: '10 Pendaftar Baru', subtitle: 'Memerlukan validasi pembayaran' },
-        { title: 'Laporan Keuangan Bulanan Siap', subtitle: 'Periode Juni 2025 telah digenerate' },
     ];
 
     return (
