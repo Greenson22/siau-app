@@ -3,58 +3,22 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Mail, Phone, Building, BookCheck, BrainCircuit, GraduationCap, KeyRound } from 'lucide-react';
+import { User, KeyRound } from 'lucide-react';
 
 import Sidebar from '@/components/fragments/Sidebar'; 
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
-import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView';
-import { navLinksDosen, dosen } from '@/lib/dataDosen'; 
-import type { NavLinkIdDosen } from '@/lib/dataDosen';
-// --- 1. Hapus impor DashboardDosenView ---
-// import DashboardDosenView from '@/components/fragments/dosen/DashboardDosenView';
-// --- 2. Impor DashboardView dan AcademicView yang sudah digabung ---
+import ProfileView, { KeamananSection } from '@/components/fragments/ProfileView';
 import DashboardView from '@/components/fragments/DashboardView'; 
 import AcademicView from '@/components/fragments/AcademicView';
 import BimbinganAkademikView from '@/components/fragments/dosen/BimbinganAkademikView';
+import BiodataDosenSection from '@/components/fragments/ProfileView/BiodataDosenSection';
+import AkademikDosenSection from '@/components/fragments/ProfileView/AkademikDosenSection';
 
-// Komponen section untuk profil tidak berubah
-const BiodataDosenSection = () => (
-    <div className="space-y-4 text-sm">
-        <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Kontak & Pribadi</h4>
-        <InfoItem icon={<Mail size={16} />} label="Alamat Email" value={dosen.email} />
-        <InfoItem icon={<Phone size={16} />} label="No. Telepon" value={dosen.telepon} />
-        <InfoItem icon={<Building size={16} />} label="Alamat Kantor" value={dosen.alamatKantor} isBlock />
-    </div>
-);
+import { navLinksDosen, dosen } from '@/lib/dataDosen'; 
+import type { NavLinkIdDosen } from '@/lib/dataDosen';
 
-const AkademikDosenSection = () => (
-    <div className="space-y-6 text-sm">
-        <div>
-            <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Akademik</h4>
-            <div className="space-y-4">
-                <InfoItem icon={<BookCheck size={16} />} label="Jabatan Fungsional" value={dosen.jabatanAkademik} />
-                <InfoItem icon={<BrainCircuit size={16} />} label="Bidang Keahlian" value={dosen.spesialisasi} isBlock />
-            </div>
-        </div>
-         <div>
-            <h4 className="font-bold text-lg text-gray-700 mt-6 mb-4">Riwayat Pendidikan</h4>
-            <ul className="space-y-3">
-                {dosen.riwayatPendidikan.map((item, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                        <GraduationCap className="text-indigo-500 mt-1 flex-shrink-0" size={18} />
-                        <div>
-                            <p className="font-semibold text-gray-800">{item.jenjang}</p>
-                            <p className="text-gray-600">{item.institusi} - Lulus {item.tahun}</p>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    </div>
-);
-
-// --- 3. Buat wrapper untuk komponen yang membutuhkan role ---
+// Wrapper untuk komponen yang membutuhkan role
 const DosenDashboardWrapper = () => <DashboardView role="dosen" />;
 const DosenAcademicWrapper = () => <AcademicView role="dosen" />;
 
@@ -83,7 +47,6 @@ const DosenLayout = () => {
   const profileMenuItemsDosen = [
     { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
     { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
-    
   ];
 
   const notificationsDosen = [
@@ -114,10 +77,8 @@ const DosenLayout = () => {
     { id: 'keamanan', label: 'Keamanan', content: <KeamananSection /> },
   ];
 
-  // --- 4. Perbarui logika render komponen ---
   const renderActiveComponent = () => {
       const views: { [key: string]: React.ComponentType<any> } = {
-          // Gunakan wrapper DashboardView yang baru
           dashboard: DosenDashboardWrapper,
           profil: () => <ProfileView user={userProfileData} tabs={profileTabs} initialTab={targetProfileTab} />,
           bimbingan: BimbinganAkademikView,
