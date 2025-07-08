@@ -17,27 +17,8 @@ import AcademicView from '@/components/fragments/AcademicView';
 import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView';
 import { navLinks, NavLinkId, ProfileTab, mahasiswa } from '@/lib/data';
 
-// Komponen section untuk profil tidak berubah
-const BiodataMahasiswaSection = () => (
-    <div className="space-y-4 text-sm">
-        <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Pribadi</h4>
-        <InfoItem icon={<Calendar size={16} />} label="Tempat, Tanggal Lahir" value={mahasiswa.ttl} />
-        <InfoItem icon={<VenetianMask size={16} />} label="Jenis Kelamin" value={mahasiswa.jenisKelamin} />
-        <InfoItem icon={<Mail size={16} />} label="Email" value={mahasiswa.email} />
-        <InfoItem icon={<Phone size={16} />} label="No. Telepon" value={mahasiswa.telepon} />
-        <InfoItem icon={<Home size={16} />} label="Alamat" value={mahasiswa.alamat} isBlock />
-    </div>
-);
-
-const AkademikMahasiswaSection = () => (
-    <div className="space-y-4 text-sm">
-        <h4 className="font-bold text-lg text-gray-700 mb-4">Informasi Akademik</h4>
-        <InfoItem icon={<UserSquare size={16} />} label="Dosen Pembimbing Akademik" value={mahasiswa.dosenPA} />
-        <InfoItem icon={<BookOpen size={16} />} label="Semester" value={mahasiswa.semester} />
-        <InfoItem icon={<Star size={16} />} label="Total SKS Ditempuh" value={mahasiswa.totalSKS} />
-        <InfoItem icon={<Star size={16} />} label="Indeks Prestasi Kumulatif (IPK)" value={mahasiswa.ipk.toFixed(2)} />
-    </div>
-);
+import BiodataMahasiswaSection from '@/components/fragments/ProfileView/BiodataMahasiswaSection';
+import AkademikMahasiswaSection from '@/components/fragments/ProfileView/AkademikMahasiswaSection';
 
 // Wrapper untuk komponen-komponen yang membutuhkan role
 const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: ProfileTab }) => {
@@ -51,21 +32,16 @@ const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: ProfileTab }) => 
         detail: mahasiswa.prodi,
     };
     const profileTabs = [
-        { id: 'biodata', label: 'Biodata', content: <BiodataMahasiswaSection /> },
-        { id: 'akademik', label: 'Info Akademik', content: <AkademikMahasiswaSection /> },
+        { id: 'biodata', label: 'Biodata', content: <BiodataMahasiswaSection mahasiswa={mahasiswa}/> },
+        { id: 'akademik', label: 'Info Akademik', content: <AkademikMahasiswaSection mahasiswa={mahasiswa}/> },
         { id: 'keamanan', label: 'Keamanan', content: <KeamananSection /> },
     ];
     return <ProfileView user={userProfileData} tabs={profileTabs} initialTab={initialTab} />;
 };
 const MahasiswaAcademicWrapper = () => <AcademicView role="mahasiswa" />;
-
-// --- 2. Buat wrapper untuk DashboardView Mahasiswa ---
 const MahasiswaDashboardWrapper = () => <DashboardView role="mahasiswa" />;
 
-
-// --- 3. Perbarui `views` object ---
 const views: { [key in NavLinkId]: React.ComponentType<any> } = {
-  // Gunakan wrapper DashboardView yang baru
   dashboard: MahasiswaDashboardWrapper,
   profil: MahasiswaProfileWrapper,
   keuangan: FinanceView,
