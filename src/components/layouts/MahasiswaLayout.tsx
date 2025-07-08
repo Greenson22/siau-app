@@ -11,10 +11,9 @@ import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
 import AcademicView from '@/components/fragments/AcademicView';
 import ProfileView, { KeamananSection } from '@/components/fragments/ProfileView';
-import BiodataMahasiswaSection from '../fragments/ProfileView/BiodataMahasiswaSection'; // Sesuaikan path jika perlu
-import AkademikMahasiswaSection from '../fragments/ProfileView/AkademikMahasiswaSection'; // Sesuaikan path jika perlu
+import BiodataMahasiswaSection from '../fragments/ProfileView/BiodataMahasiswaSection';
+import AkademikMahasiswaSection from '../fragments/ProfileView/AkademikMahasiswaSection';
 
-// Komponen Pembungkus (Wrapper) untuk Halaman Profil
 const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: string }) => {
     const userProfileData = {
         nama: mahasiswa.nama,
@@ -33,9 +32,7 @@ const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: string }) => {
     return <ProfileView user={userProfileData} tabs={profileTabs} initialTab={initialTab} />;
 };
 
-
 const MahasiswaLayout = () => {
-    // Definisikan view yang tersedia untuk mahasiswa
     const views = {
         dashboard: () => <DashboardView role="mahasiswa" />,
         profil: MahasiswaProfileWrapper,
@@ -43,7 +40,6 @@ const MahasiswaLayout = () => {
         akademik: () => <AcademicView role="mahasiswa" />,
     };
 
-    // Fungsi yang membuat menu item, menerima handleSetView sebagai argumen
     const profileMenuItemsFactory = (handleSetView: (view: string, tab?: string) => void) => [
         { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
         { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
