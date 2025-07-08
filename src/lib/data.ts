@@ -89,10 +89,10 @@ export const dataKeuangan = {
   ]
 };
 
-export const notifikasi = [
-  { id: 1, pesan: 'Batas akhir pembayaran UKT adalah 30 Juli 2025.', waktu: '2 jam yang lalu' },
-  { id: 2, pesan: 'Jadwal KRS Semester Ganjil 2025/2026 telah terbit.', waktu: '1 hari yang lalu' },
-  { id: 3, pesan: 'Nilai mata kuliah Teologi Sistematika II telah keluar.', waktu: '3 hari yang lalu' },
+export const notificationsMhs = [
+  { title: 'Batas Akhir Pembayaran UKT', subtitle: '30 Juli 2025' },
+  { title: 'Validasi KRS oleh Dosen PA', subtitle: '25-31 Agustus 2025' },
+  { title: 'Perkuliahan Semester Ganjil Dimulai', subtitle: '1 September 2025' },
 ];
 
 export const dataKrs = {

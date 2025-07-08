@@ -3,19 +3,17 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence, Transition } from 'framer-motion';
-import {
-    User, KeyRound, Mail, Phone, Home, Calendar, VenetianMask, UserSquare, BookOpen, Star
-} from 'lucide-react';
+import { User, KeyRound } from 'lucide-react';
 
 import Sidebar from '@/components/fragments/Sidebar';
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
-// --- 1. Impor DashboardView yang sudah digabung ---
+
 import DashboardView from '@/components/fragments/DashboardView'; 
 import FinanceView from '@/components/fragments/FinanceView';
 import AcademicView from '@/components/fragments/AcademicView';
-import ProfileView, { KeamananSection, InfoItem } from '@/components/fragments/ProfileView';
-import { navLinks, NavLinkId, ProfileTab, mahasiswa } from '@/lib/data';
+import ProfileView, { KeamananSection } from '@/components/fragments/ProfileView';
+import { navLinks, NavLinkId, ProfileTab, mahasiswa, notificationsMhs } from '@/lib/data';
 
 import BiodataMahasiswaSection from '@/components/fragments/ProfileView/BiodataMahasiswaSection';
 import AkademikMahasiswaSection from '@/components/fragments/ProfileView/AkademikMahasiswaSection';
@@ -85,12 +83,6 @@ const MahasiswaLayout = () => {
   const profileMenuItemsMhs = [
     { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
     { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
-  ];
-
-  const notificationsMhs = [
-      { title: 'Batas Akhir Pembayaran UKT', subtitle: '30 Juli 2025' },
-      { title: 'Validasi KRS oleh Dosen PA', subtitle: '25-31 Agustus 2025' },
-      { title: 'Perkuliahan Semester Ganjil Dimulai', subtitle: '1 September 2025' },
   ];
 
   const animationVariants = {
