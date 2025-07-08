@@ -4,42 +4,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence, Transition } from 'framer-motion';
-import type { LucideIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import Sidebar, { type NavLink } from '@/components/fragments/Sidebar';
+import Sidebar from '@/components/fragments/Sidebar';
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
 
 import { pageTransitionVariants, pageTransition } from '@/lib/animations';
-
-type User = {
-  nama: string;
-  peran: string;
-  email: string;
-};
-
-type Notification = {
-  title: string;
-  subtitle: string;
-};
-
-type ProfileMenuItemsFactory = (setView: (view: string, tab?: string) => void) => {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-  action: () => void;
-}[];
-
-interface AppLayoutProps {
-  user: User;
-  navLinks: NavLink[];
-  portalTitle: string;
-  notifications: Notification[];
-  profileMenuItemsFactory: ProfileMenuItemsFactory;
-  views: { [key: string]: React.ComponentType<any> };
-  initialView?: string;
-}
+import type { AppLayoutProps } from '@/types'; 
 
 const AppLayout: React.FC<AppLayoutProps> = ({
   user,
