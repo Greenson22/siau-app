@@ -24,7 +24,6 @@ type Notification = {
   subtitle: string;
 };
 
-// Tipe untuk fungsi yang akan membuat menu item
 type ProfileMenuItemsFactory = (setView: (view: string, tab?: string) => void) => {
   id: string;
   label: string;
