@@ -5,10 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import SidebarHeader from './SidebarHeader';
 import SidebarNav from './SidebarNav';
 import SidebarFooter from './SidebarFooter';
-import type { NavLink, SidebarProps } from '@/types';
+import type { SidebarProps } from '@/types';
 
-import { sidebarVariants, backdropVariants } from '@/lib/animations'; // <-- Sesuaikan path jika perlu
-
+import { sidebarVariants, backdropVariants } from '@/lib/animations';
 const Sidebar: React.FC<SidebarProps> = ({
   navLinks,
   activeView,
