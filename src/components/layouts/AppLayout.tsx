@@ -11,7 +11,8 @@ import Sidebar, { type NavLink } from '@/components/fragments/Sidebar';
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
 
-// Tipe data generik untuk props
+import { pageTransitionVariants, pageTransition } from '@/lib/animations';
+
 type User = {
   nama: string;
   peran: string;
@@ -77,18 +78,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({
   const ActiveComponent = views[activeView];
   const pageTitle = navLinks.find(link => link.id === activeView)?.title || 'Dashboard';
 
-  const animationVariants = {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: { opacity: 1, scale: 1 },
-    exit:    { opacity: 0, scale: 0.9 },
-  };
-
-  const animationTransition: Transition = {
-    type: "spring",
-    stiffness: 300,
-    damping: 25,  
-  };
-
   return (
     <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
       {isSidebarOpen && (
@@ -121,8 +110,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({
           <AnimatePresence mode="wait">
             <motion.div
               key={activeView}
-              variants={animationVariants}
-              transition={animationTransition}
+              variants={pageTransitionVariants}
+              transition={pageTransition}
               initial="initial"
               animate="animate"
               exit="exit"
