@@ -6,7 +6,8 @@ import { User, KeyRound } from 'lucide-react';
 import AppLayout from './AppLayout'; // Ganti dengan AppLayout
 
 // Impor data & view khusus mahasiswa
-import { navLinks, mahasiswa } from '@/lib/data';
+import { notifications, mahasiswa, navLinks } from '@/lib/dataMahasiswa';
+
 import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
 import AcademicView from '@/components/fragments/AcademicView';
@@ -50,11 +51,7 @@ const MahasiswaLayout = () => {
             user={mahasiswa}
             navLinks={navLinks}
             portalTitle="Portal Mahasiswa"
-            notifications={[
-                { title: 'Batas Akhir Pembayaran UKT', subtitle: '30 Juli 2025' },
-                { title: 'Validasi KRS oleh Dosen PA', subtitle: '25-31 Agustus 2025' },
-                { title: 'Perkuliahan Semester Ganjil Dimulai', subtitle: '1 September 2025' },
-            ]}
+            notifications={notifications}
             profileMenuItemsFactory={profileMenuItemsFactory}
             views={views}
         />
