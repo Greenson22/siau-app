@@ -79,3 +79,33 @@ export interface Mahasiswa {
     statusKrs: KrsStatus;
     avatar: string;
 }
+
+// --- Tipe dari Sidebar ---
+export interface SidebarProps {
+  navLinks: NavLink[];
+  activeView: string;
+  setActiveView: (view: string) => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  handleLogout: () => void;
+  portalTitle: string;
+}
+
+export interface SidebarVariants {
+  open: {
+    x: number;
+    transition: {
+      type: string;
+      stiffness: number;
+      damping: number;
+    };
+  };
+  closed: {
+    x: string;
+    transition: {
+      type: string;
+      stiffness: number;
+      damping: number;
+    };
+  };
+}
