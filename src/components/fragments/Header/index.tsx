@@ -4,6 +4,7 @@ import { Menu } from 'lucide-react';
 import type { HeaderProps } from '@/types';
 import NotificationDropdown from './NotificationDropdown';
 import ProfileDropdown from './ProfileDropdown';
+import Button from '@/components/elements/Button'; // <-- 1. Impor Button
 
 const Header: React.FC<HeaderProps> = ({
   title,
@@ -17,13 +18,17 @@ const Header: React.FC<HeaderProps> = ({
     <header className="bg-white shadow-sm p-4 flex justify-between items-center mb-6">
       {/* Bagian Kiri */}
       <div className="flex items-center gap-4">
-        <button onClick={toggleSidebar} className="md:hidden text-gray-500 hover:text-gray-700 transition-colors">
+        <Button 
+            onClick={toggleSidebar} 
+            variant="ghost" 
+            className="md:hidden !p-2"
+        >
           <Menu size={24} />
-        </button>
+        </Button>
         <h2 className="text-xl sm:text-2xl font-bold text-gray-800">{title}</h2>
       </div>
 
-      {/* Bagian Kanan */}
+      {/* Bagian Kanan (tidak berubah) */}
       <div className="flex items-center gap-3 sm:gap-5">
         <NotificationDropdown notifications={notifications} />
         <div className="w-px h-8 bg-gray-200 hidden sm:block"></div>

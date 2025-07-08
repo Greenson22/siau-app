@@ -1,9 +1,8 @@
 import React from 'react';
 
-// 1. Tambahkan 'danger' sebagai pilihan variant
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'danger'; // <-- 'danger' ditambahkan di sini
+  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
   isLoading?: boolean;
 }
 
@@ -16,11 +15,11 @@ const Button = ({
 }: ButtonProps) => {
   const baseClasses = 'flex items-center justify-center rounded-md px-4 py-2 font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:cursor-wait disabled:opacity-50';
 
-  // 2. Tambahkan kelas untuk variant 'danger'
   const variantClasses = {
     primary: 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500',
     secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500', // <-- Kelas untuk tombol merah
+    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+    ghost: 'bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:ring-indigo-500', // <-- Kelas untuk tombol transparan
   };
 
   return (
