@@ -1,53 +1,30 @@
-// src/components/layouts/AppLayout.tsx
-
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAppLayout } from '@/hooks/useAppLayout'; // Impor hook
+import type { AppLayoutProps } from '@/types';
 
 import Sidebar from '@/components/fragments/Sidebar';
 import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
-
 import { pageTransitionVariants, pageTransition } from '@/lib/animations';
-import type { AppLayoutProps } from '@/types'; 
 
-const AppLayout: React.FC<AppLayoutProps> = ({
-  user,
-  navLinks,
-  portalTitle,
-  notifications,
-  profileMenuItemsFactory,
-  views,
-  initialView = 'dashboard',
-}) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeView, setActiveView] = useState(initialView);
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const [targetProfileTab, setTargetProfileTab] = useState('biodata');
-  const router = useRouter();
-
-  const handleSetView = (view: string, tab?: string) => {
-    setActiveView(view);
-    if (tab) {
-      setTargetProfileTab(tab);
-    }
-    if (window.innerWidth < 1024) {
-      setIsSidebarOpen(false);
-    }
-  };
-
-  const handleRequestLogout = () => setIsLogoutModalOpen(true);
-  const handleConfirmLogout = () => {
-    setIsLogoutModalOpen(false);
-    router.push('/login');
-  };
-  const handleCancelLogout = () => setIsLogoutModalOpen(false);
-
-  const profileMenuItems = profileMenuItemsFactory(handleSetView);
-  const ActiveComponent = views[activeView];
-  const pageTitle = navLinks.find(link => link.id === activeView)?.title || 'Dashboard';
+const AppLayout: React.FC<AppLayoutProps> = (props) => {
+  const {
+    isSidebarOpen,
+    isLogoutModalOpen,
+    activeView,
+    targetProfileTab,
+    pageTitle,
+    profileMenuItems,
+    ActiveComponent,
+    handleSetView,
+    handleRequestLogout,
+    handleConfirmLogout,
+    handleCancelLogout,
+    toggleSidebar,
+    setIsSidebarOpen,
+  } = useAppLayout(props);
 
   return (
     <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
@@ -59,8 +36,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({
       )}
 
       <Sidebar
-        navLinks={navLinks}
-        portalTitle={portalTitle}
+        navLinks={props.navLinks}
+        portalTitle={props.portalTitle}
         activeView={activeView}
         setActiveView={handleSetView}
         isOpen={isSidebarOpen}
@@ -71,10 +48,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({
       <div className="flex-1 flex flex-col h-screen">
         <Header
           title={pageTitle}
-          user={user}
+          user={props.user}
           profileMenuItems={profileMenuItems}
-          notifications={notifications}
-          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          notifications={props.notifications}
+          toggleSidebar={toggleSidebar}
           handleLogout={handleRequestLogout}
         />
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
