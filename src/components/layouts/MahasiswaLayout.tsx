@@ -1,25 +1,21 @@
+// MahasiswaLayout.tsx
+
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence, Transition } from 'framer-motion';
 import { User, KeyRound } from 'lucide-react';
+import AppLayout from './AppLayout'; // Ganti dengan AppLayout
 
-import Sidebar from '@/components/fragments/Sidebar';
-import Header from '@/components/fragments/Header';
-import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
-
-import DashboardView from '@/components/fragments/DashboardView'; 
+// Impor data & view khusus mahasiswa
+import { navLinks, mahasiswa } from '@/lib/data';
+import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
 import AcademicView from '@/components/fragments/AcademicView';
 import ProfileView, { KeamananSection } from '@/components/fragments/ProfileView';
-import { navLinks, NavLinkId, ProfileTab, mahasiswa, notificationsMhs } from '@/lib/data';
+import BiodataMahasiswaSection from '../fragments/ProfileView/BiodataMahasiswaSection'; // Sesuaikan path jika perlu
+import AkademikMahasiswaSection from '../fragments/ProfileView/AkademikMahasiswaSection'; // Sesuaikan path jika perlu
 
-import BiodataMahasiswaSection from '@/components/fragments/ProfileView/BiodataMahasiswaSection';
-import AkademikMahasiswaSection from '@/components/fragments/ProfileView/AkademikMahasiswaSection';
-
-// Wrapper untuk komponen-komponen yang membutuhkan role
-const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: ProfileTab }) => {
+// Komponen Pembungkus (Wrapper) untuk Halaman Profil
+const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: string }) => {
     const userProfileData = {
         nama: mahasiswa.nama,
         peran: mahasiswa.peran,
@@ -36,120 +32,37 @@ const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: ProfileTab }) => 
     ];
     return <ProfileView user={userProfileData} tabs={profileTabs} initialTab={initialTab} />;
 };
-const MahasiswaAcademicWrapper = () => <AcademicView role="mahasiswa" />;
-const MahasiswaDashboardWrapper = () => <DashboardView role="mahasiswa" />;
 
-const views: { [key in NavLinkId]: React.ComponentType<any> } = {
-  dashboard: MahasiswaDashboardWrapper,
-  profil: MahasiswaProfileWrapper,
-  keuangan: FinanceView,
-  akademik: MahasiswaAcademicWrapper,
-};
 
 const MahasiswaLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeView, setActiveView] = useState<NavLinkId>('dashboard');
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const [targetProfileTab, setTargetProfileTab] = useState<ProfileTab>('biodata');
-  
-  const router = useRouter();
+    // Definisikan view yang tersedia untuk mahasiswa
+    const views = {
+        dashboard: () => <DashboardView role="mahasiswa" />,
+        profil: MahasiswaProfileWrapper,
+        keuangan: FinanceView,
+        akademik: () => <AcademicView role="mahasiswa" />,
+    };
 
-  const ActiveComponent = views[activeView];
-  const pageTitle = navLinks.find(link => link.id === activeView)?.title || 'Dashboard';
+    // Fungsi yang membuat menu item, menerima handleSetView sebagai argumen
+    const profileMenuItemsFactory = (handleSetView: (view: string, tab?: string) => void) => [
+        { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
+        { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
+    ];
 
-  const handleSetView = (view: NavLinkId, tab?: ProfileTab) => {
-    setActiveView(view);
-    if (tab) {
-        setTargetProfileTab(tab);
-    }
-    if (window.innerWidth < 768) {
-      setIsSidebarOpen(false);
-    }
-  };
-
-  const handleRequestLogout = () => {
-    setIsLogoutModalOpen(true);
-  };
-
-  const handleConfirmLogout = () => {
-    setIsLogoutModalOpen(false);
-    router.push('/login'); 
-  };
-  
-  const handleCancelLogout = () => {
-    setIsLogoutModalOpen(false);
-  };
-
-  const profileMenuItemsMhs = [
-    { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
-    { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
-  ];
-
-  const animationVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
-  };
-
-  const animationTransition: Transition = {
-    type: "tween",
-    ease: "anticipate",
-    duration: 0.1
-  };
-
-  return (
-    <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 z-20 bg-black opacity-50 md:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
-      )}
-
-      <Sidebar 
-        navLinks={navLinks}
-        portalTitle="Portal Mahasiswa"
-        activeView={activeView} 
-        setActiveView={(view) => handleSetView(view as NavLinkId)}
-        isOpen={isSidebarOpen}
-        setIsOpen={setIsSidebarOpen}
-        handleLogout={handleRequestLogout}
-      />
-      
-      <div className="flex-1 flex flex-col h-screen">
-        <Header 
-          title={pageTitle} 
-          user={mahasiswa}
-          profileMenuItems={profileMenuItemsMhs}
-          notifications={notificationsMhs}
-          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
-          handleLogout={handleRequestLogout}
+    return (
+        <AppLayout
+            user={mahasiswa}
+            navLinks={navLinks}
+            portalTitle="Portal Mahasiswa"
+            notifications={[
+                { title: 'Batas Akhir Pembayaran UKT', subtitle: '30 Juli 2025' },
+                { title: 'Validasi KRS oleh Dosen PA', subtitle: '25-31 Agustus 2025' },
+                { title: 'Perkuliahan Semester Ganjil Dimulai', subtitle: '1 September 2025' },
+            ]}
+            profileMenuItemsFactory={profileMenuItemsFactory}
+            views={views}
         />
-        <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeView}
-              variants={animationVariants}
-              transition={animationTransition}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <ActiveComponent initialTab={targetProfileTab} />
-            </motion.div>
-          </AnimatePresence>
-        </main>
-      </div>
-
-      <ConfirmationModal
-        isOpen={isLogoutModalOpen}
-        onClose={handleCancelLogout}
-        onConfirm={handleConfirmLogout}
-        title="Konfirmasi Logout"
-        message="Apakah Anda yakin ingin keluar dari Portal Mahasiswa?"
-      />
-    </div>
-  );
+    );
 };
 
 export default MahasiswaLayout;
