@@ -1,9 +1,9 @@
 // src/components/fragments/Sidebar.tsx
 'use client';
 
-import SidebarHeader from './Sidebar/SidebarHeader';
-import SidebarNav from './Sidebar/SidebarNav';
-import SidebarFooter from './Sidebar/SidebarFooter';
+import SidebarHeader from './SidebarHeader';
+import SidebarNav from './SidebarNav';
+import SidebarFooter from './SidebarFooter';
 import type { NavLink } from '@/types';
 
 interface SidebarProps {
