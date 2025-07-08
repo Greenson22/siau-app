@@ -1,45 +1,29 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useLoginForm } from '@/hooks/useLoginForm';
 import Logo from '@/components/elements/Logo';
-import Label from '@/components/elements/Label';
-import Input from '@/components/elements/Input';
-import Button from '@/components/elements/Button';
+import LoginInput from '@/components/elements/Login/LoginInput';
+import LoginButton from '@/components/elements/Login/LoginButton';
+import ErrorMessage from '@/components/elements/Login/ErrorMessage';
 import { User, Lock } from 'lucide-react';
 
 const LoginForm = () => {
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const router = useRouter();
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-
-    setTimeout(() => {
-      if (identifier === '20210118' && password === 'password') {
-        router.push('/mahasiswa');
-      } else if (identifier === 'dosen' && password === 'dosen') {
-        router.push('/dosen');
-      } else if (identifier === 'admin' && password === 'admin') { // <-- Tambahkan ini
-        router.push('/administrasi');
-      } else {
-        setError('NIM/NIDN atau Password salah. Silakan coba lagi.');
-        setIsLoading(false);
-      }
-    }, 1500);
-  };
+  const {
+    identifier,
+    setIdentifier,
+    password,
+    setPassword,
+    isLoading,
+    error,
+    handleSubmit,
+  } = useLoginForm();
 
   return (
     <div className="flex flex-col">
       <div className="md:hidden flex flex-col items-center mb-6">
         <Logo />
       </div>
-      
+
       <div className="text-center">
         <h2 className="text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Login ke Akun Anda
@@ -50,45 +34,29 @@ const LoginForm = () => {
       </div>
 
       <form className="mt-8 w-full space-y-6" onSubmit={handleSubmit}>
-        <div>
-          <Label htmlFor="identifier">NIM / NIDN / User ID</Label> {/* Label diubah */}
-          <div className="mt-2 relative">
-            <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <Input
-              id="identifier"
-              name="identifier"
-              type="text"
-              placeholder="Masukkan ID Anda" // Placeholder diubah
-              className="pl-10"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              required
-              label={''} 
-            />
-          </div>
-        </div>
+        <LoginInput
+          id="identifier"
+          label="NIM / NIDN / User ID"
+          Icon={User}
+          type="text"
+          placeholder="Masukkan ID Anda"
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
+          required
+        />
 
-        <div>
-          <Label htmlFor="password">Password</Label>
-          <div className="mt-2 relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="••••••••"
-              className="pl-10"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              label={''} 
-            />
-          </div>
-        </div>
-        
-        {error && (
-          <p className="text-sm text-center text-red-600 animate-shake">{error}</p>
-        )}
+        <LoginInput
+          id="password"
+          label="Password"
+          Icon={Lock}
+          type="password"
+          placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <ErrorMessage message={error} />
 
         <div className="flex items-center justify-end">
           <div className="text-sm">
@@ -99,9 +67,7 @@ const LoginForm = () => {
         </div>
 
         <div>
-          <Button type="submit" className="w-full" isLoading={isLoading}>
-            Login
-          </Button>
+          <LoginButton isLoading={isLoading} />
         </div>
       </form>
     </div>
