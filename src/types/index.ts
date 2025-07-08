@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 
-// Anda mungkin juga ingin memindahkan NavLink ke sini jika digunakan di banyak tempat
+// --- Tipe yang sudah ada ---
 export interface NavLink {
   id: string;
   title: string;
@@ -18,12 +18,25 @@ export interface Notification {
   subtitle: string;
 }
 
-export type ProfileMenuItemsFactory = (setView: (view: string, tab?: string) => void) => {
+// --- Tipe BARU dari Header.tsx ---
+export interface ProfileMenuItem {
   id: string;
   label: string;
   icon: LucideIcon;
   action: () => void;
-}[];
+}
+
+export interface HeaderProps {
+  title: string;
+  user: User; // Menggunakan tipe User yang sudah ada
+  profileMenuItems: ProfileMenuItem[];
+  notifications: Notification[]; // Menggunakan tipe Notification yang sudah ada
+  toggleSidebar: () => void;
+  handleLogout: () => void;
+}
+
+// --- Tipe yang sudah ada lainnya ---
+export type ProfileMenuItemsFactory = (setView: (view: string, tab?: string) => void) => ProfileMenuItem[]; // Diperbarui untuk menggunakan ProfileMenuItem
 
 export interface AppLayoutProps {
   user: User;
