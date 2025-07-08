@@ -1,5 +1,3 @@
-export type NavLinkId = 'dashboard' | 'profil' | 'keuangan' | 'akademik';
-export type ProfileTab = 'biodata' | 'akademik' | 'keamanan';
 export const ringkasanAkademik = {
     ipk: "3.75",
     statusKeuangan: "Lunas",
