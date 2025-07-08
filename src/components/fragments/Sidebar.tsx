@@ -1,14 +1,8 @@
 'use client';
 
-import { LogOut, X, type LucideIcon } from 'lucide-react';
+import { LogOut, X} from 'lucide-react';
 import Image from 'next/image';
-
-// Mendefinisikan tipe data untuk link navigasi secara generik
-export interface NavLink {
-  id: string;
-  title: string;
-  icon: LucideIcon;
-}
+import type { NavLink } from '@/types'; 
 
 interface SidebarProps {
   navLinks: NavLink[];
@@ -17,7 +11,7 @@ interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   handleLogout: () => void;
-  portalTitle: string; // Judul portal, misal: "Portal Dosen"
+  portalTitle: string; 
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 

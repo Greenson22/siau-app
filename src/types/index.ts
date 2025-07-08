@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 
-// --- Tipe yang sudah ada ---
+// --- Tipe Generik ---
 export interface NavLink {
   id: string;
   title: string;
@@ -18,7 +18,7 @@ export interface Notification {
   subtitle: string;
 }
 
-// --- Tipe BARU dari Header.tsx ---
+// --- Tipe dari Header ---
 export interface ProfileMenuItem {
   id: string;
   label: string;
@@ -28,15 +28,15 @@ export interface ProfileMenuItem {
 
 export interface HeaderProps {
   title: string;
-  user: User; // Menggunakan tipe User yang sudah ada
+  user: User;
   profileMenuItems: ProfileMenuItem[];
-  notifications: Notification[]; // Menggunakan tipe Notification yang sudah ada
+  notifications: Notification[];
   toggleSidebar: () => void;
   handleLogout: () => void;
 }
 
-// --- Tipe yang sudah ada lainnya ---
-export type ProfileMenuItemsFactory = (setView: (view: string, tab?: string) => void) => ProfileMenuItem[]; // Diperbarui untuk menggunakan ProfileMenuItem
+// --- Tipe dari AppLayout ---
+export type ProfileMenuItemsFactory = (setView: (view: string, tab?: string) => void) => ProfileMenuItem[];
 
 export interface AppLayoutProps {
   user: User;
@@ -46,4 +46,36 @@ export interface AppLayoutProps {
   profileMenuItemsFactory: ProfileMenuItemsFactory;
   views: { [key: string]: React.ComponentType<any> };
   initialView?: string;
+}
+
+// --- Tipe dari KRS ---
+export type KrsStatus = 'belum_kontrak' | 'menunggu_persetujuan' | 'disetujui';
+export type BadgeStatus = 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui';
+
+// --- Tipe dari ProfileView ---
+export interface UserProfile {
+  nama: string;
+  peran: string;
+  idNumber: string; // Bisa NIM atau NIDN
+  idLabel: string; // "NIM" atau "NIDN"
+  status: string;
+  fotoProfil: string;
+  detail?: string; // Prodi untuk mahasiswa, Jabatan untuk dosen
+}
+
+export interface ProfileTab {
+  id: string;
+  label: string;
+  content: React.ReactNode;
+}
+
+// --- Tipe dari BimbinganAkademikView ---
+export interface Mahasiswa {
+    id: number;
+    nama: string;
+    nim: string;
+    prodi: string;
+    semester: number;
+    statusKrs: KrsStatus;
+    avatar: string;
 }
