@@ -30,7 +30,7 @@ const AppLayout: React.FC<AppLayoutProps> = (props) => {
     <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 z-20 bg-black bg-opacity-50 md:hidden"
+          className="fixed inset-0 z-20 bg-black/50 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         ></div>
       )}
