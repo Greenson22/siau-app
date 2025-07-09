@@ -40,7 +40,6 @@ const BrandingPanel = () => {
       {/* 1. Header dengan Logo */}
       <div className="flex items-center gap-4 z-10">
         <Logo />
-        <span className="text-xl font-bold">STTIS Siau</span>
       </div>
 
       {/* 2. Konten Dinamis di Tengah */}
