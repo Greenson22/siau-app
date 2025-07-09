@@ -39,7 +39,7 @@ const BrandingPanel = () => {
     <div className="hidden md:flex flex-col justify-between w-1/2 bg-gradient-to-br from-indigo-900 to-blue-900 p-12 text-white overflow-hidden">
       {/* 1. Header dengan Logo */}
       <div className="flex items-center gap-4 z-10">
-        <Logo />
+        <Logo textColor="text-gray-200"/>
       </div>
 
       {/* 2. Konten Dinamis di Tengah */}
