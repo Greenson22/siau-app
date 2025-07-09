@@ -4,16 +4,32 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-// 1. Tambahkan prop textColor
+// 1. Definisikan tipe untuk posisi teks
+type TextPosition = 'kanan' | 'kiri' | 'atas' | 'bawah';
+
+// 2. Tambahkan prop textPosition dan textColor
 interface LogoProps {
   showText?: boolean;
   textColor?: string; // Contoh: 'text-white', 'text-gray-800'
+  textPosition?: TextPosition;
 }
 
-// 2. Terima prop baru dengan nilai default
-const Logo: React.FC<LogoProps> = ({ showText = true, textColor = 'text-white' }) => {
+// 3. Terima prop baru dengan nilai default
+const Logo: React.FC<LogoProps> = ({ 
+  showText = true, 
+  textColor = 'text-gray-800', 
+  textPosition = 'kanan' 
+}) => {
+  // 4. Tentukan kelas CSS berdasarkan posisi teks
+  const positionClasses = {
+    kanan: 'flex-row',
+    kiri: 'flex-row-reverse',
+    atas: 'flex-col-reverse items-center',
+    bawah: 'flex-col items-center',
+  };
+
   return (
-    <div className="flex items-center gap-3">
+    <div className={`flex ${positionClasses[textPosition]} gap-3`}>
       <motion.div
         className="p-1 rounded-full shadow-sm"
         initial={{ opacity: 0, scale: 0.8 }}
@@ -31,7 +47,6 @@ const Logo: React.FC<LogoProps> = ({ showText = true, textColor = 'text-white' }
       </motion.div>
       {showText && (
         <motion.span 
-          // 3. Gunakan prop textColor di className
           className={`text-xl font-bold ${textColor} overflow-hidden`}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

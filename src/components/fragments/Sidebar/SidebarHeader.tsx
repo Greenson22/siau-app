@@ -20,6 +20,7 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({ portalTitle, onClose }) =
       <Logo 
         showText={true} 
         textColor="text-gray-800"
+        textPosition='bawah'
       />
     </div>
     
