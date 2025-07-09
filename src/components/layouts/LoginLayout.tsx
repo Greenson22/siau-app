@@ -8,7 +8,7 @@ const LoginLayout = () => {
       {/* Bagian Kiri: Panel Branding (Hanya untuk Desktop) */}
       <div className="hidden md:flex flex-col justify-between w-1/2 bg-indigo-800 p-12 text-white">
         <div className="flex items-center gap-4">
-            <Logo variant="light" />
+            <Logo />
             <span className="text-xl font-bold">STTIS Siau</span>
         </div>
         <div>
