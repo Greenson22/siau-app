@@ -21,7 +21,7 @@ const LoginForm = () => {
   return (
     <div className="flex flex-col">
       <div className="md:hidden flex flex-col items-center mb-6">
-        <Logo />
+        <Logo textPosition='bawah'/>
       </div>
 
       <div className="text-center">
