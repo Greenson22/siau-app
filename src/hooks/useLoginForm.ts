@@ -1,3 +1,5 @@
+// src/hooks/useLoginForm.ts
+
 'use client';
 
 import { useState } from 'react';
@@ -10,23 +12,58 @@ export const useLoginForm = () => {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    setTimeout(() => {
-      if (identifier === '20210118' && password === 'password') {
-        router.push('/mahasiswa');
-      } else if (identifier === 'dosen' && password === 'dosen') {
-        router.push('/dosen');
-      } else if (identifier === 'admin' && password === 'admin') {
-        router.push('/administrasi');
-      } else {
-        setError('NIM/NIDN atau Password salah. Silakan coba lagi.');
-        setIsLoading(false);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          // Menggunakan nama field yang umum, sesuaikan jika perlu (misal: 'username' atau 'email')
+          identifier: identifier,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Jika server memberikan pesan error, tampilkan pesan tersebut.
+        // Jika tidak, tampilkan pesan generik.
+        throw new Error(data.message || 'Terjadi kesalahan saat login.');
       }
-    }, 1500);
+
+      // Asumsi server mengembalikan token dan informasi peran (role)
+      const { token, user } = data;
+
+      // Simpan token untuk sesi pengguna (misal: di localStorage)
+      localStorage.setItem('authToken', token);
+
+      // Arahkan pengguna berdasarkan peran (role)
+      switch (user.role) {
+        case 'mahasiswa':
+          router.push('/mahasiswa');
+          break;
+        case 'dosen':
+          router.push('/dosen');
+          break;
+        case 'administrasi':
+          router.push('/administrasi');
+          break;
+        default:
+          throw new Error('Peran pengguna tidak dikenali.');
+      }
+
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return {
