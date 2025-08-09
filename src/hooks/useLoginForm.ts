@@ -18,18 +18,18 @@ export const useLoginForm = () => {
     setError('');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           // Menggunakan nama field yang umum, sesuaikan jika perlu (misal: 'username' atau 'email')
-          identifier: identifier,
+          username: identifier,
           password: password,
         }),
       });
-
+      
       const data = await response.json();
 
       if (!response.ok) {
@@ -37,7 +37,7 @@ export const useLoginForm = () => {
         // Jika tidak, tampilkan pesan generik.
         throw new Error(data.message || 'Terjadi kesalahan saat login.');
       }
-
+      
       // Asumsi server mengembalikan token dan informasi peran (role)
       const { token, user } = data;
 
@@ -46,13 +46,13 @@ export const useLoginForm = () => {
 
       // Arahkan pengguna berdasarkan peran (role)
       switch (user.role) {
-        case 'mahasiswa':
+        case 'Mahasiswa':
           router.push('/mahasiswa');
           break;
-        case 'dosen':
+        case 'Dosen':
           router.push('/dosen');
           break;
-        case 'administrasi':
+        case 'Admin':
           router.push('/administrasi');
           break;
         default:
