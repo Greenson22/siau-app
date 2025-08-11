@@ -1,14 +1,19 @@
 'use client';
 
 import { InfoItem } from '@/components/fragments/ProfileView';
-import { mahasiswa } from '@/lib/data';
+import { UserSquare, BookOpen, Star } from 'lucide-react';
 
-import {
-    UserSquare, BookOpen, Star
-} from 'lucide-react';
+// Definisikan tipe data yang relevan untuk bagian akademik ini.
+// Tipe ini adalah sebagian dari tipe MahasiswaProfile yang lebih besar.
+interface MahasiswaAkademikData {
+    dosenPA: string;
+    semester: number;
+    totalSKS: number;
+    ipk: number;
+}
 
 interface AkademikMahasiswaSectionProps {
-    mahasiswa: typeof mahasiswa;
+    mahasiswa: MahasiswaAkademikData;
 }
 
 const AkademikMahasiswaSection = ({ mahasiswa }: AkademikMahasiswaSectionProps) => (
