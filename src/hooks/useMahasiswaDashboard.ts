@@ -79,9 +79,9 @@ export const useMahasiswaDashboard = () => {
         };
 
         const [khsRes, tagihanRes, pengumumanRes] = await Promise.all([
-          fetch('/api/mahasiswa/me/khs', { headers }),
-          fetch('/api/mahasiswa/me/tagihan', { headers }),
-          fetch('/api/pengumuman', { headers })
+          fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/mahasiswa/me/khs`, { headers }),
+          fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/mahasiswa/me/tagihan`, { headers }),
+          fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/pengumuman`, { headers })
         ]);
 
         if (!khsRes.ok || !tagihanRes.ok || !pengumumanRes.ok) {
