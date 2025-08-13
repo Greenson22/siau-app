@@ -3,15 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { LogOut, ChevronDown } from 'lucide-react';
 import type { User, ProfileMenuItem } from '@/types';
-
-const getInitials = (name: string) => {
-  if (!name) return '??';
-  const names = name.split(' ');
-  if (names.length > 1) {
-    return `${names[0].charAt(0)}${names[1].charAt(0)}`.toUpperCase();
-  }
-  return name.substring(0, 2).toUpperCase();
-};
+import { getInitials } from '@/lib/utils';
 
 interface ProfileDropdownProps {
   user: User;

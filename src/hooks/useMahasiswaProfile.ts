@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { getInitials } from '@/lib/utils'
 
 // --- (Interface DTO) ---
 interface UserProfileDTO {
@@ -86,7 +87,7 @@ export const useMahasiswaProfile = () => {
 
                 // Buat inisial dengan aman, pastikan namaLengkap ada.
                 const inisial = (meData.mahasiswaInfo.namaLengkap && meData.mahasiswaInfo.namaLengkap.length > 0) 
-                    ? meData.mahasiswaInfo.namaLengkap.charAt(0)
+                    ? getInitials(meData.mahasiswaInfo.namaLengkap)
                     : '?';
 
                 const formattedProfile: MahasiswaProfile = {
