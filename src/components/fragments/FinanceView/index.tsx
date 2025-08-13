@@ -4,9 +4,11 @@
 
 import React from 'react';
 import Card from '@/components/elements/Card';
-import { useFinanceData } from '@/hooks/useFinanceData'; // <-- 1. Impor hook baru
+import { useFinanceData } from '@/hooks/useFinanceData';
+// 💡 PERBAIKAN: Mengganti 'Bill' dengan 'Receipt' yang valid
+import { Receipt, History, AlertCircle } from 'lucide-react'; 
 
-// Fungsi helper untuk memformat angka menjadi format Rupiah
+// Helper untuk format Rupiah (tidak berubah)
 const formatRupiah = (angka: number) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -15,7 +17,7 @@ const formatRupiah = (angka: number) => {
   }).format(angka);
 };
 
-// Fungsi helper untuk memformat tanggal
+// Helper untuk format Tanggal (tidak berubah)
 const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('id-ID', {
         day: '2-digit', 
@@ -25,77 +27,111 @@ const formatDate = (dateString: string) => {
 };
 
 const FinanceView = () => {
-  // 2. Panggil hook untuk mendapatkan data dan state
   const { tagihan, pembayaran, isLoading, error } = useFinanceData();
 
-  // 3. Render loading state
   if (isLoading) {
-    return <Card><p className="text-center">Memuat data keuangan...</p></Card>;
+    return (
+      <Card>
+        <div className="text-center py-8">
+          <p className="text-gray-500">Memuat data keuangan Anda...</p>
+        </div>
+      </Card>
+    );
   }
 
-  // 4. Render error state
   if (error) {
-    return <Card><p className="text-center text-red-500">Error: {error}</p></Card>;
+    return (
+      <Card className="bg-red-50 border border-red-200">
+        <div className="flex items-center justify-center text-red-700 p-4">
+          <AlertCircle className="mr-3" />
+          <div>
+            <h4 className="font-bold">Gagal Memuat Data</h4>
+            <p className="text-sm">{error}</p>
+          </div>
+        </div>
+      </Card>
+    );
   }
 
-  // 5. Render UI utama dengan data dari hook
   return (
     <>
-      <h3 className="text-xl font-bold mb-4 text-gray-800">Informasi Keuangan</h3>
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card>
-          <h4 className="font-bold mb-4 text-gray-800">Rincian Tagihan</h4>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-500">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3">Bulan</th>
-                  <th scope="col" className="px-6 py-3">Jumlah</th>
-                  <th scope="col" className="px-6 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tagihan.map((item, index) => (
-                  <tr key={index} className="bg-white border-b">
-                    <td className="px-6 py-4">{item.deskripsiTagihan}</td>
-                    <td className="px-6 py-4">{formatRupiah(item.totalTagihan)}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+      <h3 className="text-2xl font-bold mb-6 text-gray-800">Informasi Keuangan</h3>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        {/* --- KARTU RINCIAN TAGIHAN --- */}
+        <Card className="!p-0 overflow-hidden">
+          <div className="p-6">
+            <div className="flex items-center gap-4 mb-1">
+              <div className="bg-blue-100 p-3 rounded-full">
+                {/* 💡 PERBAIKAN: Menggunakan ikon Receipt */}
+                <Receipt className="text-blue-600" size={24} />
+              </div>
+              <div>
+                <h4 className="font-bold text-lg text-gray-800">Rincian Tagihan</h4>
+                <p className="text-sm text-gray-500">Tagihan UKT dan lainnya yang perlu dibayar.</p>
+              </div>
+            </div>
+          </div>
+          <div className="flow-root">
+            <ul role="list" className="divide-y divide-gray-200">
+              {tagihan.length > 0 ? tagihan.map((item, index) => (
+                <li key={index} className="px-6 py-4 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{item.deskripsiTagihan}</p>
+                      <p className="text-sm text-gray-500 truncate">{formatRupiah(item.totalTagihan)}</p>
+                    </div>
+                    <div className={`inline-flex items-center text-xs font-semibold px-2.5 py-0.5 rounded-full ${
                         item.status === 'LUNAS' 
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-red-100 text-red-800'
                       }`}>
-                        {item.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      {item.status}
+                    </div>
+                  </div>
+                </li>
+              )) : (
+                <li className="px-6 py-8 text-center">
+                  <p className="text-gray-500">Tidak ada tagihan saat ini. Hebat!</p>
+                </li>
+              )}
+            </ul>
           </div>
         </Card>
 
-        <Card>
-          <h4 className="font-bold mb-4 text-gray-800">Riwayat Pembayaran</h4>
-           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-500">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3">Tanggal</th>
-                  <th scope="col" className="px-6 py-3">Keterangan</th>
-                  <th scope="col" className="px-6 py-3">Jumlah</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pembayaran.map((item, index) => (
-                  <tr key={index} className="bg-white border-b">
-                    <td className="px-6 py-4">{formatDate(item.tanggalBayar)}</td>
-                    <td className="px-6 py-4">{item.deskripsiTagihan}</td>
-                    <td className="px-6 py-4">{formatRupiah(item.jumlahBayar)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* --- KARTU RIWAYAT PEMBAYARAN --- */}
+        <Card className="!p-0 overflow-hidden">
+          <div className="p-6">
+            <div className="flex items-center gap-4 mb-1">
+               <div className="bg-green-100 p-3 rounded-full">
+                <History className="text-green-600" size={24} />
+              </div>
+              <div>
+                <h4 className="font-bold text-lg text-gray-800">Riwayat Pembayaran</h4>
+                <p className="text-sm text-gray-500">Semua transaksi yang telah berhasil.</p>
+              </div>
+            </div>
+          </div>
+          <div className="flow-root">
+            <ul role="list" className="divide-y divide-gray-200">
+                {pembayaran.length > 0 ? pembayaran.map((item, index) => (
+                    <li key={index} className="px-6 py-4 hover:bg-gray-50 transition-colors">
+                        <div className="flex items-center space-x-4">
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-gray-900 truncate">{item.deskripsiTagihan}</p>
+                                <p className="text-sm text-gray-500 truncate">{formatDate(item.tanggalBayar)}</p>
+                            </div>
+                            <div className="inline-flex items-center text-sm font-semibold text-gray-900">
+                                {formatRupiah(item.jumlahBayar)}
+                            </div>
+                        </div>
+                    </li>
+                )) : (
+                    <li className="px-6 py-8 text-center">
+                      <p className="text-gray-500">Belum ada riwayat pembayaran.</p>
+                    </li>
+                )}
+            </ul>
           </div>
         </Card>
       </div>
