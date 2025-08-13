@@ -83,13 +83,10 @@ export const useMahasiswaProfile = () => {
                 const meData: UserProfileDTO = await meRes.json();
                 const biodataData: BiodataMahasiswaDTO = await biodataRes.json();
                 const summaryData: MahasiswaSummaryDTO = await summaryRes.json(); // Data summary
-                console.log(meData.mahasiswaInfo)
-                console.log(biodataData)
-                console.log(summaryData)
 
                 // Buat inisial dengan aman, pastikan namaLengkap ada.
-                const inisial = (meData.namaLengkap && meData.namaLengkap.length > 0) 
-                    ? meData.namaLengkap.charAt(0) 
+                const inisial = (meData.mahasiswaInfo.namaLengkap && meData.mahasiswaInfo.namaLengkap.length > 0) 
+                    ? meData.mahasiswaInfo.namaLengkap.charAt(0)
                     : '?';
 
                 const formattedProfile: MahasiswaProfile = {
