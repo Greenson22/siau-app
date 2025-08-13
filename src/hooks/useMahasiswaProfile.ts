@@ -9,6 +9,12 @@ interface UserProfileDTO {
     nim: string;
     status: string;
     mahasiswaInfo: {
+        dosenPA: string;
+        fotoProfil: string;
+        status: string;
+        mahasiswaInfo: any;
+        nim: string;
+        namaLengkap: string;
         namaJurusan: string;
     };
     fotoProfil: string;
@@ -25,6 +31,7 @@ interface BiodataMahasiswaDTO {
 
 // DTO untuk endpoint summary
 interface MahasiswaSummaryDTO {
+    semesterAktif: number;
     totalSks: number;
     ipk: number;
 }
@@ -76,6 +83,8 @@ export const useMahasiswaProfile = () => {
                 const meData: UserProfileDTO = await meRes.json();
                 const biodataData: BiodataMahasiswaDTO = await biodataRes.json();
                 const summaryData: MahasiswaSummaryDTO = await summaryRes.json(); // Data summary
+                console.log(meData.mahasiswaInfo)
+                console.log(biodataData)
                 console.log(summaryData)
 
                 // Buat inisial dengan aman, pastikan namaLengkap ada.
@@ -84,18 +93,18 @@ export const useMahasiswaProfile = () => {
                     : '?';
 
                 const formattedProfile: MahasiswaProfile = {
-                    nama: meData.namaLengkap || 'Nama tidak ditemukan',
-                    nim: meData.nim,
-                    prodi: meData.mahasiswaInfo?.namaJurusan || 'Jurusan tidak ditemukan',
-                    status: meData.status,
-                    fotoProfil: meData.fotoProfil || `https://placehold.co/128x128/FCA5A5/991B1B?text=${inisial}`,
+                    nama: meData.mahasiswaInfo.namaLengkap || 'Nama tidak ditemukan',
+                    nim: meData.mahasiswaInfo.nim,
+                    prodi: meData.mahasiswaInfo.mahasiswaInfo?.namaJurusan || 'Jurusan Belum Ada',
+                    status: meData.mahasiswaInfo.status,
+                    fotoProfil: meData.mahasiswaInfo.fotoProfil || `https://placehold.co/128x128/FCA5A5/991B1B?text=${inisial}`,
                     ttl: `${biodataData.tempatLahir}, ${new Date(biodataData.tanggalLahir).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}`,
                     email: biodataData.emailPribadi,
                     telepon: biodataData.nomorTelepon,
                     alamat: biodataData.alamat,
                     jenisKelamin: biodataData.jenisKelamin, // Menggunakan data jenisKelamin dari API
-                    dosenPA: 'Dr. Glenn Maramis, S.Kom., M.CompSc',
-                    semester: 7,
+                    dosenPA: meData.mahasiswaInfo.dosenPA || 'Perhatian: Dosen Pembimbing Akademik Anda belum ditentukan. Persetujuan Kartu Rencana Studi (KRS) dan proses bimbingan akademik memerlukan seorang Dosen PA. Mohon segera hubungi bagian administrasi jurusan Anda untuk penetapan Dosen PA.',
+                    semester: summaryData.semesterAktif,
                     ipk: summaryData.ipk, // Menggunakan data IPK dari API
                     totalSKS: summaryData.totalSks, // Menggunakan data SKS dari API
                 };
