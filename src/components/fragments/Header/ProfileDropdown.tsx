@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { LogOut, ChevronDown } from 'lucide-react';
 import type { User, ProfileMenuItem } from '@/types';
-import { getInitials } from '@/lib/utils';
+import { getInitials, getAvatarColors } from '@/lib/utils';
 
 interface ProfileDropdownProps {
   user: User;
@@ -30,11 +30,22 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user, profileMenuItem
     setIsOpen(false);
   }
 
+    // Dapatkan inisial dan warna dari fungsi utilitas
+    const initials = getInitials(user.nama);
+    const avatarColors = getAvatarColors(initials);
+
   return (
     <div ref={ref} className="relative">
       <button onClick={() => setIsOpen(prev => !prev)} className="flex items-center gap-3 p-1 rounded-lg hover:bg-gray-100">
-        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg">
-          {getInitials(user.nama)}
+        {/* Avatar dengan warna dinamis */}
+        <div
+          className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg"
+          style={{
+            backgroundColor: `#${avatarColors.bg}`,
+            color: `#${avatarColors.text}`,
+          }}
+        >
+          {initials}
         </div>
         <div className="hidden sm:block text-left">
           <p className="font-semibold text-sm">{user.nama}</p>
