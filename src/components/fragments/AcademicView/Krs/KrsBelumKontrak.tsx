@@ -1,23 +1,28 @@
-// src/components/fragments/KrsBelumKontrak.tsx
+// src/components/fragments/AcademicView/Krs/KrsBelumKontrak.tsx
 import React from 'react';
 import Button from '../../../elements/Button';
 import Card from '../../../elements/Card';
 
+// Tipe data untuk matakuliah, sesuaikan dengan hook
 interface Matkul {
-  kode: string;
-  nama: string;
+  kodeMk: string;
+  namaMatakuliah: string;
   sks: number;
 }
 
+// Tipe data untuk props, termasuk nama paket dan total SKS dari API
 interface KrsBelumKontrakProps {
+  namaPaket: string;
   matakuliah: Matkul[];
+  totalSks: number;
   onAjukan: () => void;
 }
 
-const KrsBelumKontrak: React.FC<KrsBelumKontrakProps> = ({ matakuliah, onAjukan }) => {
+const KrsBelumKontrak: React.FC<KrsBelumKontrakProps> = ({ namaPaket, matakuliah, totalSks, onAjukan }) => {
   return (
     <Card>
-      <h3 className="text-xl font-bold mb-4">Paket Matakuliah Semester 3</h3>
+      {/* Judul paket sekarang dinamis */}
+      <h3 className="text-xl font-bold mb-4">{namaPaket}</h3>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
           <thead className="bg-gray-50">
@@ -29,9 +34,10 @@ const KrsBelumKontrak: React.FC<KrsBelumKontrakProps> = ({ matakuliah, onAjukan 
           </thead>
           <tbody className="divide-y divide-gray-200">
             {matakuliah.map((mk) => (
-              <tr key={mk.kode}>
-                <td className="py-4 px-6 whitespace-nowrap">{mk.kode}</td>
-                <td className="py-4 px-6 whitespace-nowrap font-medium">{mk.nama}</td>
+              // Gunakan kodeMk sebagai key yang lebih unik
+              <tr key={mk.kodeMk}>
+                <td className="py-4 px-6 whitespace-nowrap">{mk.kodeMk}</td>
+                <td className="py-4 px-6 whitespace-nowrap font-medium">{mk.namaMatakuliah}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{mk.sks}</td>
               </tr>
             ))}
@@ -39,8 +45,9 @@ const KrsBelumKontrak: React.FC<KrsBelumKontrakProps> = ({ matakuliah, onAjukan 
            <tfoot className="bg-gray-50">
                 <tr>
                     <td colSpan={2} className="py-3 px-6 text-right font-bold">Total SKS</td>
+                    {/* Total SKS juga diambil dari data dinamis */}
                     <td className="py-3 px-6 text-center font-bold">
-                        {matakuliah.reduce((total, mk) => total + mk.sks, 0)}
+                        {totalSks}
                     </td>
                 </tr>
             </tfoot>
