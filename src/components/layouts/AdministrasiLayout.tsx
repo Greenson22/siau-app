@@ -11,6 +11,7 @@ import PendaftaranView from '@/components/fragments/administrasi/PendaftaranView
 import KeuanganView from '@/components/fragments/administrasi/KeuanganView';
 import AkademikView from '@/components/fragments/administrasi/AkademikView';
 import ProfileView, { KeamananSection } from '@/components/fragments/ProfileView';
+import UserManagementView from '@/components/fragments/administrasi/UserManagementView'; // <-- Impor view baru
 
 // Wrapper untuk ProfileView agar sesuai dengan struktur AppLayout
 const AdministrasiProfileWrapper = ({ initialTab }: { initialTab: string }) => {
@@ -34,6 +35,7 @@ const AdministrasiLayout = () => {
     const views = {
         dashboard: DashboardView,
         pendaftaran: PendaftaranView,
+        pengguna: UserManagementView, // <-- Tambahkan view baru
         keuangan: KeuanganView,
         akademik: AkademikView,
         profil: AdministrasiProfileWrapper,
