@@ -12,6 +12,7 @@ import KeuanganView from '@/components/fragments/administrasi/KeuanganView';
 import AkademikView from '@/components/fragments/administrasi/AkademikView';
 import ProfileView, { KeamananSection } from '@/components/fragments/ProfileView';
 import UserManagementView from '@/components/fragments/administrasi/UserManagementView'; // <-- Impor view baru
+import SystemView from '@/components/fragments/administrasi/SystemView'; // <-- Impor view baru
 
 // Wrapper untuk ProfileView agar sesuai dengan struktur AppLayout
 const AdministrasiProfileWrapper = ({ initialTab }: { initialTab: string }) => {
@@ -38,6 +39,7 @@ const AdministrasiLayout = () => {
         pengguna: UserManagementView, // <-- Tambahkan view baru
         keuangan: KeuanganView,
         akademik: AkademikView,
+        sistem: SystemView, // <-- Tambahkan view baru
         profil: AdministrasiProfileWrapper,
     };
 
