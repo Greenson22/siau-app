@@ -6,6 +6,7 @@ import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Select from '@/components/elements/Select';
 import MahasiswaManagementView from './MahasiswaManagementView';
+import DosenManagementView from './DosenManagementView';
 
 // --- Interface untuk data dari API ---
 interface User {
@@ -203,6 +204,10 @@ const UserManagementView = () => {
             {/* --- Daftar dan Cari Mahasiswa --- */}
             <div className="mt-8">
                 <MahasiswaManagementView />
+            </div>
+
+            <div className="mt-8">
+                <DosenManagementView />
             </div>
         </div>
     );
