@@ -71,6 +71,8 @@ export interface ProfileTab {
 
 // --- Tipe dari BimbinganAkademikView ---
 export interface Mahasiswa {
+    namaLengkap: any;
+    mahasiswaId: any;
     id: number;
     nama: string;
     nim: string;
