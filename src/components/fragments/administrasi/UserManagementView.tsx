@@ -5,6 +5,7 @@ import Card from '@/components/elements/Card';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Select from '@/components/elements/Select';
+import MahasiswaManagementView from './MahasiswaManagementView';
 
 // --- Interface untuk data dari API ---
 interface User {
@@ -198,6 +199,11 @@ const UserManagementView = () => {
                     </table>
                 </div>
             </Card>
+
+            {/* --- Daftar dan Cari Mahasiswa --- */}
+            <div className="mt-8">
+                <MahasiswaManagementView />
+            </div>
         </div>
     );
 };
