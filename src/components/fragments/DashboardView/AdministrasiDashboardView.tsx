@@ -17,7 +17,7 @@ const AdministrasiDashboardView = () => {
             </div>
 
             <Card>
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Statistik Pendaftaran</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-4">Statistik Pendaftaran hore</h3>
                 <p className="text-gray-600">Area untuk menampilkan grafik atau statistik pendaftaran mahasiswa baru. [cite: 104]</p>
             </Card>
         </div>
