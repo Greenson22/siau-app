@@ -1,6 +1,7 @@
 // program/next-js/components/fragments/administrasi/AkademikView.tsx
 import Card from '@/components/elements/Card';
-import JurusanView from './JurusanView'; // Impor komponen baru
+import JurusanView from './JurusanView';
+import MataKuliahView from './MataKuliahView';
 
 const AkademikView = () => (
     <div className="space-y-8">
@@ -15,6 +16,7 @@ const AkademikView = () => (
         
         {/* Tambahkan komponen JurusanView di sini */}
         <JurusanView />
+        <MataKuliahView />
     </div>
 );
 
