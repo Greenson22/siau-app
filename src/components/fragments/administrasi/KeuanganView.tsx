@@ -6,9 +6,14 @@ import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Select from '@/components/elements/Select';
 import { AlertCircle, Plus, Trash2, X } from 'lucide-react';
-import { Mahasiswa } from '@/types';
 
 // Interface untuk data dari API
+interface Mahasiswa {
+    mahasiswaId: number;
+    nim: string;
+    namaLengkap: string;
+}
+
 interface KomponenBiaya {
     komponenId: number;
     namaKomponen: string;
@@ -144,6 +149,14 @@ const KeuanganView = () => {
             setIsSubmitting(false);
         }
     };
+    
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+    };
 
     const totalTagihan = useMemo(() => {
         return rincian.reduce((total, item) => total + (parseFloat(item.jumlah) || 0), 0);
@@ -212,14 +225,34 @@ const KeuanganView = () => {
             {/* Daftar Tagihan */}
             <div className="lg:col-span-2">
                 <Card>
-                    <h3 className="text-xl font-bold text-gray-800 mb-4">Daftar Tagihan Mahasiswa</h3>
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                            {/* ... thead ... */}
-                            <tbody>
-                                {tagihanList.map(t => (
-                                    <tr key={t.tagihanId} className="border-b">
-                                        {/* ... td ... */}
+                    <h3 className="text-xl font-bold text-gray-800 mb-4">Riwayat Tagihan Seluruh Mahasiswa</h3>
+                    <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+                        <table className="w-full text-sm text-left text-gray-500">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0">
+                                <tr>
+                                    <th className="px-6 py-3">Mahasiswa</th>
+                                    <th className="px-6 py-3">Deskripsi</th>
+                                    <th className="px-6 py-3">Jumlah</th>
+                                    <th className="px-6 py-3">Jatuh Tempo</th>
+                                    <th className="px-6 py-3 text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y">
+                                {tagihanList.map(tagihan => (
+                                    <tr key={tagihan.tagihanId} className="bg-white hover:bg-gray-50">
+                                        <td className="px-6 py-4 font-medium text-gray-900">{tagihan.namaMahasiswa}</td>
+                                        <td className="px-6 py-4">{tagihan.deskripsiTagihan}</td>
+                                        <td className="px-6 py-4">Rp {tagihan.totalTagihan.toLocaleString('id-ID')}</td>
+                                        <td className="px-6 py-4">{formatDate(tagihan.tanggalJatuhTempo)}</td>
+                                        <td className="px-6 py-4 text-center">
+                                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                                                tagihan.status === 'LUNAS' 
+                                                    ? 'bg-green-100 text-green-800' 
+                                                    : 'bg-red-100 text-red-800'
+                                            }`}>
+                                                {tagihan.status}
+                                            </span>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -230,5 +263,4 @@ const KeuanganView = () => {
         </div>
     );
 };
-
 export default KeuanganView;
