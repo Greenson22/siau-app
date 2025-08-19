@@ -12,8 +12,18 @@ interface PendingPembayaran {
     tanggalBayar: string;
 }
 
+// Interface baru untuk log aktivitas
+interface ActivityLog {
+    logId: number;
+    username: string;
+    aksi: string;
+    deskripsi: string;
+    timestamp: string;
+}
+
 export interface ActionItemData {
     pembayaranMenungguVerifikasi: PendingPembayaran[];
+    latestActivities: ActivityLog[]; // <-- DITAMBAHKAN
 }
 
 // --- Custom Hook ---

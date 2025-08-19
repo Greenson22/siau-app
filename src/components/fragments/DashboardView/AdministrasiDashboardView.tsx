@@ -1,3 +1,4 @@
+// program/next-js/components/fragments/DashboardView/AdministrasiDashboardView.tsx
 'use client';
 
 import Card from '@/components/elements/Card';
@@ -5,7 +6,8 @@ import InfoCard from '@/components/fragments/InfoCard';
 import { useAdminDashboard } from '@/hooks/useAdminDashboard';
 import { UserPlus, Wallet, GraduationCap, AlertCircle, Hourglass } from 'lucide-react';
 import PendaftaranChart from './PendaftaranChart';
-import ActionItemsView from './ActionItemsView'; // <-- 1. Impor komponen baru
+import ActionItemsView from './ActionItemsView';
+import ActivityLogCard from './ActivityLogCard'; // <-- 1. Impor komponen baru
 
 const AdministrasiDashboardView = () => {
     const { summary, isLoading, error } = useAdminDashboard();
@@ -43,9 +45,10 @@ const AdministrasiDashboardView = () => {
                 <PendaftaranChart />
             </div>
             
-            {/* 2. Tambahkan komponen ActionItemsView di sini */}
-            <div className="lg:col-span-1">
+            {/* Kolom kanan sekarang berisi 2 komponen */}
+            <div className="lg:col-span-1 space-y-8">
                 <ActionItemsView />
+                <ActivityLogCard /> {/* <-- 2. Tambahkan komponen di sini */}
             </div>
         </div>
     );
