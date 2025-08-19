@@ -1,11 +1,11 @@
-// program/next-js/components/fragments/DashboardView/AdministrasiDashboardView.tsx
 'use client';
 
 import Card from '@/components/elements/Card';
 import InfoCard from '@/components/fragments/InfoCard';
 import { useAdminDashboard } from '@/hooks/useAdminDashboard';
 import { UserPlus, Wallet, GraduationCap, AlertCircle, Hourglass } from 'lucide-react';
-import PendaftaranChart from './PendaftaranChart'; // <-- Impor komponen chart baru
+import PendaftaranChart from './PendaftaranChart';
+import ActionItemsView from './ActionItemsView'; // <-- 1. Impor komponen baru
 
 const AdministrasiDashboardView = () => {
     const { summary, isLoading, error } = useAdminDashboard();
@@ -28,19 +28,25 @@ const AdministrasiDashboardView = () => {
     }
 
     return (
-        <div className="space-y-8">
-            <div>
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Ringkasan Sistem</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <InfoCard icon={UserPlus} label="Pendaftar Baru" value={summary?.pendaftarBaru ?? 0} colorClass={{bg: 'bg-blue-100', text: 'text-blue-600'}} />
-                    <InfoCard icon={GraduationCap} label="Total Mahasiswa Aktif" value={summary?.totalMahasiswaAktif ?? 0} colorClass={{bg: 'bg-green-100', text: 'text-green-600'}} />
-                    <InfoCard icon={Wallet} label="Total Dosen" value={summary?.totalDosen ?? 0} colorClass={{bg: 'bg-yellow-100', text: 'text-yellow-600'}} />
-                    <InfoCard icon={Hourglass} label="Pembayaran Pending" value={summary?.pembayaranMenungguVerifikasi ?? 0} colorClass={{bg: 'bg-red-100', text: 'text-red-600'}} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+                <div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-4">Ringkasan Sistem</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <InfoCard icon={UserPlus} label="Pendaftar Baru" value={summary?.pendaftarBaru ?? 0} colorClass={{bg: 'bg-blue-100', text: 'text-blue-600'}} />
+                        <InfoCard icon={GraduationCap} label="Total Mahasiswa Aktif" value={summary?.totalMahasiswaAktif ?? 0} colorClass={{bg: 'bg-green-100', text: 'text-green-600'}} />
+                        <InfoCard icon={Wallet} label="Total Dosen" value={summary?.totalDosen ?? 0} colorClass={{bg: 'bg-yellow-100', text: 'text-yellow-600'}} />
+                        <InfoCard icon={Hourglass} label="Pembayaran Pending" value={summary?.pembayaranMenungguVerifikasi ?? 0} colorClass={{bg: 'bg-red-100', text: 'text-red-600'}} />
+                    </div>
                 </div>
-            </div>
 
-            {/* Tambahkan komponen PendaftaranChart di sini */}
-            <PendaftaranChart />
+                <PendaftaranChart />
+            </div>
+            
+            {/* 2. Tambahkan komponen ActionItemsView di sini */}
+            <div className="lg:col-span-1">
+                <ActionItemsView />
+            </div>
         </div>
     );
 };
