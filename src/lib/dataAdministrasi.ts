@@ -1,6 +1,6 @@
 import { LayoutDashboard, UserPlus, Wallet, GraduationCap, User, Users, Megaphone } from 'lucide-react';
 
-export type NavLinkIdAdministrasi = 'dashboard' | 'pendaftaran' | 'keuangan' | 'akademik' | 'profil';
+export type NavLinkIdAdministrasi = 'dashboard' | 'keuangan' | 'akademik' | 'profil';
 
 export const administrasi = {
   nama: 'Admin Sistem',
@@ -12,7 +12,6 @@ export const administrasi = {
 
 export const navLinksAdministrasi = [
   { id: 'dashboard', title: 'Dashboard', icon: LayoutDashboard },
-  { id: 'pendaftaran', title: 'Manajemen Pendaftaran', icon: UserPlus },
   { id: 'pengguna', title: 'Manajemen Pengguna', icon: Users }, // <-- Tambahkan baris ini
   { id: 'keuangan', title: 'Manajemen Keuangan', icon: Wallet },
   { id: 'akademik', title: 'Manajemen Akademik', icon: GraduationCap },

@@ -7,7 +7,6 @@ import AppLayout from './AppLayout';
 // Impor data & view khusus administrasi
 import { navLinksAdministrasi, administrasi, notifications } from '@/lib/dataAdministrasi';
 import DashboardView from '@/components/fragments/DashboardView/AdministrasiDashboardView';
-import PendaftaranView from '@/components/fragments/administrasi/PendaftaranView';
 import KeuanganView from '@/components/fragments/administrasi/KeuanganView';
 import AkademikView from '@/components/fragments/administrasi/AkademikView';
 import ProfileView, { KeamananSection } from '@/components/fragments/ProfileView';
@@ -35,7 +34,6 @@ const AdministrasiProfileWrapper = ({ initialTab }: { initialTab: string }) => {
 const AdministrasiLayout = () => {
     const views = {
         dashboard: DashboardView,
-        pendaftaran: PendaftaranView,
         pengguna: UserManagementView, // <-- Tambahkan view baru
         keuangan: KeuanganView,
         akademik: AkademikView,
