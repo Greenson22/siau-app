@@ -5,6 +5,7 @@ import Card from "@/components/elements/Card";
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import { LucideIcon } from 'lucide-react';
+import { useChangePassword } from '@/hooks/useChangePassword'; // Impor hook baru
 
 // --- Tipe Data Generik ---
 interface UserProfile {
@@ -102,20 +103,56 @@ const TabButton = ({ id, label, activeTab, setActiveTab }: { id: string, label: 
 
 // Komponen untuk Bagian Keamanan (Ganti Password)
 export const KeamananSection = () => {
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        alert('Fitur ganti password sedang dalam pengembangan.');
-    };
+    // Gunakan hook untuk mendapatkan state dan handler
+    const {
+        oldPassword, setOldPassword,
+        newPassword, setNewPassword,
+        confirmPassword, setConfirmPassword,
+        isLoading,
+        error,
+        success,
+        handleSubmit,
+    } = useChangePassword();
 
     return (
         <div className="max-w-md">
             <h4 className="font-bold text-lg text-gray-700 mb-4">Ganti Password</h4>
+            {/* Gunakan handler handleSubmit dari hook */}
             <form onSubmit={handleSubmit} className="space-y-4">
-                <Input id="password-lama" label="Password Lama" type="password" required />
-                <Input id="password-baru" label="Password Baru" type="password" required />
-                <Input id="konfirmasi-password" label="Konfirmasi Password Baru" type="password" required />
+                <Input 
+                    id="password-lama" 
+                    label="Password Lama" 
+                    type="password" 
+                    value={oldPassword} 
+                    onChange={(e) => setOldPassword(e.target.value)} 
+                    required 
+                />
+                <Input 
+                    id="password-baru" 
+                    label="Password Baru" 
+                    type="password" 
+                    value={newPassword} 
+                    onChange={(e) => setNewPassword(e.target.value)} 
+                    required 
+                />
+                <Input 
+                    id="konfirmasi-password" 
+                    label="Konfirmasi Password Baru" 
+                    type="password" 
+                    value={confirmPassword} 
+                    onChange={(e) => setConfirmPassword(e.target.value)} 
+                    required 
+                />
+                
+                {/* Tampilkan pesan error atau sukses */}
+                {error && <p className="text-sm text-red-600">{error}</p>}
+                {success && <p className="text-sm text-green-600">{success}</p>}
+
                 <div className="pt-2">
-                    <Button type="submit">Simpan Perubahan</Button>
+                    {/* Hubungkan isLoading ke Button */}
+                    <Button type="submit" isLoading={isLoading}>
+                        Simpan Perubahan
+                    </Button>
                 </div>
             </form>
         </div>
