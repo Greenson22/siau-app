@@ -3,14 +3,15 @@
 
 import { useMahasiswaProfile } from '@/hooks/useMahasiswaProfile';
 import AppLayout from './AppLayout';
-import { navLinks } from '@/lib/dataMahasiswa'; // Data notifikasi statis tidak diimpor lagi
+import { navLinks } from '@/lib/dataMahasiswa';
 import ProfileView, { KeamananSection } from '@/components/fragments/ProfileView';
 import BiodataMahasiswaSection from '../fragments/ProfileView/BiodataMahasiswaSection';
 import AkademikMahasiswaSection from '../fragments/ProfileView/AkademikMahasiswaSection';
 import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
-import { User, KeyRound } from 'lucide-react';
-
+// --- 1. GANTI Impor ke AcademicView (router) ---
+import AcademicView from '@/components/fragments/AcademicView';
+import { User, KeyRound, GraduationCap } from 'lucide-react';
 
 const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: string }) => {
     const { mahasiswa, isLoading, error } = useMahasiswaProfile();
@@ -37,6 +38,7 @@ const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: string }) => {
     return <ProfileView user={userProfileData} tabs={profileTabs} initialTab={initialTab} />;
 };
 
+
 const MahasiswaLayout = () => {
     const { mahasiswa, isLoading, error } = useMahasiswaProfile();
     
@@ -48,12 +50,15 @@ const MahasiswaLayout = () => {
 
     const views = {
         dashboard: () => <DashboardView role="mahasiswa" />,
+        // --- 2. PERBAIKI cara memanggil AcademicView ---
+        akademik: () => <AcademicView role="mahasiswa" />,
         profil: MahasiswaProfileWrapper,
         keuangan: FinanceView,
     };
 
     const profileMenuItemsFactory = (handleSetView: (view: string, tab?: string) => void) => [
         { id: 'profil', label: 'Profil Saya', icon: User, action: () => handleSetView('profil', 'biodata') },
+        { id: 'krs', label: 'Lihat KRS', icon: GraduationCap, action: () => handleSetView('akademik', 'krs') },
         { id: 'keamanan', label: 'Ganti Password', icon: KeyRound, action: () => handleSetView('profil', 'keamanan') }
     ];
 
@@ -62,7 +67,6 @@ const MahasiswaLayout = () => {
             user={userDisplayData}
             navLinks={navLinks}
             portalTitle="Portal Mahasiswa"
-            // Prop 'notifications' tidak lagi diteruskan dari sini
             profileMenuItemsFactory={profileMenuItemsFactory}
             views={views}
         />

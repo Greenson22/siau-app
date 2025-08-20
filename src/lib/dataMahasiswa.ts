@@ -2,6 +2,7 @@ import { LayoutDashboard, UserCircle, Landmark, GraduationCap } from 'lucide-rea
 
 export const navLinks = [
     { id: 'dashboard', title: 'Dashboard', icon: LayoutDashboard },
+    { id: 'akademik', title: 'Akademik', icon: GraduationCap },
     { id: 'profil', title: 'Profil Mahasiswa', icon: UserCircle },
     { id: 'keuangan', title: 'Keuangan', icon: Landmark },
 ];

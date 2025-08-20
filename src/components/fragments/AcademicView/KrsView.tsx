@@ -1,4 +1,4 @@
-// src/components/fragments/AcademicView/KrsView.tsx
+// program/next-js/components/fragments/AcademicView/KrsView.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -8,8 +8,8 @@ import Modal from '@/components/fragments/Modal/Modal';
 import KrsBelumKontrak from '@/components/fragments/AcademicView/Krs/KrsBelumKontrak';
 import KrsMenungguPersetujuan from '@/components/fragments/AcademicView/Krs/KrsMenungguPersetujuan';
 import KrsDisetujui from '@/components/fragments/AcademicView/Krs/KrsDisetujui';
-import { useKrsPackage } from '@/hooks/useKrsPackage'; // <-- 1. Impor hook baru
-import { AlertCircle } from 'lucide-react'; // <-- 2. Impor ikon untuk pesan error
+import { useKrsPackage } from '@/hooks/useKrsPackage';
+import { AlertCircle } from 'lucide-react';
 import Card from '@/components/elements/Card';
 
 type KrsStatus = 'belum_kontrak' | 'menunggu_persetujuan' | 'disetujui';
@@ -19,7 +19,6 @@ export default function KrsView() {
   const [status, setStatus] = useState<KrsStatus>('belum_kontrak');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // 3. Panggil hook untuk mendapatkan data, status loading, dan error
   const { krsPackage, isLoading, error } = useKrsPackage();
 
   const handleBukaModalKonfirmasi = () => {
@@ -29,29 +28,28 @@ export default function KrsView() {
   const handleAjukanKrs = () => {
     setIsModalOpen(false);
     setStatus('menunggu_persetujuan');
+    // Simulasi proses persetujuan oleh Dosen PA
     setTimeout(() => {
       setStatus('disetujui');
-    }, 5000);
+    }, 5000); // Status akan menjadi 'Disetujui' setelah 5 detik
   };
 
-  const handleReset = () => {
+  const handleResetSimulasi = () => {
     setStatus('belum_kontrak');
   };
 
   const renderContent = () => {
-    // 4. Handle state loading
     if (isLoading) {
-      return <Card><p className="text-center text-gray-500 py-8">Memuat paket mata kuliah...</p></Card>;
+      return <Card><p className="text-center text-gray-500 py-8">Memuat paket mata kuliah untuk semester Anda...</p></Card>;
     }
 
-    // 5. Handle state error
     if (error) {
       return (
         <Card className="bg-red-50 border-red-200 text-red-700">
           <div className="flex items-center gap-4 p-4">
             <AlertCircle />
             <div>
-              <h4 className="font-bold">Gagal Memuat Data</h4>
+              <h4 className="font-bold">Gagal Memuat Data KRS</h4>
               <p className="text-sm">{error}</p>
             </div>
           </div>
@@ -66,7 +64,6 @@ export default function KrsView() {
         return <KrsDisetujui />;
       case 'belum_kontrak':
       default:
-        // 6. Jika data ada, teruskan ke komponen KrsBelumKontrak
         if (krsPackage) {
           return <KrsBelumKontrak 
                     namaPaket={krsPackage.namaPaket}
@@ -75,7 +72,7 @@ export default function KrsView() {
                     onAjukan={handleBukaModalKonfirmasi} 
                  />;
         }
-        return null; // Atau tampilkan pesan jika paket tidak ada
+        return <Card><p className="text-center text-gray-500 py-8">Paket KRS untuk semester ini tidak ditemukan.</p></Card>;
     }
   };
 
@@ -97,13 +94,14 @@ export default function KrsView() {
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleAjukanKrs}
         title="Konfirmasi Pengajuan KRS"
+        variant="info" // Menggunakan varian 'info' untuk tampilan yang lebih sesuai
       >
         Apakah Anda yakin ingin mengontrak semua mata kuliah yang ada di paket ini?
         Setelah diajukan, Anda tidak dapat mengubahnya hingga Dosen PA memberikan persetujuan.
       </Modal>
 
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-semibold text-gray-800">Status KRS Anda:</h3>
+        <h3 className="text-lg font-semibold text-gray-800">Status KRS Semester Ini:</h3>
         <StatusBadge status={getStatusText()} />
       </div>
       
@@ -112,8 +110,8 @@ export default function KrsView() {
       </div>
 
       <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
-        <p className="text-sm text-yellow-700 mb-2">Ini adalah area demonstrasi untuk simulasi.</p>
-        <Button onClick={handleReset} variant="secondary">
+        <p className="text-sm text-yellow-700 mb-2">Ini adalah halaman simulasi untuk demonstrasi alur KRS.</p>
+        <Button onClick={handleResetSimulasi} variant="secondary">
           Reset Simulasi
         </Button>
       </div>
