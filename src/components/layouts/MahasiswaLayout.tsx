@@ -1,11 +1,9 @@
-// src/components/layouts/MahasiswaLayout.tsx
-
+// program/next-js/components/layouts/MahasiswaLayout.tsx
 'use client';
 
-import { useAppLayout } from '@/hooks/useAppLayout'; // Hook untuk layout
-import { useMahasiswaProfile } from '@/hooks/useMahasiswaProfile'; // Hook baru kita
+import { useMahasiswaProfile } from '@/hooks/useMahasiswaProfile';
 import AppLayout from './AppLayout';
-import { navLinks, notifications } from '@/lib/dataMahasiswa'; // Data statis lain
+import { navLinks } from '@/lib/dataMahasiswa'; // Data notifikasi statis tidak diimpor lagi
 import ProfileView, { KeamananSection } from '@/components/fragments/ProfileView';
 import BiodataMahasiswaSection from '../fragments/ProfileView/BiodataMahasiswaSection';
 import AkademikMahasiswaSection from '../fragments/ProfileView/AkademikMahasiswaSection';
@@ -16,16 +14,14 @@ import { User, KeyRound } from 'lucide-react';
 
 
 const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: string }) => {
-    // Gunakan hook untuk mendapatkan data profil
     const { mahasiswa, isLoading, error } = useMahasiswaProfile();
 
     if (isLoading) return <p>Memuat profil...</p>;
     if (error || !mahasiswa) return <p>Gagal memuat profil: {error}</p>;
 
-    // Data untuk header ProfileView
     const userProfileData = {
         nama: mahasiswa.nama,
-        peran: 'Mahasiswa', // Bisa diambil dari data user jika ada
+        peran: 'Mahasiswa',
         idNumber: mahasiswa.nim,
         idLabel: "NIM",
         status: mahasiswa.status,
@@ -33,7 +29,6 @@ const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: string }) => {
         detail: mahasiswa.prodi,
     };
 
-    // Tabs untuk ProfileView
     const profileTabs = [
         { id: 'biodata', label: 'Biodata', content: <BiodataMahasiswaSection mahasiswa={mahasiswa}/> },
         { id: 'akademik', label: 'Info Akademik', content: <AkademikMahasiswaSection mahasiswa={mahasiswa}/> },
@@ -43,14 +38,9 @@ const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: string }) => {
     return <ProfileView user={userProfileData} tabs={profileTabs} initialTab={initialTab} />;
 };
 
-
-// Komponen MahasiswaLayout utama (sebagian besar tidak berubah)
 const MahasiswaLayout = () => {
-    const { mahasiswa, isLoading, error } = useMahasiswaProfile(); // Ambil data di level atas
+    const { mahasiswa, isLoading, error } = useMahasiswaProfile();
     
-    // ... (sisa logika AppLayout)
-    
-    // Data user untuk header & sidebar, bisa ditampilkan sebagian saat loading
     const userDisplayData = {
         nama: isLoading ? 'Memuat...' : mahasiswa?.nama || 'User',
         peran: 'Mahasiswa',
@@ -74,7 +64,7 @@ const MahasiswaLayout = () => {
             user={userDisplayData}
             navLinks={navLinks}
             portalTitle="Portal Mahasiswa"
-            notifications={notifications}
+            // Prop 'notifications' tidak lagi diteruskan dari sini
             profileMenuItemsFactory={profileMenuItemsFactory}
             views={views}
         />

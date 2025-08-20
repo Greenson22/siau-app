@@ -1,7 +1,9 @@
+// program/next-js/components/layouts/AppLayout.tsx
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAppLayout } from '@/hooks/useAppLayout'; // Impor hook
+import { useAppLayout } from '@/hooks/useAppLayout';
+import { useNotifications } from '@/hooks/useNotifications'; // <-- Impor hook notifikasi
 import type { AppLayoutProps } from '@/types';
 
 import Sidebar from '@/components/fragments/Sidebar';
@@ -9,7 +11,7 @@ import Header from '@/components/fragments/Header';
 import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
 import { pageTransitionVariants, pageTransition } from '@/lib/animations';
 
-const AppLayout: React.FC<AppLayoutProps> = (props) => {
+const AppLayout: React.FC<Omit<AppLayoutProps, 'notifications'>> = (props) => {
   const {
     isSidebarOpen,
     isLogoutModalOpen,
@@ -25,6 +27,8 @@ const AppLayout: React.FC<AppLayoutProps> = (props) => {
     toggleSidebar,
     setIsSidebarOpen,
   } = useAppLayout(props);
+
+  const { notifications } = useNotifications(); // <-- Gunakan hook untuk mendapatkan notifikasi
 
   return (
     <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
@@ -50,7 +54,7 @@ const AppLayout: React.FC<AppLayoutProps> = (props) => {
           title={pageTitle}
           user={props.user}
           profileMenuItems={profileMenuItems}
-          notifications={props.notifications}
+          notifications={notifications} // <-- Teruskan notifikasi dinamis
           toggleSidebar={toggleSidebar}
           handleLogout={handleRequestLogout}
         />
