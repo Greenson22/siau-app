@@ -4,7 +4,6 @@ export const navLinks = [
     { id: 'dashboard', title: 'Dashboard', icon: LayoutDashboard },
     { id: 'profil', title: 'Profil Mahasiswa', icon: UserCircle },
     { id: 'keuangan', title: 'Keuangan', icon: Landmark },
-    { id: 'akademik', title: 'Akademik', icon: GraduationCap },
 ];
 
 // Helper untuk membuat inisial dari nama

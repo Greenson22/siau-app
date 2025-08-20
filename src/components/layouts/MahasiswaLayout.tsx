@@ -9,7 +9,6 @@ import BiodataMahasiswaSection from '../fragments/ProfileView/BiodataMahasiswaSe
 import AkademikMahasiswaSection from '../fragments/ProfileView/AkademikMahasiswaSection';
 import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
-import AcademicView from '@/components/fragments/AcademicView';
 import { User, KeyRound } from 'lucide-react';
 
 
@@ -51,7 +50,6 @@ const MahasiswaLayout = () => {
         dashboard: () => <DashboardView role="mahasiswa" />,
         profil: MahasiswaProfileWrapper,
         keuangan: FinanceView,
-        akademik: () => <AcademicView role="mahasiswa" />,
     };
 
     const profileMenuItemsFactory = (handleSetView: (view: string, tab?: string) => void) => [
