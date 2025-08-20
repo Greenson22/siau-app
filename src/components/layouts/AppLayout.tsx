@@ -3,8 +3,9 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppLayout } from '@/hooks/useAppLayout';
-import { useNotifications } from '@/hooks/useNotifications'; // <-- Impor hook notifikasi
+import { useNotificationStore } from '@/store/useNotificationStore'; // <-- Impor dari store
 import type { AppLayoutProps } from '@/types';
+import { useEffect } from 'react';
 
 import Sidebar from '@/components/fragments/Sidebar';
 import Header from '@/components/fragments/Header';
@@ -28,7 +29,13 @@ const AppLayout: React.FC<Omit<AppLayoutProps, 'notifications'>> = (props) => {
     setIsSidebarOpen,
   } = useAppLayout(props);
 
-  const { notifications } = useNotifications(); // <-- Gunakan hook untuk mendapatkan notifikasi
+  // Ambil state dan fungsi dari wadah global
+  const { notifications, fetchNotifications } = useNotificationStore();
+
+  // Panggil fetchNotifications sekali saat komponen pertama kali dimuat
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   return (
     <div className="relative min-h-screen md:flex bg-gray-100 font-sans">
@@ -54,7 +61,7 @@ const AppLayout: React.FC<Omit<AppLayoutProps, 'notifications'>> = (props) => {
           title={pageTitle}
           user={props.user}
           profileMenuItems={profileMenuItems}
-          notifications={notifications} // <-- Teruskan notifikasi dinamis
+          notifications={notifications} // <-- Teruskan notifikasi dari store
           toggleSidebar={toggleSidebar}
           handleLogout={handleRequestLogout}
         />

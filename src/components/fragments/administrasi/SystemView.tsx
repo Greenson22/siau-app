@@ -1,9 +1,11 @@
+// program/next-js/components/fragments/administrasi/SystemView.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import Card from '@/components/elements/Card';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
+import { useNotificationStore } from '@/store/useNotificationStore';
 
 // --- Interface untuk data dari API ---
 interface Pengumuman {
@@ -34,6 +36,9 @@ const SystemView = () => {
     const [isi, setIsi] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
+
+    // Ambil fungsi fetchNotifications dari store
+    const { fetchNotifications } = useNotificationStore();
 
     // --- Efek untuk mengambil data awal ---
     useEffect(() => {
@@ -92,8 +97,11 @@ const SystemView = () => {
                 throw new Error(newData.message || 'Gagal mengirim pengumuman.');
             }
             
-            // Tambahkan pengumuman baru ke daftar paling atas
+            // Tambahkan pengumuman baru ke daftar paling atas (untuk UI lokal)
             setPengumumanList(prev => [newData, ...prev]);
+
+            // PANGGIL FUNGSI UNTUK MENGAMBIL ULANG NOTIFIKASI SECARA GLOBAL
+            await fetchNotifications();
 
             // Reset form
             setJudul('');
