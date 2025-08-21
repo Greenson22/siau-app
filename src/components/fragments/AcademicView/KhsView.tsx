@@ -2,14 +2,14 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { useKhs } from '@/hooks/useKhs'; 
-import { KhsDTO } from '@/types'; 
+import { useKhs } from '@/hooks/useKhs';
+import { useAkademikSummary } from '@/hooks/useAkademikSummary'; // <-- 1. Impor hook untuk ringkasan
+import { KhsDTO } from '@/types';
 import Card from '@/components/elements/Card';
 import Select from '@/components/elements/Select';
 import { GraduationCap, BookCopy, TrendingUp, CheckCircle, AlertCircle } from 'lucide-react';
-import { ringkasanAkademik } from '@/lib/data';
 
-// Tipe untuk props InfoCardKHS
+// Tipe untuk props InfoCardKHS (tidak berubah)
 interface InfoCardKHSProps {
   icon: React.ElementType;
   label: string;
@@ -31,9 +31,12 @@ const InfoCardKHS: React.FC<InfoCardKHSProps> = ({ icon: Icon, label, value, col
 
 
 const KhsView = () => {
-  const { khs, isLoading, error } = useKhs();
+  // 2. Panggil kedua hook untuk mendapatkan semua data yang diperlukan
+  const { khs, isLoading: isLoadingKhs, error: errorKhs } = useKhs();
+  const { summary, isLoading: isLoadingSummary, error: errorSummary } = useAkademikSummary();
   const [selectedSemester, setSelectedSemester] = useState('');
 
+  // Logika untuk mengelompokkan KHS per semester (tidak berubah)
   const groupedKhsData = useMemo(() => {
     if (!khs) return {};
     return khs.reduce((acc, item) => {
@@ -46,6 +49,7 @@ const KhsView = () => {
     }, {} as Record<string, KhsDTO[]>);
   }, [khs]);
 
+  // Logika untuk menghitung IPS (tidak berubah)
   const calculateIps = (mataKuliah: KhsDTO[]) => {
       const gradeToWeight = (grade: string): number => {
         const gradeMap: { [key: string]: number } = {
@@ -84,12 +88,15 @@ const KhsView = () => {
     setSelectedSemester(e.target.value);
   };
 
-  if (isLoading) {
+  // 3. Tampilkan status loading jika salah satu data masih dimuat
+  if (isLoadingKhs || isLoadingSummary) {
     return <Card><p>Memuat data Kartu Hasil Studi...</p></Card>;
   }
 
-  if (error) {
-    return <Card className="bg-red-50 border-red-200 text-red-700 p-4 flex items-center gap-3"><AlertCircle /><p>Error: {error}</p></Card>;
+  // 4. Tampilkan error jika salah satu panggilan API gagal
+  const anyError = errorKhs || errorSummary;
+  if (anyError) {
+    return <Card className="bg-red-50 border-red-200 text-red-700 p-4 flex items-center gap-3"><AlertCircle /><p>Error: {anyError}</p></Card>;
   }
   
   if (!selectedKhsData) {
@@ -99,9 +106,9 @@ const KhsView = () => {
   const ips = calculateIps(selectedKhsData);
   const sksSemester = selectedKhsData.reduce((sum, item) => sum + item.sks, 0);
   
-  // -- PERBAIKAN DI SINI --
-  // Menggunakan nama properti yang benar 'sksDitempuh' dan memberinya alias 'totalSks'
-  const { ipk, sksDitempuh: totalSks } = ringkasanAkademik;
+  // 5. Ambil data IPK dan total SKS dari hook summary, bukan dari data statis
+  const ipk = summary?.ipk?.toFixed(2) || '0.00';
+  const totalSks = summary?.totalSks?.toString() || '0';
 
 
   return (
