@@ -3,18 +3,21 @@
 
 import React, { useMemo } from 'react';
 import { useKhs } from '@/hooks/useKhs';
-import { useAkademikSummary } from '@/hooks/useAkademikSummary'; // <-- 1. Impor hook summary
+import { useAkademikSummary } from '@/hooks/useAkademikSummary';
 import { KhsDTO } from '@/types';
 import Card from '@/components/elements/Card';
 import Button from '@/components/elements/Button';
 import { Download, AlertCircle } from 'lucide-react';
 
 const TranscriptView = () => {
-  // 2. Gunakan kedua hook untuk mengambil data
   const { khs, isLoading: isLoadingKhs, error: errorKhs } = useKhs();
   const { summary, isLoading: isLoadingSummary, error: errorSummary } = useAkademikSummary();
 
-  // 3. Kelompokkan data KHS berdasarkan semester (logika sama seperti KhsView)
+  // Fungsi untuk membuka halaman cetak di tab baru
+  const handlePrint = () => {
+    window.open('/mahasiswa/transkrip/cetak', '_blank');
+  };
+
   const groupedSemesters = useMemo(() => {
     if (!khs) return {};
     return khs.reduce((acc, item) => {
@@ -27,9 +30,8 @@ const TranscriptView = () => {
     }, {} as Record<string, KhsDTO[]>);
   }, [khs]);
 
-  const sortedSemesterKeys = Object.keys(groupedSemesters).sort(); // Urutkan semester
+  const sortedSemesterKeys = Object.keys(groupedSemesters).sort();
 
-  // Kalkulasi IPS per semester
   const calculateIps = (mataKuliah: KhsDTO[]) => {
       const gradeToWeight = (grade: string): number => {
         const gradeMap: { [key: string]: number } = {'A':4.0,'A-':3.7,'B+':3.3,'B':3.0,'B-':2.7,'C+':2.3,'C':2.0,'D':1.0,'E':0.0};
@@ -44,7 +46,6 @@ const TranscriptView = () => {
       return total.totalSks > 0 ? (total.totalQualityPoints / total.totalSks).toFixed(2) : '0.00';
   }
 
-  // Render state
   if (isLoadingKhs || isLoadingSummary) {
     return <Card><p>Memuat data transkrip nilai...</p></Card>;
   }
@@ -61,7 +62,8 @@ const TranscriptView = () => {
           <h4 className="font-bold text-lg text-gray-800">Transkrip Nilai Akademik</h4>
           <p className="text-sm text-gray-500">Rekapitulasi nilai semua semester.</p>
         </div>
-        <Button>
+        {/* Tombol sekarang memanggil fungsi handlePrint */}
+        <Button onClick={handlePrint}>
           <Download size={16} className="mr-2" />
           Unduh Transkrip
         </Button>
