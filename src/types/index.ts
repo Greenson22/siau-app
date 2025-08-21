@@ -111,3 +111,14 @@ export interface SidebarVariants {
     };
   };
 }
+
+// --- Tipe DTO dari Backend ---
+export interface KhsDTO {
+  kodeMataKuliah: string;
+  namaMataKuliah: string;
+  sks: number;
+  tahunAkademik: string;
+  semester: string;
+  nilaiAkhir: number;
+  nilaiHuruf: string;
+}

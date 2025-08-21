@@ -1,12 +1,13 @@
-// src/components/fragments/AcademicView/KhsView.tsx
-
+// program/next-js/components/fragments/AcademicView/KhsView.tsx
 'use client';
 
-import React, { useState, useMemo } from 'react';
-import { dataAkademik } from '@/lib/data';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useKhs } from '@/hooks/useKhs'; 
+import { KhsDTO } from '@/types'; 
 import Card from '@/components/elements/Card';
 import Select from '@/components/elements/Select';
-import { GraduationCap, BookCopy, TrendingUp, CheckCircle } from 'lucide-react';
+import { GraduationCap, BookCopy, TrendingUp, CheckCircle, AlertCircle } from 'lucide-react';
+import { ringkasanAkademik } from '@/lib/data';
 
 // Tipe untuk props InfoCardKHS
 interface InfoCardKHSProps {
@@ -30,29 +31,78 @@ const InfoCardKHS: React.FC<InfoCardKHSProps> = ({ icon: Icon, label, value, col
 
 
 const KhsView = () => {
-  const { khs } = dataAkademik;
+  const { khs, isLoading, error } = useKhs();
+  const [selectedSemester, setSelectedSemester] = useState('');
 
-  // State untuk menyimpan semester yang dipilih, default ke semester terbaru
-  const [selectedSemester, setSelectedSemester] = useState(khs[0].semester);
+  const groupedKhsData = useMemo(() => {
+    if (!khs) return {};
+    return khs.reduce((acc, item) => {
+      const semesterKey = `${item.semester} ${item.tahunAkademik}`;
+      if (!acc[semesterKey]) {
+        acc[semesterKey] = [];
+      }
+      acc[semesterKey].push(item);
+      return acc;
+    }, {} as Record<string, KhsDTO[]>);
+  }, [khs]);
 
-  // Cari data KHS yang sesuai dengan semester yang dipilih
-  const selectedKhsData = useMemo(() => {
-    return khs.find((k) => k.semester === selectedSemester);
-  }, [khs, selectedSemester]);
-  
-  // Opsi untuk dropdown semester
-  const semesterOptions = khs.map(k => ({
-    value: k.semester,
-    label: `Semester ${k.semester}`
-  }));
+  const calculateIps = (mataKuliah: KhsDTO[]) => {
+      const gradeToWeight = (grade: string): number => {
+        const gradeMap: { [key: string]: number } = {
+          'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0,
+          'B-': 2.7, 'C+': 2.3, 'C': 2.0, 'D': 1.0, 'E': 0.0
+        };
+        return gradeMap[grade.toUpperCase()] || 0;
+      };
+
+      const total = mataKuliah.reduce((acc, item) => {
+          const weight = gradeToWeight(item.nilaiHuruf);
+          acc.totalQualityPoints += item.sks * weight;
+          acc.totalSks += item.sks;
+          return acc;
+      }, { totalQualityPoints: 0, totalSks: 0 });
+
+      return total.totalSks > 0 ? (total.totalQualityPoints / total.totalSks).toFixed(2) : '0.00';
+  }
+
+  const semesterOptions = useMemo(() => {
+    return Object.keys(groupedKhsData).map(semester => ({
+      value: semester,
+      label: `Semester ${semester}`
+    }));
+  }, [groupedKhsData]);
+
+  useEffect(() => {
+    if (semesterOptions.length > 0 && !selectedSemester) {
+      setSelectedSemester(semesterOptions[0].value);
+    }
+  }, [semesterOptions, selectedSemester]);
+
+  const selectedKhsData = groupedKhsData[selectedSemester];
 
   const handleSemesterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSemester(e.target.value);
   };
 
-  if (!selectedKhsData) {
-    return <Card><p>Data untuk semester yang dipilih tidak ditemukan.</p></Card>;
+  if (isLoading) {
+    return <Card><p>Memuat data Kartu Hasil Studi...</p></Card>;
   }
+
+  if (error) {
+    return <Card className="bg-red-50 border-red-200 text-red-700 p-4 flex items-center gap-3"><AlertCircle /><p>Error: {error}</p></Card>;
+  }
+  
+  if (!selectedKhsData) {
+    return <Card><p>Tidak ada data KHS yang tersedia untuk ditampilkan.</p></Card>;
+  }
+
+  const ips = calculateIps(selectedKhsData);
+  const sksSemester = selectedKhsData.reduce((sum, item) => sum + item.sks, 0);
+  
+  // -- PERBAIKAN DI SINI --
+  // Menggunakan nama properti yang benar 'sksDitempuh' dan memberinya alias 'totalSks'
+  const { ipk, sksDitempuh: totalSks } = ringkasanAkademik;
+
 
   return (
     <div className="space-y-6">
@@ -70,23 +120,22 @@ const KhsView = () => {
         />
       </div>
 
-      {/* Kartu Informasi IPS, SKS, IPK */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <InfoCardKHS icon={TrendingUp} label="Indeks Prestasi Semester (IPS)" value={selectedKhsData.ips} color="bg-blue-500" />
-        <InfoCardKHS icon={BookCopy} label="SKS Semester" value={selectedKhsData.sks} color="bg-green-500" />
-        <InfoCardKHS icon={GraduationCap} label="IP Kumulatif (IPK)" value={selectedKhsData.ipk} color="bg-indigo-500" />
-        <InfoCardKHS icon={CheckCircle} label="Total SKS" value={selectedKhsData.totalSks} color="bg-yellow-500" />
+        <InfoCardKHS icon={TrendingUp} label="Indeks Prestasi Semester (IPS)" value={ips} color="bg-blue-500" />
+        <InfoCardKHS icon={BookCopy} label="SKS Semester" value={sksSemester.toString()} color="bg-green-500" />
+        <InfoCardKHS icon={GraduationCap} label="IP Kumulatif (IPK)" value={ipk} color="bg-indigo-500" />
+        <InfoCardKHS icon={CheckCircle} label="Total SKS" value={totalSks} color="bg-yellow-500" />
       </div>
 
-      {/* Tabel Mata Kuliah */}
       <Card>
         <h5 className="font-bold text-lg mb-4 text-gray-800">
-          Daftar Nilai - Semester {selectedKhsData.semester}
+          Daftar Nilai - Semester {selectedSemester}
         </h5>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
+                <th scope="col" className="px-6 py-3">Kode MK</th>
                 <th scope="col" className="px-6 py-3">Mata Kuliah</th>
                 <th scope="col" className="px-6 py-3 text-center">SKS</th>
                 <th scope="col" className="px-6 py-3 text-center">Nilai Huruf</th>
@@ -94,12 +143,13 @@ const KhsView = () => {
               </tr>
             </thead>
             <tbody>
-              {selectedKhsData.mataKuliah.map((mk, index) => (
+              {selectedKhsData.map((mk, index) => (
                 <tr key={index} className="bg-white border-b hover:bg-gray-50">
-                  <td className="px-6 py-4 font-medium text-gray-900">{mk.nama}</td>
+                  <td className="px-6 py-4 font-mono">{mk.kodeMataKuliah}</td>
+                  <td className="px-6 py-4 font-medium text-gray-900">{mk.namaMataKuliah}</td>
                   <td className="px-6 py-4 text-center">{mk.sks}</td>
                   <td className="px-6 py-4 text-center font-semibold text-gray-800">{mk.nilaiHuruf}</td>
-                  <td className="px-6 py-4 text-center">{mk.nilaiAngka.toFixed(2)}</td>
+                  <td className="px-6 py-4 text-center">{mk.nilaiAkhir.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
