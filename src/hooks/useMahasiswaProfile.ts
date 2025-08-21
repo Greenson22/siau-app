@@ -1,19 +1,18 @@
-// src/hooks/useMahasiswaProfile.ts
+// program/next-js/hooks/useMahasiswaProfile.ts
 'use client';
 
 import { useState, useEffect } from 'react';
 import { getInitials } from '@/lib/utils'
 
-// --- (Interface DTO) ---
 interface UserProfileDTO {
     namaLengkap: string;
     nim: string;
     status: string;
     mahasiswaInfo: {
-        dosenPA: string;
+        dosenPA: string; // <-- Properti ini sebenarnya tidak ada, yang benar adalah namaDosenPA
+        namaDosenPA: string; // <-- Yang benar adalah ini
         fotoProfil: string;
         status: string;
-        mahasiswaInfo: any;
         nim: string;
         namaLengkap: string;
         namaJurusan: string;
@@ -27,10 +26,9 @@ interface BiodataMahasiswaDTO {
     emailPribadi: string;
     nomorTelepon: string;
     alamat: string;
-    jenisKelamin: string; // Penambahan jenisKelamin
+    jenisKelamin: string;
 }
 
-// DTO untuk endpoint summary
 interface MahasiswaSummaryDTO {
     semesterAktif: number;
     totalSks: number;
@@ -52,7 +50,7 @@ interface MahasiswaProfile {
     semester: number;
     ipk: number;
     totalSKS: number;
-    jenisKelamin: string; // Penambahan jenisKelamin
+    jenisKelamin: string;
 }
 
 
@@ -70,7 +68,6 @@ export const useMahasiswaProfile = () => {
 
                 const headers = { 'Authorization': `Bearer ${token}` };
 
-                // Menambahkan fetch untuk endpoint summary
                 const [meRes, biodataRes, summaryRes] = await Promise.all([
                     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/me`, { headers }),
                     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/mahasiswa/me/biodata`, { headers }),
@@ -83,9 +80,8 @@ export const useMahasiswaProfile = () => {
 
                 const meData: UserProfileDTO = await meRes.json();
                 const biodataData: BiodataMahasiswaDTO = await biodataRes.json();
-                const summaryData: MahasiswaSummaryDTO = await summaryRes.json(); // Data summary
+                const summaryData: MahasiswaSummaryDTO = await summaryRes.json();
 
-                // Buat inisial dengan aman, pastikan namaLengkap ada.
                 const inisial = (meData.mahasiswaInfo.namaLengkap && meData.mahasiswaInfo.namaLengkap.length > 0) 
                     ? getInitials(meData.mahasiswaInfo.namaLengkap)
                     : '?';
@@ -93,18 +89,20 @@ export const useMahasiswaProfile = () => {
                 const formattedProfile: MahasiswaProfile = {
                     nama: meData.mahasiswaInfo.namaLengkap || 'Nama tidak ditemukan',
                     nim: meData.mahasiswaInfo.nim,
-                    prodi: meData.mahasiswaInfo.mahasiswaInfo?.namaJurusan || 'Jurusan Belum Ada',
+                    prodi: meData.mahasiswaInfo.namaJurusan || 'Jurusan Belum Ada',
                     status: meData.mahasiswaInfo.status,
                     fotoProfil: meData.mahasiswaInfo.fotoProfil || `https://placehold.co/128x128/FCA5A5/991B1B?text=${inisial}`,
                     ttl: `${biodataData.tempatLahir}, ${new Date(biodataData.tanggalLahir).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}`,
                     email: biodataData.emailPribadi,
                     telepon: biodataData.nomorTelepon,
                     alamat: biodataData.alamat,
-                    jenisKelamin: biodataData.jenisKelamin, // Menggunakan data jenisKelamin dari API
-                    dosenPA: meData.mahasiswaInfo.dosenPA || 'Perhatian: Dosen Pembimbing Akademik Anda belum ditentukan. Persetujuan Kartu Rencana Studi (KRS) dan proses bimbingan akademik memerlukan seorang Dosen PA. Mohon segera hubungi bagian administrasi jurusan Anda untuk penetapan Dosen PA.',
+                    jenisKelamin: biodataData.jenisKelamin,
+                    // --- PERBAIKAN DI SINI ---
+                    // Menggunakan field 'namaDosenPA' dari respons API
+                    dosenPA: meData.mahasiswaInfo.namaDosenPA,
                     semester: summaryData.semesterAktif,
-                    ipk: summaryData.ipk, // Menggunakan data IPK dari API
-                    totalSKS: summaryData.totalSks, // Menggunakan data SKS dari API
+                    ipk: summaryData.ipk,
+                    totalSKS: summaryData.totalSks,
                 };
 
                 setMahasiswa(formattedProfile);
