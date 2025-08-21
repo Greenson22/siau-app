@@ -1,46 +1,43 @@
 // program/next-js/components/fragments/AcademicView/KrsView.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import StatusBadge from '@/components/elements/StatusBadge';
-import Button from '@/components/elements/Button';
 import Modal from '@/components/fragments/Modal/Modal';
 import KrsBelumKontrak from '@/components/fragments/AcademicView/Krs/KrsBelumKontrak';
 import KrsMenungguPersetujuan from '@/components/fragments/AcademicView/Krs/KrsMenungguPersetujuan';
 import KrsDisetujui from '@/components/fragments/AcademicView/Krs/KrsDisetujui';
 import { useKrsPackage } from '@/hooks/useKrsPackage';
-import { useKrs } from '@/hooks/useKrs'; // <-- 1. Impor hook baru
+import { useKrs } from '@/hooks/useKrs';
 import { AlertCircle } from 'lucide-react';
 import Card from '@/components/elements/Card';
 
-type KrsStatus = 'belum_kontrak' | 'menunggu_persetujuan' | 'disetujui' | 'ditolak';
 type BadgeStatus = 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui' | 'Ditolak';
 
-export default function KrsView() {
+// Terima prop onSwitchTab
+interface KrsViewProps {
+  onSwitchTab: (tabId: string) => void;
+}
+
+export default function KrsView({ onSwitchTab }: KrsViewProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // -- MENGGUNAKAN HOOK BARU --
   const { krsPackage, isLoading: isLoadingPackage, error: errorPackage } = useKrsPackage();
-  const { krsData, status, isLoading: isLoadingKrs, error: errorKrs, ajukanKrs } = useKrs(); // <-- 2. Gunakan hook krs
+  const { krsData, status, isLoading: isLoadingKrs, error: errorKrs, ajukanKrs } = useKrs();
 
   const handleBukaModalKonfirmasi = () => {
     setIsModalOpen(true);
   };
 
-  // -- FUNGSI UNTUK MENGAJUKAN KRS KE BACKEND --
   const handleAjukanKrs = async () => {
     if (!krsPackage) return;
     
-    // Ambil daftar kelas dari paket
     const kelasUntukDiajukan = krsPackage.detailPaket.map(mk => mk.kodeMk);
-
-    // Panggil fungsi ajukanKrs dari hook
     await ajukanKrs(kelasUntukDiajukan);
 
     setIsModalOpen(false);
   };
 
-  // -- RENDER KONTEN BERDASARKAN STATUS DARI BACKEND --
   const renderContent = () => {
     if (isLoadingPackage || isLoadingKrs) {
       return <Card><p className="text-center text-gray-500 py-8">Memuat data Kartu Rencana Studi Anda...</p></Card>;
@@ -65,8 +62,8 @@ export default function KrsView() {
       case 'menunggu_persetujuan':
         return <KrsMenungguPersetujuan krsDiajukan={krsData} />;
       case 'disetujui':
-        return <KrsDisetujui krsDisetujui={krsData}/>;
-      // TODO: Tambahkan view untuk status DITOLAK jika diperlukan
+        // Teruskan prop ke KrsDisetujui
+        return <KrsDisetujui krsDisetujui={krsData} onNavigateToJadwal={() => onSwitchTab('jadwal')} />;
       case 'belum_kontrak':
       default:
         if (krsPackage) {

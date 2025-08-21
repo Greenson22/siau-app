@@ -1,10 +1,9 @@
+// program/next-js/components/fragments/AcademicView/MahasiswaAcademicView.tsx
 'use client';
 
 import React, { useState, useMemo } from 'react';
 import Card from '@/components/elements/Card';
 import TabButton from '@/components/elements/TabButton';
-
-// Impor view yang spesifik untuk mahasiswa
 import KrsView from './KrsView';
 import KhsView from './KhsView';
 import TranscriptView from './TranscriptView';
@@ -13,13 +12,17 @@ import ScheduleView from './ScheduleView';
 const MahasiswaAcademicView = () => {
   const [activeTab, setActiveTab] = useState('krs');
 
-  // Definisikan tab-tab khusus untuk mahasiswa
+  // Fungsi baru untuk mengubah tab, akan diteruskan sebagai prop
+  const handleSwitchTab = (tabId: string) => {
+    setActiveTab(tabId);
+  };
+
   const studentTabs = useMemo(() => [
-    { id: 'krs', label: 'KRS', component: KrsView },
-    { id: 'khs', label: 'KHS', component: KhsView },
-    { id: 'transkrip', label: 'Transkrip Nilai', component: TranscriptView },
-    { id: 'jadwal', label: 'Jadwal Kuliah', component: ScheduleView },
-  ], []);
+    { id: 'krs', label: 'KRS', component: <KrsView onSwitchTab={handleSwitchTab} /> },
+    { id: 'khs', label: 'KHS', component: <KhsView /> },
+    { id: 'transkrip', label: 'Transkrip Nilai', component: <TranscriptView /> },
+    { id: 'jadwal', label: 'Jadwal Kuliah', component: <ScheduleView /> },
+  ], []); // Dependensi kosong karena handleSwitchTab stabil
 
   const ActiveComponent = studentTabs.find(tab => tab.id === activeTab)?.component;
 
@@ -42,7 +45,7 @@ const MahasiswaAcademicView = () => {
       </div>
 
       <div className="mt-6">
-        {ActiveComponent && <ActiveComponent />}
+        {ActiveComponent}
       </div>
     </Card>
   );

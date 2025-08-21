@@ -1,4 +1,6 @@
 // program/next-js/components/fragments/AcademicView/Krs/KrsDisetujui.tsx
+'use client';
+
 import React from 'react';
 import Button from '../../../elements/Button';
 import Card from '../../../elements/Card';
@@ -7,10 +9,16 @@ import type { KrsData } from '@/hooks/useKrs';
 
 interface Props {
   krsDisetujui: KrsData[];
+  onNavigateToJadwal: () => void; // Prop untuk navigasi
 }
 
-const KrsDisetujui: React.FC<Props> = ({ krsDisetujui }) => {
+const KrsDisetujui: React.FC<Props> = ({ krsDisetujui, onNavigateToJadwal }) => {
   const totalSks = krsDisetujui.reduce((sum, item) => sum + item.sks, 0);
+
+  // Fungsi untuk menangani pencetakan
+  const handlePrint = () => {
+    window.print();
+  };
 
   return (
     <Card>
@@ -23,18 +31,19 @@ const KrsDisetujui: React.FC<Props> = ({ krsDisetujui }) => {
           Selamat! KRS Anda telah divalidasi oleh Dosen PA. Anda sekarang resmi terdaftar pada mata kuliah semester ini.
         </p>
         <div className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4">
-            <Button variant="primary">
+            {/* Tombol Lihat Jadwal Kuliah sekarang berfungsi */}
+            <Button variant="primary" onClick={onNavigateToJadwal}>
                 <Calendar size={16} className="mr-2"/>
                 Lihat Jadwal Kuliah
             </Button>
-            <Button variant="secondary">
+            {/* Tombol Cetak sekarang berfungsi */}
+            <Button variant="secondary" onClick={handlePrint}>
                 <Printer size={16} className="mr-2"/>
                 Cetak Bukti KRS
             </Button>
         </div>
       </div>
-      {/* Tampilkan daftar mata kuliah yang disetujui */}
-        <div className="p-6">
+      <div className="p-6">
         <h4 className="font-semibold mb-4 text-center">Mata Kuliah yang Disetujui</h4>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-gray-500">
