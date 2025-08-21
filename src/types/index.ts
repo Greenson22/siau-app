@@ -122,3 +122,11 @@ export interface KhsDTO {
   nilaiAkhir: number;
   nilaiHuruf: string;
 }
+
+export interface JadwalDTO {
+  hari: string;
+  jadwal: string; // contoh: "08:00 - 10:30"
+  namaMataKuliah: string;
+  dosenPengajar: string;
+  ruangan: string;
+}
