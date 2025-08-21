@@ -1,7 +1,7 @@
 // program/next-js/components/fragments/AcademicView/KrsView.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StatusBadge from '@/components/elements/StatusBadge';
 import Button from '@/components/elements/Button';
 import Modal from '@/components/fragments/Modal/Modal';
@@ -9,48 +9,52 @@ import KrsBelumKontrak from '@/components/fragments/AcademicView/Krs/KrsBelumKon
 import KrsMenungguPersetujuan from '@/components/fragments/AcademicView/Krs/KrsMenungguPersetujuan';
 import KrsDisetujui from '@/components/fragments/AcademicView/Krs/KrsDisetujui';
 import { useKrsPackage } from '@/hooks/useKrsPackage';
+import { useKrs } from '@/hooks/useKrs'; // <-- 1. Impor hook baru
 import { AlertCircle } from 'lucide-react';
 import Card from '@/components/elements/Card';
 
-type KrsStatus = 'belum_kontrak' | 'menunggu_persetujuan' | 'disetujui';
-type BadgeStatus = 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui';
+type KrsStatus = 'belum_kontrak' | 'menunggu_persetujuan' | 'disetujui' | 'ditolak';
+type BadgeStatus = 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui' | 'Ditolak';
 
 export default function KrsView() {
-  const [status, setStatus] = useState<KrsStatus>('belum_kontrak');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  const { krsPackage, isLoading, error } = useKrsPackage();
+  // -- MENGGUNAKAN HOOK BARU --
+  const { krsPackage, isLoading: isLoadingPackage, error: errorPackage } = useKrsPackage();
+  const { krsData, status, isLoading: isLoadingKrs, error: errorKrs, ajukanKrs } = useKrs(); // <-- 2. Gunakan hook krs
 
   const handleBukaModalKonfirmasi = () => {
     setIsModalOpen(true);
   };
 
-  const handleAjukanKrs = () => {
+  // -- FUNGSI UNTUK MENGAJUKAN KRS KE BACKEND --
+  const handleAjukanKrs = async () => {
+    if (!krsPackage) return;
+    
+    // Ambil daftar kelas dari paket
+    const kelasUntukDiajukan = krsPackage.detailPaket.map(mk => mk.kodeMk);
+
+    // Panggil fungsi ajukanKrs dari hook
+    await ajukanKrs(kelasUntukDiajukan);
+
     setIsModalOpen(false);
-    setStatus('menunggu_persetujuan');
-    // Simulasi proses persetujuan oleh Dosen PA
-    setTimeout(() => {
-      setStatus('disetujui');
-    }, 5000); // Status akan menjadi 'Disetujui' setelah 5 detik
   };
 
-  const handleResetSimulasi = () => {
-    setStatus('belum_kontrak');
-  };
-
+  // -- RENDER KONTEN BERDASARKAN STATUS DARI BACKEND --
   const renderContent = () => {
-    if (isLoading) {
-      return <Card><p className="text-center text-gray-500 py-8">Memuat paket mata kuliah untuk semester Anda...</p></Card>;
+    if (isLoadingPackage || isLoadingKrs) {
+      return <Card><p className="text-center text-gray-500 py-8">Memuat data Kartu Rencana Studi Anda...</p></Card>;
     }
 
-    if (error) {
+    const anyError = errorPackage || errorKrs;
+    if (anyError) {
       return (
         <Card className="bg-red-50 border-red-200 text-red-700">
           <div className="flex items-center gap-4 p-4">
             <AlertCircle />
             <div>
               <h4 className="font-bold">Gagal Memuat Data KRS</h4>
-              <p className="text-sm">{error}</p>
+              <p className="text-sm">{anyError}</p>
             </div>
           </div>
         </Card>
@@ -59,9 +63,10 @@ export default function KrsView() {
 
     switch (status) {
       case 'menunggu_persetujuan':
-        return <KrsMenungguPersetujuan />;
+        return <KrsMenungguPersetujuan krsDiajukan={krsData} />;
       case 'disetujui':
-        return <KrsDisetujui />;
+        return <KrsDisetujui krsDisetujui={krsData}/>;
+      // TODO: Tambahkan view untuk status DITOLAK jika diperlukan
       case 'belum_kontrak':
       default:
         if (krsPackage) {
@@ -82,6 +87,8 @@ export default function KrsView() {
         return 'Menunggu Persetujuan';
       case 'disetujui':
         return 'Disetujui';
+      case 'ditolak':
+        return 'Ditolak';
       default:
         return 'Belum Kontrak';
     }
@@ -94,7 +101,7 @@ export default function KrsView() {
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleAjukanKrs}
         title="Konfirmasi Pengajuan KRS"
-        variant="info" // Menggunakan varian 'info' untuk tampilan yang lebih sesuai
+        variant="info"
       >
         Apakah Anda yakin ingin mengontrak semua mata kuliah yang ada di paket ini?
         Setelah diajukan, Anda tidak dapat mengubahnya hingga Dosen PA memberikan persetujuan.
@@ -107,13 +114,6 @@ export default function KrsView() {
       
       <div className="mb-8">
         {renderContent()}
-      </div>
-
-      <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
-        <p className="text-sm text-yellow-700 mb-2">Ini adalah halaman simulasi untuk demonstrasi alur KRS.</p>
-        <Button onClick={handleResetSimulasi} variant="secondary">
-          Reset Simulasi
-        </Button>
       </div>
     </>
   );

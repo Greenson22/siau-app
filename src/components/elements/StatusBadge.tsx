@@ -1,8 +1,8 @@
-// src/components/elements/StatusBadge.tsx
+// program/next-js/components/elements/StatusBadge.tsx
 import React from 'react';
 
 interface StatusBadgeProps {
-  status: 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui';
+  status: 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui' | 'Ditolak';
 }
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
@@ -10,12 +10,14 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
     'Belum Kontrak': 'bg-yellow-100 text-yellow-800',
     'Menunggu Persetujuan': 'bg-blue-100 text-blue-800 animate-pulse',
     'Disetujui': 'bg-green-100 text-green-800',
+    'Ditolak': 'bg-red-100 text-red-800',
   };
 
   const statusIcons = {
     'Belum Kontrak': '📢',
     'Menunggu Persetujuan': '⏳',
     'Disetujui': '✅',
+    'Ditolak': '❌',
   }
 
   return (

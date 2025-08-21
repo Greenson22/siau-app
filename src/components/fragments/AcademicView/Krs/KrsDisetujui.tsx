@@ -3,11 +3,18 @@ import React from 'react';
 import Button from '../../../elements/Button';
 import Card from '../../../elements/Card';
 import { CheckCircle2, Calendar, Printer } from 'lucide-react';
+import type { KrsData } from '@/hooks/useKrs';
 
-const KrsDisetujui: React.FC = () => {
+interface Props {
+  krsDisetujui: KrsData[];
+}
+
+const KrsDisetujui: React.FC<Props> = ({ krsDisetujui }) => {
+  const totalSks = krsDisetujui.reduce((sum, item) => sum + item.sks, 0);
+
   return (
-    <Card className="text-center bg-green-50 border border-green-200">
-      <div className="p-8">
+    <Card>
+      <div className="text-center bg-green-50 border border-green-200 p-8 rounded-t-lg">
         <div className="flex justify-center mb-4">
           <CheckCircle2 className="h-16 w-16 text-green-600"/>
         </div>
@@ -24,6 +31,38 @@ const KrsDisetujui: React.FC = () => {
                 <Printer size={16} className="mr-2"/>
                 Cetak Bukti KRS
             </Button>
+        </div>
+      </div>
+      {/* Tampilkan daftar mata kuliah yang disetujui */}
+        <div className="p-6">
+        <h4 className="font-semibold mb-4 text-center">Mata Kuliah yang Disetujui</h4>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left text-gray-500">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th className="px-6 py-3">Kode MK</th>
+                <th className="px-6 py-3">Nama Matakuliah</th>
+                <th className="px-6 py-3">Dosen</th>
+                <th className="px-6 py-3 text-center">SKS</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {krsDisetujui.map(krs => (
+                <tr key={krs.krsId}>
+                  <td className="px-6 py-4 font-mono">{krs.kodeMataKuliah}</td>
+                  <td className="px-6 py-4 font-medium">{krs.namaMataKuliah}</td>
+                  <td className="px-6 py-4 text-gray-600">{krs.namaDosen}</td>
+                  <td className="px-6 py-4 text-center">{krs.sks}</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot className="bg-gray-100 font-bold">
+              <tr>
+                <td colSpan={3} className="px-6 py-3 text-right">Total SKS</td>
+                <td className="px-6 py-3 text-center text-indigo-600">{totalSks}</td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
     </Card>
