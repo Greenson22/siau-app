@@ -9,15 +9,15 @@ import type { KrsData } from '@/hooks/useKrs';
 
 interface Props {
   krsDisetujui: KrsData[];
-  onNavigateToJadwal: () => void; // Prop untuk navigasi
+  onNavigateToJadwal: () => void;
 }
 
 const KrsDisetujui: React.FC<Props> = ({ krsDisetujui, onNavigateToJadwal }) => {
   const totalSks = krsDisetujui.reduce((sum, item) => sum + item.sks, 0);
 
-  // Fungsi untuk menangani pencetakan
+  // Fungsi untuk membuka halaman cetak di tab baru
   const handlePrint = () => {
-    window.print();
+    window.open('/mahasiswa/krs/cetak', '_blank');
   };
 
   return (
@@ -31,12 +31,11 @@ const KrsDisetujui: React.FC<Props> = ({ krsDisetujui, onNavigateToJadwal }) => 
           Selamat! KRS Anda telah divalidasi oleh Dosen PA. Anda sekarang resmi terdaftar pada mata kuliah semester ini.
         </p>
         <div className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4">
-            {/* Tombol Lihat Jadwal Kuliah sekarang berfungsi */}
             <Button variant="primary" onClick={onNavigateToJadwal}>
                 <Calendar size={16} className="mr-2"/>
                 Lihat Jadwal Kuliah
             </Button>
-            {/* Tombol Cetak sekarang berfungsi */}
+            {/* Tombol Cetak sekarang membuka halaman baru */}
             <Button variant="secondary" onClick={handlePrint}>
                 <Printer size={16} className="mr-2"/>
                 Cetak Bukti KRS
