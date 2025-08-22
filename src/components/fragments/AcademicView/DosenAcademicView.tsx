@@ -1,11 +1,13 @@
+// program/next-js/components/fragments/AcademicView/DosenAcademicView.tsx
 'use client';
 
 import React, { useState, useMemo } from 'react';
 import Card from '@/components/elements/Card';
 import TabButton from '@/components/elements/TabButton';
 import Button from '@/components/elements/Button';
-import { jadwalMengajar, kelasUntukNilai } from '@/lib/dataDosen';
-import { Clock, MapPin, Users } from 'lucide-react';
+import { useDosenJadwal } from '@/hooks/useDosenJadwal'; // <-- Import hook baru
+import { kelasUntukNilai } from '@/lib/dataDosen';
+import { Clock, MapPin, Users, AlertCircle } from 'lucide-react';
 
 // Sub-komponen untuk mengisi nilai
 const IsiNilaiView = () => (
@@ -44,35 +46,51 @@ const IsiNilaiView = () => (
 
 // Sub-komponen untuk melihat jadwal mengajar
 const JadwalMengajarView = () => {
+    const { jadwal, isLoading, error } = useDosenJadwal(); // <-- Panggil hook
+    
+    // Urutan hari yang diinginkan
     const daysOrder = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
-    const groupedSchedule = jadwalMengajar.reduce((acc, item) => {
-        const day = item.hari;
-        if (!acc[day]) acc[day] = [];
-        acc[day].push(item);
-        return acc;
-    }, {} as Record<string, typeof jadwalMengajar>);
+
+    // Mengelompokkan jadwal berdasarkan hari
+    const groupedSchedule = useMemo(() => {
+        if (!jadwal) return {};
+        return jadwal.reduce((acc, item) => {
+            const day = item.jadwal.split(',')[0]; // Ambil hari dari string jadwal
+            if (!acc[day]) acc[day] = [];
+            acc[day].push(item);
+            return acc;
+        }, {} as Record<string, typeof jadwal>);
+    }, [jadwal]);
+
+    const sortedDays = daysOrder.filter(day => groupedSchedule[day]);
+
+    if (isLoading) return <p>Memuat jadwal mengajar...</p>;
+    if (error) return <p className="text-red-500">Error: {error}</p>;
 
     return (
         <div>
             <h4 className="font-bold text-lg text-gray-800 mb-4">Jadwal Mengajar</h4>
             <div className="space-y-6">
-                {daysOrder.filter(day => groupedSchedule[day]).map(day => (
-                    <div key={day}>
-                        <h5 className="font-semibold text-indigo-600 mb-3 border-b pb-2">{day}</h5>
-                        <div className="space-y-4">
-                            {groupedSchedule[day].map((item, index) => (
-                                <div key={index} className="p-4 rounded-lg border bg-gray-50">
-                                    <p className="font-bold text-md text-gray-900 mb-3">{item.nama}</p>
-                                    <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
-                                        <div className="flex items-center gap-2"><Clock size={14} /><span>{item.waktu}</span></div>
-                                        <div className="flex items-center gap-2"><Users size={14} /><span>{item.prodi}</span></div>
-                                        <div className="flex items-center gap-2"><MapPin size={14} /><span>Ruang: {item.ruang}</span></div>
+                {sortedDays.length > 0 ? (
+                    sortedDays.map(day => (
+                        <div key={day}>
+                            <h5 className="font-semibold text-indigo-600 mb-3 border-b pb-2">{day}</h5>
+                            <div className="space-y-4">
+                                {groupedSchedule[day].map((item, index) => (
+                                    <div key={index} className="p-4 rounded-lg border bg-gray-50">
+                                        <p className="font-bold text-md text-gray-900 mb-3">{item.namaMataKuliah}</p>
+                                        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
+                                            <div className="flex items-center gap-2"><Clock size={14} /><span>{item.jadwal.split(', ')[1]}</span></div>
+                                            <div className="flex items-center gap-2"><MapPin size={14} /><span>Ruang: {item.ruangan}</span></div>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                ) : (
+                    <p className="text-center text-gray-500 mt-8">Tidak ada jadwal mengajar yang ditemukan.</p>
+                )}
             </div>
         </div>
     );
@@ -81,7 +99,6 @@ const JadwalMengajarView = () => {
 const DosenAcademicView = () => {
     const [activeTab, setActiveTab] = useState('nilai');
 
-    // Definisikan tab-tab khusus untuk dosen
     const lecturerTabs = useMemo(() => [
         { id: 'nilai', label: 'Input Nilai', component: IsiNilaiView },
         { id: 'jadwal_mengajar', label: 'Jadwal Mengajar', component: JadwalMengajarView },
