@@ -2,22 +2,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getInitials } from '@/lib/utils'
 
 interface UserProfileDTO {
-    namaLengkap: string;
-    nim: string;
-    status: string;
+    // ... (Definisi DTO lainnya tidak perlu diubah)
     mahasiswaInfo: {
-        dosenPA: string; // <-- Properti ini sebenarnya tidak ada, yang benar adalah namaDosenPA
-        namaDosenPA: string; // <-- Yang benar adalah ini
-        fotoProfil: string;
-        status: string;
-        nim: string;
         namaLengkap: string;
+        nim: string;
+        status: string;
         namaJurusan: string;
+        namaDosenPA: string;
+        fotoProfil: string; // <-- Properti ini sekarang datang dari backend
     };
-    fotoProfil: string;
 }
 
 interface BiodataMahasiswaDTO {
@@ -35,7 +30,6 @@ interface MahasiswaSummaryDTO {
     ipk: number;
 }
 
-
 interface MahasiswaProfile {
     nama: string;
     prodi: string;
@@ -52,7 +46,6 @@ interface MahasiswaProfile {
     totalSKS: number;
     jenisKelamin: string;
 }
-
 
 export const useMahasiswaProfile = () => {
     const [mahasiswa, setMahasiswa] = useState<MahasiswaProfile | null>(null);
@@ -78,27 +71,21 @@ export const useMahasiswaProfile = () => {
                     throw new Error('Gagal mengambil data profil');
                 }
 
-                const meData: UserProfileDTO = await meRes.json();
+                const meData = await meRes.json();
                 const biodataData: BiodataMahasiswaDTO = await biodataRes.json();
                 const summaryData: MahasiswaSummaryDTO = await summaryRes.json();
-
-                const inisial = (meData.mahasiswaInfo.namaLengkap && meData.mahasiswaInfo.namaLengkap.length > 0) 
-                    ? getInitials(meData.mahasiswaInfo.namaLengkap)
-                    : '?';
-
+                
                 const formattedProfile: MahasiswaProfile = {
                     nama: meData.mahasiswaInfo.namaLengkap || 'Nama tidak ditemukan',
                     nim: meData.mahasiswaInfo.nim,
                     prodi: meData.mahasiswaInfo.namaJurusan || 'Jurusan Belum Ada',
                     status: meData.mahasiswaInfo.status,
-                    fotoProfil: meData.mahasiswaInfo.fotoProfil || `https://placehold.co/128x128/FCA5A5/991B1B?text=${inisial}`,
+                    fotoProfil: meData.mahasiswaInfo.fotoProfil, // Langsung gunakan dari API
                     ttl: `${biodataData.tempatLahir}, ${new Date(biodataData.tanggalLahir).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}`,
                     email: biodataData.emailPribadi,
                     telepon: biodataData.nomorTelepon,
                     alamat: biodataData.alamat,
                     jenisKelamin: biodataData.jenisKelamin,
-                    // --- PERBAIKAN DI SINI ---
-                    // Menggunakan field 'namaDosenPA' dari respons API
                     dosenPA: meData.mahasiswaInfo.namaDosenPA,
                     semester: summaryData.semesterAktif,
                     ipk: summaryData.ipk,
