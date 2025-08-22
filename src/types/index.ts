@@ -11,6 +11,7 @@ export interface User {
   nama: string;
   peran: string;
   email: string;
+  fotoProfil?: string; // <-- DITAMBAHKAN
 }
 
 export interface Notification {

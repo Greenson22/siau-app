@@ -30,23 +30,35 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user, profileMenuItem
     setIsOpen(false);
   }
 
-    // Dapatkan inisial dan warna dari fungsi utilitas
-    const initials = getInitials(user.nama);
-    const avatarColors = getAvatarColors(initials);
+  // Logika avatar inisial tetap ada sebagai fallback
+  const initials = getInitials(user.nama);
+  const avatarColors = getAvatarColors(initials);
 
   return (
     <div ref={ref} className="relative">
       <button onClick={() => setIsOpen(prev => !prev)} className="flex items-center gap-3 p-1 rounded-lg hover:bg-gray-100">
-        {/* Avatar dengan warna dinamis */}
-        <div
-          className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg"
-          style={{
-            backgroundColor: `#${avatarColors.bg}`,
-            color: `#${avatarColors.text}`,
-          }}
-        >
-          {initials}
-        </div>
+        
+        {/* --- PERUBAHAN UTAMA DI SINI --- */}
+        {user.fotoProfil ? (
+          // Jika ada URL fotoProfil, tampilkan gambar
+          <img
+            src={user.fotoProfil}
+            alt={`Foto profil ${user.nama}`}
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        ) : (
+          // Jika tidak, tampilkan avatar inisial seperti sebelumnya
+          <div
+            className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg"
+            style={{
+              backgroundColor: `#${avatarColors.bg}`,
+              color: `#${avatarColors.text}`,
+            }}
+          >
+            {initials}
+          </div>
+        )}
+        
         <div className="hidden sm:block text-left">
           <p className="font-semibold text-sm">{user.nama}</p>
           <p className="text-xs text-gray-500">{user.peran}</p>

@@ -9,7 +9,6 @@ import BiodataMahasiswaSection from '../fragments/ProfileView/BiodataMahasiswaSe
 import AkademikMahasiswaSection from '../fragments/ProfileView/AkademikMahasiswaSection';
 import DashboardView from '@/components/fragments/DashboardView';
 import FinanceView from '@/components/fragments/FinanceView';
-// --- 1. GANTI Impor ke AcademicView (router) ---
 import AcademicView from '@/components/fragments/AcademicView';
 import { User, KeyRound, GraduationCap } from 'lucide-react';
 
@@ -42,15 +41,16 @@ const MahasiswaProfileWrapper = ({ initialTab }: { initialTab: string }) => {
 const MahasiswaLayout = () => {
     const { mahasiswa, isLoading, error } = useMahasiswaProfile();
     
+    // --- PERUBAHAN DI SINI ---
     const userDisplayData = {
         nama: isLoading ? 'Memuat...' : mahasiswa?.nama || 'User',
         peran: 'Mahasiswa',
         email: isLoading ? '...' : mahasiswa?.email || '...',
+        fotoProfil: mahasiswa?.fotoProfil, // <-- FOTO PROFIL DITERUSKAN
     };
 
     const views = {
         dashboard: () => <DashboardView role="mahasiswa" />,
-        // --- 2. PERBAIKI cara memanggil AcademicView ---
         akademik: () => <AcademicView role="mahasiswa" />,
         profil: MahasiswaProfileWrapper,
         keuangan: FinanceView,
