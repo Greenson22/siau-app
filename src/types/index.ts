@@ -17,6 +17,7 @@ export interface User {
 export interface Notification {
   title: string;
   subtitle: string;
+  tanggalTerbit: string; // <-- DITAMBAHKAN
 }
 
 // --- Tipe dari Header ---

@@ -1,52 +1,58 @@
-'use client';
-
-import { useState, useEffect } from 'react';
+import {create} from 'zustand';
 import type { Notification } from '@/types';
 
 // Tipe data dari endpoint /api/pengumuman
 interface PengumumanDTO {
+  pengumumanId: number;
   judul: string;
+  isi: string;
+  namaPembuat: string;
   tanggalTerbit: string;
 }
 
-export const useNotifications = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface NotificationState {
+  notifications: Notification[];
+  isLoading: boolean;
+  error: string | null;
+  fetchNotifications: () => Promise<void>;
+}
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      setIsLoading(true);
-      try {
-        const token = localStorage.getItem('authToken');
-        if (!token) throw new Error('Token tidak ditemukan');
+/**
+ * Wadah global (store) untuk mengelola notifikasi di seluruh aplikasi.
+ */
+export const useNotificationStore = create<NotificationState>((set) => ({
+  notifications: [],
+  isLoading: true,
+  error: null,
+  
+  /**
+   * Fungsi untuk mengambil (atau mengambil ulang) daftar notifikasi dari server.
+   */
+  fetchNotifications: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) throw new Error('Token tidak ditemukan');
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/pengumuman`, {
-          headers: { 'Authorization': `Bearer ${token}` },
-        });
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/pengumuman`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
 
-        if (!response.ok) {
-          throw new Error('Gagal mengambil notifikasi.');
-        }
-
-        const data: PengumumanDTO[] = await response.json();
-        
-        // Transformasi data DTO ke tipe Notifikasi yang dibutuhkan komponen
-        const formattedNotifications = data.map(item => ({
-          title: item.judul,
-          subtitle: `Diterbitkan pada: ${new Date(item.tanggalTerbit).toLocaleString('id-ID')}`
-        }));
-
-        setNotifications(formattedNotifications);
-      } catch (e: any) {
-        setError(e.message);
-      } finally {
-        setIsLoading(false);
+      if (!response.ok) {
+        throw new Error('Gagal mengambil notifikasi.');
       }
-    };
 
-    fetchNotifications();
-  }, []);
+      const data: PengumumanDTO[] = await response.json();
+      
+      const formattedNotifications = data.map(item => ({
+        title: item.judul,
+        subtitle: `Diterbitkan: ${new Date(item.tanggalTerbit).toLocaleString('id-ID')}`,
+        tanggalTerbit: item.tanggalTerbit, // <-- SIMPAN TANGGAL ASLI
+      }));
 
-  return { notifications, isLoading, error };
-};
+      set({ notifications: formattedNotifications, isLoading: false });
+    } catch (e: any) {
+      set({ error: e.message, isLoading: false });
+    }
+  },
+}));
