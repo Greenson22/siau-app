@@ -6,7 +6,8 @@ import React from 'react';
 import Card from '@/components/elements/Card';
 import InfoCard from '@/components/fragments/InfoCard';
 import IpsChart from './IpsChart';
-import { useMahasiswaDashboard } from '@/hooks/useMahasiswaDashboard'; // <-- 1. Impor hook baru
+import { useMahasiswaDashboard } from '@/hooks/useMahasiswaDashboard';
+import { useIpsChart } from '@/hooks/useIpsChart'; // <-- 1. Impor hook baru untuk grafik
 import { GraduationCap, Wallet, BookCopy, Megaphone, AlertCircle } from 'lucide-react';
 
 // Komponen untuk item pengumuman (tidak berubah)
@@ -33,30 +34,32 @@ const formatDate = (isoString: string) => {
 };
 
 const MahasiswaDashboardView = () => {
-  // 2. Panggil hook untuk mendapatkan data dan state
+  // 2. Panggil kedua hook untuk mendapatkan data
   const { summaryData, announcements, isLoading, error } = useMahasiswaDashboard();
+  const { chartData, isLoading: isLoadingChart, error: errorChart } = useIpsChart();
 
-  // 3. Render loading state
-  if (isLoading) {
+  // 3. Gabungkan state loading dari kedua hook
+  if (isLoading || isLoadingChart) {
     return <div className="text-center p-8">Memuat data dashboard...</div>;
   }
 
-  // 4. Render error state
-  if (error) {
+  // 4. Gabungkan state error dari kedua hook
+  const anyError = error || errorChart;
+  if (anyError) {
     return (
         <Card className="bg-red-50 border-red-200 text-red-800">
             <div className="flex items-center gap-4">
                 <AlertCircle />
                 <div>
                     <h3 className="font-bold">Gagal Memuat Data</h3>
-                    <p>{error}</p>
+                    <p>{anyError}</p>
                 </div>
             </div>
         </Card>
     );
   }
 
-  // 5. Render UI utama dengan data dari hook
+  // Render UI utama dengan data dari hook
   const announcementColors = ["border-indigo-500", "border-green-500", "border-yellow-500"];
 
   return (
@@ -69,7 +72,10 @@ const MahasiswaDashboardView = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2">
           <h3 className="text-xl font-bold mb-4 text-gray-800">Grafik Indeks Prestasi Semester (IPS)</h3>
-          <div className="h-80"><IpsChart /></div>
+          {/* 5. Teruskan data dinamis ke komponen IpsChart */}
+          <div className="h-80">
+            {chartData && <IpsChart labels={chartData.labels} dataPoints={chartData.data} />}
+          </div>
         </Card>
         <Card>
           <div className="flex items-center gap-3 mb-4">
