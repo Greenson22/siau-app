@@ -2,23 +2,12 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import type { KrsData } from '@/types'; // Impor dari @/types
 
 // --- Interface & Tipe Data ---
 
 // Tipe untuk status KRS yang dikelola oleh hook
 type KrsStatus = 'belum_kontrak' | 'menunggu_persetujuan' | 'disetujui' | 'ditolak';
-
-// Tipe data KRS yang diterima dari backend
-export interface KrsData {
-    krsId: number;
-    kelasId: number;
-    kodeMataKuliah: string;
-    namaMataKuliah: string;
-    sks: number;
-    namaDosen: string;
-    statusPersetujuan: 'DIAJUKAN' | 'DISETUJUI' | 'DITOLAK';
-    jadwal: string;
-}
 
 // Tipe data Kelas yang diterima dari backend
 interface Kelas {

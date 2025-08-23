@@ -132,3 +132,14 @@ export interface JadwalDTO {
   dosenPengajar: string;
   ruangan: string;
 }
+
+export interface KrsData {
+  krsId: number;
+  kelasId: number;
+  kodeMataKuliah: string;
+  namaMataKuliah: string;
+  sks: number;
+  namaDosen: string;
+  statusPersetujuan: 'DIAJUKAN' | 'DISETUJUI' | 'DITOLAK';
+  jadwal: string;
+}
