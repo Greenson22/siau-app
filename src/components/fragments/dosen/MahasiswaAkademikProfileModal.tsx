@@ -118,6 +118,7 @@ const MahasiswaAkademikProfileModal: React.FC<MahasiswaAkademikProfileModalProps
             onConfirm={onClose} // Tombol konfirmasi hanya akan menutup modal
             title={`Profil Akademik - ${mahasiswaName}`}
             variant="info"
+            maxWidth="max-w-4xl" // <-- PERUBAHAN DI SINI
         >
             <div className="border-b border-gray-200">
                 <nav className="flex space-x-6 overflow-x-auto" aria-label="Tabs">

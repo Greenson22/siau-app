@@ -11,6 +11,7 @@ interface ModalProps {
   title: string;
   children: React.ReactNode;
   variant?: 'info' | 'danger';
+  maxWidth?: string; // <-- TAMBAHKAN BARIS INI
 }
 
 const Modal: React.FC<ModalProps> = ({ 
@@ -19,11 +20,13 @@ const Modal: React.FC<ModalProps> = ({
   onConfirm, 
   title, 
   children, 
-  variant = 'info'
+  variant = 'info',
+  maxWidth = 'max-w-md' // <-- TAMBAHKAN BARIS INI DENGAN NILAI DEFAULT
 }) => {
   const [isRendered, setIsRendered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
+  // ... (Sisa kode tidak berubah)
   const theme = {
     info: {
       Icon: Info,
@@ -67,7 +70,7 @@ const Modal: React.FC<ModalProps> = ({
       onClick={onClose}
     >
       <div
-        className={`relative w-full max-w-md transform rounded-2xl bg-white text-left shadow-xl transition-all duration-300 ease-in-out ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+        className={`relative w-full ${maxWidth} transform rounded-2xl bg-white text-left shadow-xl transition-all duration-300 ease-in-out ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 rounded-t-2xl">
@@ -78,7 +81,6 @@ const Modal: React.FC<ModalProps> = ({
             <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
               <h3 className="text-lg font-semibold leading-6 text-gray-900">{title}</h3>
               <div className="mt-2">
-                {/* --- PERUBAHAN DI SINI --- */}
                 <div className="text-sm text-gray-500">{children}</div>
               </div>
             </div>
