@@ -61,7 +61,7 @@ export const useBimbinganAkademik = () => {
     }, [fetchData]);
 
     // Fungsi untuk memvalidasi KRS
-    const validateKrs = async (krsId: number, status: 'DISETUJUI' | 'DITOLAK') => {
+    const validateKrs = async (krsId: number, status: 'DISETUJUI' | 'DITOLAK', reason: string = '') => {
         try {
             const token = localStorage.getItem('authToken');
             if (!token) throw new Error('Sesi tidak valid.');
@@ -72,7 +72,10 @@ export const useBimbinganAkademik = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({ statusPersetujuan: status }),
+                body: JSON.stringify({
+                  statusPersetujuan: status,
+                  catatanPenolakan: reason // <-- KIRIM ALASAN
+                }),
             });
 
             if (!response.ok) {

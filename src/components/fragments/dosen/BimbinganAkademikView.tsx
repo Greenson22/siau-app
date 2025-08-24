@@ -1,14 +1,14 @@
-// program/next-js/components/fragments/dosen/BimbinganAkademikView.tsx
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import Card from '@/components/elements/Card';
 import Button from '@/components/elements/Button';
 import StatusBadge from '@/components/elements/StatusBadge';
 import ConfirmationModal from '@/components/fragments/Modal/ConfirmationModal';
-import MahasiswaAkademikProfileModal from './MahasiswaAkademikProfileModal'; // <-- UBAH: Impor modal profil akademik
+import MahasiswaAkademikProfileModal from './MahasiswaAkademikProfileModal';
+import KrsRejectionModal from './KrsRejectionModal'; // <-- Impor modal baru
 import { useBimbinganAkademik, MahasiswaBimbingan } from '@/hooks/useBimbinganAkademik';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Check, X } from 'lucide-react';
 import type { KrsData } from '@/types';
 
 interface SelectedMahasiswaInfo {
@@ -19,35 +19,55 @@ interface SelectedMahasiswaInfo {
 const BimbinganAkademikView = () => {
     const { mahasiswaList, isLoading, error, validateKrs } = useBimbinganAkademik();
     
-    // State untuk Modal Konfirmasi Validasi
+    // State untuk berbagai modal
     const [selectedMahasiswaInfo, setSelectedMahasiswaInfo] = useState<SelectedMahasiswaInfo | null>(null);
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-
-    // State baru untuk Modal Profil Akademik
+    const [isRejectModalOpen, setIsRejectModalOpen] = useState(false); // <-- State untuk modal tolak
     const [isAkademikModalOpen, setIsAkademikModalOpen] = useState(false);
     const [selectedMahasiswaForAkademik, setSelectedMahasiswaForAkademik] = useState<MahasiswaBimbingan | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Fungsi untuk membuka modal konfirmasi validasi
+    // Handler untuk membuka modal
     const handleOpenConfirmModal = (mahasiswa: MahasiswaBimbingan) => {
         const krsToValidate = mahasiswa.krs.filter(k => k.statusPersetujuan === 'DIAJUKAN');
         setSelectedMahasiswaInfo({ mahasiswa, krsToValidate });
         setIsConfirmModalOpen(true);
     };
 
-    // Fungsi baru untuk membuka modal profil akademik
+    const handleOpenRejectModal = (mahasiswa: MahasiswaBimbingan) => {
+        const krsToValidate = mahasiswa.krs.filter(k => k.statusPersetujuan === 'DIAJUKAN');
+        setSelectedMahasiswaInfo({ mahasiswa, krsToValidate });
+        setIsRejectModalOpen(true);
+    };
+    
     const handleViewAcademicProfile = (mahasiswa: MahasiswaBimbingan) => {
         setSelectedMahasiswaForAkademik(mahasiswa);
         setIsAkademikModalOpen(true);
     };
 
+    // Handler untuk aksi
     const handleConfirmValidation = async () => {
         if (!selectedMahasiswaInfo) return;
+        setIsSubmitting(true);
         const validationPromises = selectedMahasiswaInfo.krsToValidate.map(krs => 
             validateKrs(krs.krsId, 'DISETUJUI')
         );
         await Promise.all(validationPromises);
         setIsConfirmModalOpen(false);
         setSelectedMahasiswaInfo(null);
+        setIsSubmitting(false);
+    };
+
+    const handleConfirmRejection = async (reason: string) => {
+        if (!selectedMahasiswaInfo) return;
+        setIsSubmitting(true);
+        const rejectionPromises = selectedMahasiswaInfo.krsToValidate.map(krs =>
+            validateKrs(krs.krsId, 'DITOLAK', reason)
+        );
+        await Promise.all(rejectionPromises);
+        setIsRejectModalOpen(false);
+        setSelectedMahasiswaInfo(null);
+        setIsSubmitting(false);
     };
     
     const getOverallKrsStatus = (krsList: KrsData[]): 'Disetujui' | 'Menunggu Persetujuan' | 'Belum Kontrak' => {
@@ -70,11 +90,20 @@ const BimbinganAkademikView = () => {
                 isOpen={isConfirmModalOpen}
                 onClose={() => setIsConfirmModalOpen(false)}
                 onConfirm={handleConfirmValidation}
-                title="Validasi KRS Mahasiswa"
+                title="Setujui KRS Mahasiswa"
                 message={`Apakah Anda yakin ingin menyetujui ${selectedMahasiswaInfo?.krsToValidate.length} mata kuliah untuk ${selectedMahasiswaInfo?.mahasiswa.namaLengkap}?`}
             />
 
-            {/* Render modal profil akademik */}
+            {selectedMahasiswaInfo && (
+                <KrsRejectionModal
+                    isOpen={isRejectModalOpen}
+                    onClose={() => setIsRejectModalOpen(false)}
+                    onConfirm={handleConfirmRejection}
+                    mahasiswaName={selectedMahasiswaInfo.mahasiswa.namaLengkap}
+                    isLoading={isSubmitting}
+                />
+            )}
+
             {selectedMahasiswaForAkademik && (
                 <MahasiswaAkademikProfileModal
                     isOpen={isAkademikModalOpen}
@@ -118,12 +147,14 @@ const BimbinganAkademikView = () => {
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             {statusKrs === 'Menunggu Persetujuan' && (
-                                                <Button
-                                                    className="!w-auto !py-1 !px-3 text-xs"
-                                                    onClick={() => handleOpenConfirmModal(mhs)}
-                                                >
-                                                    Validasi KRS
-                                                </Button>
+                                                <div className="flex justify-center items-center gap-2">
+                                                    <Button variant="primary" className="!p-2" onClick={() => handleOpenConfirmModal(mhs)}>
+                                                        <Check size={16} />
+                                                    </Button>
+                                                    <Button variant="danger" className="!p-2" onClick={() => handleOpenRejectModal(mhs)}>
+                                                        <X size={16} />
+                                                    </Button>
+                                                </div>
                                             )}
                                         </td>
                                     </tr>
