@@ -7,6 +7,7 @@ interface DosenDashboardSummary {
   totalMahasiswaBimbingan: number;
   totalKelasMengajar: number;
   totalSksMengajar: number;
+  krsMenungguPersetujuan: number; // <-- TAMBAHKAN PROPERTI BARU
 }
 
 export const useDosenDashboard = () => {

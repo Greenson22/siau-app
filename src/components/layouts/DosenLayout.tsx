@@ -34,8 +34,13 @@ const DosenProfileWrapper = ({ initialTab }: { initialTab: string }) => {
 };
 
 const DosenLayout = () => {
+    // --- WRAPPER BARU ---
+    const DosenDashboardWrapper = ({ onNavigate }: { onNavigate?: (view: string, tab?: string) => void }) => (
+        <DashboardView role="dosen" onNavigate={onNavigate} />
+    );
+    
     const views = {
-        dashboard: () => <DashboardView role="dosen" />,
+        dashboard: DosenDashboardWrapper,
         profil: DosenProfileWrapper,
         bimbingan: BimbinganAkademikView,
         akademik: () => <AcademicView role="dosen" />,
@@ -51,10 +56,6 @@ const DosenLayout = () => {
             user={dosen}
             navLinks={navLinksDosen}
             portalTitle="Portal Dosen"
-            notifications={[
-                { title: '5 Mahasiswa Membutuhkan Validasi KRS', subtitle: 'Batas waktu: 31 Agustus 2025' },
-                { title: 'Jadwal Rapat Dosen', subtitle: 'Besok, 10:00 WITA di Ruang Rapat' },
-            ]}
             profileMenuItemsFactory={profileMenuItemsFactory}
             views={views}
             initialView="dashboard"

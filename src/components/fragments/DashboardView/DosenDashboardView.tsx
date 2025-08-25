@@ -2,13 +2,19 @@
 
 import Card from '@/components/elements/Card';
 import InfoCard from '@/components/fragments/InfoCard';
+import Button from '@/components/elements/Button'; // <-- IMPORT BUTTON
 import { useDosenDashboard } from '@/hooks/useDosenDashboard';
-import { useDosenJadwal } from '@/hooks/useDosenJadwal'; // <-- Import hook jadwal yang baru
-import { Users, Calendar, BookOpen, AlertCircle } from 'lucide-react';
+import { useDosenJadwal } from '@/hooks/useDosenJadwal';
+import { Users, Calendar, BookOpen, AlertCircle, Bell, ArrowRight } from 'lucide-react'; // <-- IMPORT ICON BARU
 
-const DosenDashboardView = () => {
+// TAMBAHKAN INTERFACE PROPS BARU
+interface DosenDashboardViewProps {
+  onNavigate?: (view: string, tab?: string) => void;
+}
+
+const DosenDashboardView: React.FC<DosenDashboardViewProps> = ({ onNavigate }) => {
     const { summary, isLoading: isLoadingSummary, error: errorSummary } = useDosenDashboard();
-    const { jadwal, isLoading: isLoadingJadwal, error: errorJadwal } = useDosenJadwal(); // <-- Panggil hook jadwal
+    const { jadwal, isLoading: isLoadingJadwal, error: errorJadwal } = useDosenJadwal();
 
     if (isLoadingSummary || isLoadingJadwal) {
         return (
@@ -28,8 +34,37 @@ const DosenDashboardView = () => {
         );
     }
 
+    const handleNavigateToBimbingan = () => {
+        if (onNavigate) {
+            onNavigate('bimbingan');
+        }
+    }
+
     return (
         <div className="space-y-8">
+            {/* --- KARTU NOTIFIKASI BARU --- */}
+            {summary && summary.krsMenungguPersetujuan > 0 && (
+                 <Card className="bg-blue-50 border-blue-200">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                            <div className="bg-blue-200 p-3 rounded-full">
+                                <Bell className="text-blue-700" size={24}/>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-blue-800">Tugas Validasi KRS</h4>
+                                <p className="text-blue-700">
+                                    Anda memiliki <strong className="text-lg">{summary.krsMenungguPersetujuan}</strong> mahasiswa yang KRS-nya menunggu persetujuan.
+                                </p>
+                            </div>
+                        </div>
+                        <Button onClick={handleNavigateToBimbingan} className="w-full sm:w-auto">
+                            Lihat Detail
+                            <ArrowRight size={16} className="ml-2"/>
+                        </Button>
+                    </div>
+                </Card>
+            )}
+
             <div>
                 <h3 className="text-xl font-bold text-gray-800 mb-4">Ringkasan Aktivitas</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
