@@ -4,8 +4,9 @@
 
 import { User, KeyRound } from 'lucide-react';
 import AppLayout from './AppLayout';
+import { useDosenProfile } from '@/hooks/useDosenProfile'; // <-- IMPORT HOOK BARU
 
-import { navLinksDosen, dosen } from '@/lib/dataDosen';
+import { navLinksDosen } from '@/lib/dataDosen';
 import DashboardView from '@/components/fragments/DashboardView';
 import AcademicView from '@/components/fragments/AcademicView';
 import BimbinganAkademikView from '@/components/fragments/dosen/BimbinganAkademikView';
@@ -14,19 +15,24 @@ import BiodataDosenSection from '@/components/fragments/ProfileView/BiodataDosen
 import AkademikDosenSection from '@/components/fragments/ProfileView/AkademikDosenSection';
 
 const DosenProfileWrapper = ({ initialTab }: { initialTab: string }) => {
+    const { profile, isLoading, error } = useDosenProfile(); // <-- Gunakan hook di sini
+
+    if (isLoading) return <p>Memuat profil...</p>;
+    if (error || !profile) return <p>Gagal memuat profil: {error}</p>;
+
     const userProfileData = {
-        nama: dosen.nama,
-        peran: dosen.peran,
-        idNumber: dosen.nidn,
+        nama: profile.namaLengkap,
+        peran: profile.jabatanAkademik,
+        idNumber: profile.nidn,
         idLabel: "NIDN",
-        status: dosen.peran,
-        fotoProfil: dosen.fotoProfil,
-        detail: dosen.jabatanAkademik,
+        status: "Aktif",
+        fotoProfil: `https://placehold.co/128x128/93C5FD/1E40AF?text=GM`, // Placeholder
+        detail: profile.jabatanAkademik,
     };
 
     const profileTabs = [
-        { id: 'biodata', label: 'Biodata', content: <BiodataDosenSection /> },
-        { id: 'akademik', label: 'Info Akademik', content: <AkademikDosenSection /> },
+        { id: 'biodata', label: 'Biodata', content: <BiodataDosenSection profile={profile} /> },
+        { id: 'akademik', label: 'Info Akademik', content: <AkademikDosenSection profile={profile} /> },
         { id: 'keamanan', label: 'Keamanan', content: <KeamananSection /> },
     ];
 
@@ -34,7 +40,15 @@ const DosenProfileWrapper = ({ initialTab }: { initialTab: string }) => {
 };
 
 const DosenLayout = () => {
-    // --- WRAPPER BARU ---
+    const { profile, isLoading } = useDosenProfile(); // <-- Ambil data di level atas
+
+    const userDisplayData = {
+        nama: isLoading ? 'Memuat...' : profile?.namaLengkap || 'Dosen',
+        peran: isLoading ? '...' : profile?.jabatanAkademik || 'Dosen',
+        email: isLoading ? '...' : profile?.emailPribadi || '...',
+        fotoProfil: `https://placehold.co/128x128/93C5FD/1E40AF?text=GM`, // Placeholder
+    };
+    
     const DosenDashboardWrapper = ({ onNavigate }: { onNavigate?: (view: string, tab?: string) => void }) => (
         <DashboardView role="dosen" onNavigate={onNavigate} />
     );
@@ -53,7 +67,7 @@ const DosenLayout = () => {
 
     return (
         <AppLayout
-            user={dosen}
+            user={userDisplayData}
             navLinks={navLinksDosen}
             portalTitle="Portal Dosen"
             profileMenuItemsFactory={profileMenuItemsFactory}
