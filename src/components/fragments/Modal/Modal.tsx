@@ -11,7 +11,10 @@ interface ModalProps {
   title: string;
   children: React.ReactNode;
   variant?: 'info' | 'danger';
-  maxWidth?: string; // <-- TAMBAHKAN BARIS INI
+  maxWidth?: string;
+  confirmText?: string; // <-- PROP BARU
+  cancelText?: string;  // <-- PROP BARU
+  hideCancelButton?: boolean; // <-- PROP BARU
 }
 
 const Modal: React.FC<ModalProps> = ({ 
@@ -21,7 +24,10 @@ const Modal: React.FC<ModalProps> = ({
   title, 
   children, 
   variant = 'info',
-  maxWidth = 'max-w-md' // <-- TAMBAHKAN BARIS INI DENGAN NILAI DEFAULT
+  maxWidth = 'max-w-md',
+  confirmText = 'Ya, Konfirmasi', // <-- Nilai default
+  cancelText = 'Batal',           // <-- Nilai default
+  hideCancelButton = false      // <-- Nilai default
 }) => {
   const [isRendered, setIsRendered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -88,13 +94,15 @@ const Modal: React.FC<ModalProps> = ({
         </div>
         <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 rounded-b-2xl">
           <Button onClick={onConfirm} variant={currentTheme.confirmButtonVariant}>
-            Ya, Konfirmasi
+            {confirmText}
           </Button>
-          <div className="mr-2">
-            <Button onClick={onClose} variant="secondary">
-              Batal
-            </Button>
-          </div>
+          {!hideCancelButton && (
+            <div className="mr-2">
+              <Button onClick={onClose} variant="secondary">
+                {cancelText}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
