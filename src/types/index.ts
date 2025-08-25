@@ -11,13 +11,13 @@ export interface User {
   nama: string;
   peran: string;
   email: string;
-  fotoProfil?: string; // <-- DITAMBAHKAN
+  fotoProfil?: string;
 }
 
 export interface Notification {
   title: string;
   subtitle: string;
-  tanggalTerbit: string; // <-- DITAMBAHKAN
+  tanggalTerbit: string;
 }
 
 // --- Tipe dari Header ---
@@ -58,11 +58,11 @@ export type BadgeStatus = 'Belum Kontrak' | 'Menunggu Persetujuan' | 'Disetujui'
 export interface UserProfile {
   nama: string;
   peran: string;
-  idNumber: string; // Bisa NIM atau NIDN
-  idLabel: string; // "NIM" atau "NIDN"
+  idNumber: string;
+  idLabel: string;
   status: string;
   fotoProfil: string;
-  detail?: string; // Prodi untuk mahasiswa, Jabatan untuk dosen
+  detail?: string;
 }
 
 export interface ProfileTab {
@@ -126,9 +126,12 @@ export interface KhsDTO {
 }
 
 export interface JadwalDTO {
-  hari: string;
-  jadwal: string; // contoh: "08:00 - 10:30"
+  kelasId: number; // <-- DITAMBAHKAN KARENA DIBUTUHKAN DI IsiNilaiView
+  kodeMataKuliah: string;
   namaMataKuliah: string;
+  sks: number;
+  hari: string;
+  jadwal: string;
   dosenPengajar: string;
   ruangan: string;
 }
@@ -142,4 +145,7 @@ export interface KrsData {
   namaDosen: string;
   statusPersetujuan: 'DIAJUKAN' | 'DISETUJUI' | 'DITOLAK';
   jadwal: string;
+  // --- PROPERTI BARU (OPSIONAL) ---
+  nilaiAkhir?: number;
+  nilaiHuruf?: string;
 }
